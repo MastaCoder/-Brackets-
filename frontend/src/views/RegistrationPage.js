@@ -1,10 +1,6 @@
 import { Container, Box, Button, TextField, Typography, Alert } from "@mui/material";
 import { useState } from "react"
 
-function RegistrationAlert(props) {
-
-}
-
 export default function RegistrationPage(props) {
   const [passwordMismatch, setPasswordMistmatch] = useState(false);
 
