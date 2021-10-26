@@ -6,6 +6,7 @@ import LoginPage from '../../views/LoginPage';
 import RegistrationPage from '../../views/RegistrationPage';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
+import ProfilePage from '../../views/Profile';
 
 function App() {
   const theme = createTheme({
@@ -33,6 +34,13 @@ function App() {
           </Route>
           <PrivateRoute exact path="/dashboard">
             <h1>Dashboard</h1>
+          </PrivateRoute>
+          <PrivateRoute exact path="/profile">
+            <ProfilePage
+              username="user"
+              email="user@user.com"
+              password="user"
+            />
           </PrivateRoute>
         </Switch>
       </Router>
