@@ -32,14 +32,14 @@ const LoginPage = (props) => {
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
-          marginTop: 8,
+          mt: 8,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
         }}
       >
-        <Typography component="h1" variant="h5">
-          Log in to Your Account
+        <Typography component="h1" variant="h4" sx={{ mb: 5 }}>
+          Log In
         </Typography>
         <Box component="form" onSubmit={handleLogin}>
           <TextField
@@ -63,7 +63,7 @@ const LoginPage = (props) => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 5 }}
           >
             Log In
           </Button>
