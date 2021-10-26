@@ -38,7 +38,7 @@ const LoginPage = (props) => {
           alignItems: 'center',
         }}
       >
-        <Typography component="h1" variant="h4" sx={{ mb: 5 }}>
+        <Typography variant="h4" sx={{ mb: 5, fontWeight: "bold" }}>
           Log In
         </Typography>
         <Box component="form" onSubmit={handleLogin}>
