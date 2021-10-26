@@ -8,7 +8,7 @@ const useAuth = () => {
 
 // Provide hook that creates auth object and handles state
 const useProvideAuth = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(false);
 
   /* Add your function handlers */
   const signin = (newUser, cb) => {
@@ -17,7 +17,7 @@ const useProvideAuth = () => {
   };
 
   const signout = (cb) => {
-    setUser(null);
+    setUser(false);
     if(user) cb();
   };
 
