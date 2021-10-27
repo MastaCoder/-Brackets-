@@ -7,6 +7,7 @@ import RegistrationPage from '../../views/RegistrationPage';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import ProfilePage from '../../views/Profile';
+import HomePage from '../../views/Home/HomePage';
 
 function App() {
   const theme = createTheme({
@@ -24,7 +25,7 @@ function App() {
         <Navbar/>
         <Switch>
           <Route exact path="/">
-            <h1>Home Page</h1>
+            <HomePage />
           </Route>
           <Route exact path="/login">
             <LoginPage/>
