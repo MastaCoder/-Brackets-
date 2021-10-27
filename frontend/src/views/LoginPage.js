@@ -1,30 +1,28 @@
 import { Container, Box, Button, TextField, Typography } from "@mui/material";
+import { useAuth } from "../hooks/Auth";
+import { useHistory } from "react-router";
 
 const playerEmail = "user@user.com";
 const playerPassword = "user";
-const organizerEmail = "organizer@organizer.com";
-const organizerPassword = "organizer";
 const adminEmail = "admin@admin.com";
 const adminPassword = "admin";
 
 const LoginPage = (props) => {
-  const handleLogin = (event) => {
+  const auth = useAuth();
+  const history = useHistory();
+
+  const HandleLogin = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get('email-input');
     const password = data.get('password-input')
     if (email === playerEmail && password === playerPassword) {
-      // redirect to user page
-      console.log("Player login has succeeded");
-    } else if (email === organizerEmail && password === organizerPassword) {
-      // redirect to user page
-      console.log("Organizer login has succeeded");
+      auth.signin(true, () => {});
+      history.push("/profile");
     } else if (email === adminEmail && password === adminPassword) {
-      // redirect to user page
-      console.log("Admin login has succeeded");
+      auth.signin(true, () => {});
     } else {
-      // redirect to login page
-      console.log("Login failed");
+      // Show error message here
     }
   };
 
@@ -38,10 +36,10 @@ const LoginPage = (props) => {
           alignItems: 'center',
         }}
       >
-        <Typography component="h1" variant="h4" sx={{ mb: 5 }}>
+        <Typography variant="h4" sx={{ mb: 5, fontWeight: "bold" }}>
           Log In
         </Typography>
-        <Box component="form" onSubmit={handleLogin}>
+        <Box component="form" onSubmit={HandleLogin}>
           <TextField
             margin="normal"
             required

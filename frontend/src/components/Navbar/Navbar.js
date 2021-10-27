@@ -6,7 +6,8 @@ const Navbar = () => {
   const auth = useAuth();
   
   const renderNavbar = () => {
-    return auth ? 
+    console.log(auth)
+    return auth.user ? 
     (
       null
     ) : (

@@ -1,5 +1,5 @@
 .bracketsNavbar {
-  height: 91px;
+  height: var(--nav-height);
   color: white;
   background-color: var(--purple);
   display: flex;
