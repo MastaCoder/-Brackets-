@@ -1,17 +1,16 @@
 import ProvideAuth from '../Authentication/ProvideAuth';
 import PrivateRoute from '../Authentication/PrivateRoute';
 import Navbar from '../Navbar/Navbar';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import LoginPage from '../../views/LoginPage';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
   const theme = createTheme({
     palette: {
       primary: {
-        main: "#6984E1"
+        main: "rgb(53,52,131)"
       }
     },
   });
@@ -26,7 +25,7 @@ function App() {
             <h1>Home Page</h1>
           </Route>
           <Route exact path="/login">
-            <h1>Login</h1>
+            <LoginPage/>
           </Route>
           <Route exact path="/register">
             <h1>Register Here</h1>
