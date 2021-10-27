@@ -6,7 +6,7 @@ import styles from "./HomePage.module.css";
 
 export default function HomePage() {
   return (
-    <Container disableGutters className={styles.main} maxWidth={false}>
+    <div className={styles.main}>
       <img src={Background} alt="" className={styles.bg} />
 
       {/* {Main title} */}
@@ -46,6 +46,6 @@ export default function HomePage() {
           </Link>
         </p>
       </Box>
-    </Container>
+    </div>
   );
 }
