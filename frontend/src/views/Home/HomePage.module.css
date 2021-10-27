@@ -1,9 +1,9 @@
 
 .main {
     height: calc(100vh - var(--nav-height));
-    margin: 0;
     position: relative;
     display: flex;
+    flex-direction: column;
 }
 
 .bg {
