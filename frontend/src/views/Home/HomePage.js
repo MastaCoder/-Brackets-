@@ -19,13 +19,8 @@ export default function HomePage() {
           alignItems: "center",
         }}
       >
-        <Typography variant="h1" className={styles.title}>
-          [Brackets]
-        </Typography>
-
-        <Typography className={styles.titleSub}>
-          Tournament management made easy
-        </Typography>
+        <h1 className={styles.title}>[Brackets]</h1>
+        <h5 className={styles.titleSub}>Tournament management made easy</h5>
       </Box>
 
       {/* {Try it out} */}
@@ -36,9 +31,7 @@ export default function HomePage() {
           alignItems: "center",
         }}
       >
-        <Typography variant="h5" className={styles.tryItOut}>
-          What are you waiting for?
-        </Typography>
+        <h5 className={styles.tryItOut}>What are you waiting for?</h5>
 
         <Link to="/register" style={{ textDecoration: "none" }}>
           <Button className={styles.btn} variant="contained" size="large">
@@ -46,12 +39,12 @@ export default function HomePage() {
           </Button>
         </Link>
 
-        <Typography variant="caption" className={styles.regText}>
+        <p className={styles.regText}>
           Looking to join a tournament? Register as a player{" "}
           <Link className={styles.here} to="/register">
             here!
           </Link>
-        </Typography>
+        </p>
       </Box>
     </Container>
   );
