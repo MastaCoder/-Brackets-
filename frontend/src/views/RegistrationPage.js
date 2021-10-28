@@ -4,17 +4,16 @@ import { useState } from "react"
 export default function RegistrationPage(props) {
   const [passwordMismatch, setPasswordMistmatch] = useState(false);
 
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
   function handleRegistration(event) {
     event.preventDefault();
-    const form = event.currentTarget;
-    const data = new FormData(form);
-    const username = data.get('username-input');
-    const email = data.get('email-input');
-    const password = data.get('password-input')
-    const password_confirm = data.get('password-confirm-input')
 
-    if (password === password_confirm) {
-      form.submit();
+    if (password === passwordConfirm) {
+      event.currentTarget.submit();
     } else {
       setPasswordMistmatch(true);
     }
@@ -41,36 +40,36 @@ export default function RegistrationPage(props) {
             margin="normal"
             required
             fullWidth
-            id="username-input"
             label="Username"
-            name="username-input"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email-input"
             label="Email"
             type="email"
-            name="email-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password-input"
             label="Password"
             type="password"
-            id="password-input"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password-confirm-input"
             label="Confirm Password"
             type="password"
-            id="password-confirm-input"
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
           />
           <Button
             type="submit"

@@ -42,7 +42,7 @@ function App() {
             <UserDashboard />
           </Route>
           <PrivateRoute exact path="/dashboard">
-            <h1>Dashboard</h1>
+            <AdminDashboard/>
           </PrivateRoute>
           <PrivateRoute exact path="/profile">
             <ProfilePage
