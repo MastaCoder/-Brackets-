@@ -8,6 +8,8 @@ import RegistrationPage from '../../views/RegistrationPage';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import AdminDashboard from '../../views/Dashboards/AdminDashboard/AdminDashboard';
+import UserDashboard from '../../views/Dashboards/UserDashboard/UserDashboard';
 
 function App() {
   const theme = createTheme({
@@ -33,8 +35,14 @@ function App() {
           <Route exact path="/register">
             <RegistrationPage/>
           </Route>
+          <Route exact path="/admin">
+            <AdminDashboard />
+          </Route>
+          <PrivateRoute exact path="/user">
+            <UserDashboard />
+          </PrivateRoute>
           <PrivateRoute exact path="/dashboard">
-            <h1>Dashboard</h1>
+            <AdminDashboard/>
           </PrivateRoute>
           <PrivateRoute exact path="/profile">
             <ProfilePage

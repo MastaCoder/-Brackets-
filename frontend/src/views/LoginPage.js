@@ -1,21 +1,22 @@
 import { Container, Box, Button, TextField, Typography } from "@mui/material";
 import { useAuth } from "../hooks/Auth";
 import { useHistory } from "react-router";
+import { useState } from "react";
 
 const playerEmail = "user@user.com";
 const playerPassword = "user";
 const adminEmail = "admin@admin.com";
 const adminPassword = "admin";
 
-const LoginPage = (props) => {
+export default function LoginPage(props) {
   const auth = useAuth();
   const history = useHistory();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const HandleLogin = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email-input');
-    const password = data.get('password-input')
     if (email === playerEmail && password === playerPassword) {
       auth.signin(true, () => {});
       history.push("/profile");
@@ -41,21 +42,21 @@ const LoginPage = (props) => {
         </Typography>
         <Box component="form" onSubmit={HandleLogin}>
           <TextField
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             margin="normal"
             required
             fullWidth
-            id="email-input"
             label="Email Address"
-            name="email-input"
           />
           <TextField
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             margin="normal"
             required
             fullWidth
-            name="password-input"
             label="Password"
             type="password"
-            id="password-input"
           />
           <Button
             type="submit"
@@ -70,5 +71,3 @@ const LoginPage = (props) => {
     </Container>
   )
 };
-
-export default LoginPage;

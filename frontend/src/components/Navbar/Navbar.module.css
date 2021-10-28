@@ -40,3 +40,12 @@
 .activeNavLink {
   color: var(--orange);
 }
+
+.link {
+  text-decoration: none;
+  color: white;
+}
+
+.avatar {
+  margin: 1em 1.5em;
+}

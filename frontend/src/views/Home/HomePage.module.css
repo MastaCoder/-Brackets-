@@ -2,8 +2,18 @@
 .main {
     height: calc(100vh - var(--nav-height));
     position: relative;
+}
+
+.verticalContainer {
     display: flex;
     flex-direction: column;
+}
+
+
+
+.titleContainerMargins {
+    margin-top: 4rem;
+    margin-bottom: 8rem;
 }
 
 .bg {
