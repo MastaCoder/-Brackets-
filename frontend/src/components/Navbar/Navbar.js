@@ -36,7 +36,7 @@ const Navbar = () => {
 
   const handleSignOut = () => {
     handleMenuClose();
-    auth.signout();
+    auth.signout(() => console.log("Logout Successful"));
   }
   
 
