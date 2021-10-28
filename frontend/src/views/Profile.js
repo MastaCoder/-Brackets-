@@ -7,17 +7,15 @@ export default function ProfilePage(props) {
   const [passwordMismatch, setPasswordMistmatch] = useState(false);
   const [updatingProfile, setUpdatingProfile] = useState(false);
 
+  const [username, setUsername] = useState(props.username);
+  const [email, setEmail] = useState(props.email);
+  const [password, setPassword] = useState(props.password);
+  const [passwordConfirm, setPasswordConfirm] = useState(props.password);
+
   function handleChangeInfo(event) {
     event.preventDefault();
-    const form = event.currentTarget;
-    const data = new FormData(form);
-    const username = data.get('username-input');
-    const email = data.get('email-input');
-    const password = data.get('password-input')
-    const password_confirm = data.get('password-confirm-input')
-
-    if (password === password_confirm) {
-      form.submit();
+    if (password === passwordConfirm) {
+      event.currentTarget.submit();
     } else {
       setPasswordMistmatch(true);
     }
@@ -27,10 +25,10 @@ export default function ProfilePage(props) {
     // Lock the fields.
     setUpdatingProfile(false);
     // Reset all fields back to their default from the props.
-    document.getElementById('username-input').value = props.username;
-    document.getElementById('email-input').value = props.email;
-    document.getElementById('password-input').value = props.password;
-    document.getElementById('password-confirm-input').value = props.password;
+    setUsername(props.username);
+    setEmail(props.email);
+    setPassword(props.password);
+    setPasswordConfirm(props.password);    
     // Reset password if tripped.
     setPasswordMistmatch(false);
   }
@@ -77,43 +75,39 @@ export default function ProfilePage(props) {
             disabled={!updatingProfile}
             required={updatingProfile}
             margin="normal"
-            id="username-input"
             label="Username"
-            name="username-input"
-            defaultValue={ props.username }
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             margin="normal"
             disabled={!updatingProfile}
             required={updatingProfile}
             fullWidth
-            id="email-input"
             label="Email"
             type="email"
-            name="email-input"
-            defaultValue={ props.email }
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             margin="normal"
             disabled={!updatingProfile}
             required={updatingProfile}
             fullWidth
-            name="password-input"
             label="Password"
             type="password"
-            id="password-input"
-            defaultValue={ props.password }
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <TextField
             margin="normal"
             disabled={!updatingProfile}
             required={updatingProfile}
             fullWidth
-            name="password-confirm-input"
             label="Confirm Password"
             type="password"
-            id="password-confirm-input"
-            defaultValue={ props.password }
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
           />
           { updatingProfile && (
             <Button
