@@ -1,5 +1,7 @@
 import { useState } from "react";
-import TournamentList from "../../../components/Tournaments/TournamentList/TournamentCardList";
+import TournamentCardList from "../../../components/Tournaments/TournamentList/TournamentCardList";
+import TournamentList from "../../../components/Tournaments/TournamentList/TournamentList";
+import Styles from "./UserDashboard.module.css";
 
 export default function UserDashboard() {
   const [tournaments, setTournaments] = useState([
@@ -12,7 +14,7 @@ export default function UserDashboard() {
       status: "On-going",
     },
     {
-      tournamentTitle: "Tournament 1",
+      tournamentTitle: "Tournament 2",
       tournamentDescription: "This is a league tournament!",
       teams: 50,
       members: 50,
@@ -20,7 +22,7 @@ export default function UserDashboard() {
       status: "On-going",
     },
     {
-      tournamentTitle: "Tournament 1",
+      tournamentTitle: "Tournament 3",
       tournamentDescription: "This is a league tournament!",
       teams: 50,
       members: 50,
@@ -28,7 +30,7 @@ export default function UserDashboard() {
       status: "On-going",
     },
     {
-      tournamentTitle: "Tournament 1",
+      tournamentTitle: "Tournament 4",
       tournamentDescription: "This is a league tournament!",
       teams: 50,
       members: 50,
@@ -39,8 +41,11 @@ export default function UserDashboard() {
 
   return (
     <div>
-      <h1 style={{ textAlign: "center", margin: "2rem 0" }}>User Dashboard</h1>
-      <TournamentList header="Current Tournaments" tournaments={tournaments}/>
+      <h1>User Dashboard</h1>
+      <div className={Styles.tournamentListsContainer}>
+        <TournamentCardList header="Current Tournaments" tournaments={tournaments}/>
+        <TournamentList header="Past Tournaments" tournaments={tournaments} />
+      </div>
     </div>
   );
 }
