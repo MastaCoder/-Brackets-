@@ -8,6 +8,7 @@ import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import ProfilePage from '../../views/Profile';
 import HomePage from '../../views/Home/HomePage';
+import AdminDashboard from '../../views/AdminDashboard';
 
 function App() {
   const theme = createTheme({
@@ -34,7 +35,7 @@ function App() {
             <RegistrationPage/>
           </Route>
           <PrivateRoute exact path="/dashboard">
-            <h1>Dashboard</h1>
+            <AdminDashboard/>
           </PrivateRoute>
           <PrivateRoute exact path="/profile">
             <ProfilePage
