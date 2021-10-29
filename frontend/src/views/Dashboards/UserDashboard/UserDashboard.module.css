@@ -4,10 +4,10 @@
     flex-wrap: wrap;
 }
 
-h1 {
-    text-align: center; 
-    margin: 2rem 0;
-}
+/*h1 {*/
+/*    text-align: center; */
+/*    margin: 2rem 0;*/
+/*}*/
 
 .tournamentListsContainer {
     margin: 4rem 8rem;
