@@ -4,7 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import ProfilePage from './views/Profile';
 import HomePage from './views/Home/HomePage';
 import LoginPage from './views/LoginPage';
-import RegistrationPage from './views/RegistrationPage';
+import RegisterPage from './views/Register/RegisterPage';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -33,7 +33,7 @@ function App() {
               <LoginPage/>
             </Route>
             <Route exact path="/register">
-              <RegistrationPage/>
+              <RegisterPage/>
             </Route>
             <Route exact path="/admin">
               <AdminDashboard />
