@@ -39,11 +39,10 @@ export default function LoginPage(props) {
       </Box>
 
       <Container maxWidth="sm">
-        {/* put error box here */}
+        { invalidPassword && (
+          <Alert severity="error">Invalid credentials.</Alert>
+        )}
         <Box component="form" onSubmit={HandleLogin}>
-          { invalidPassword && (
-            <Alert severity="error">Invalid credentials.</Alert>
-          )}
           <TextField
             value={email}
             onChange={(e) => setEmail(e.target.value)}
