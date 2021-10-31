@@ -1,4 +1,4 @@
-import { Container, Box, Button, TextField, Typography } from "@mui/material";
+import { Container, Box, Button, TextField, Typography, Alert } from "@mui/material";
 import { useAuth } from "../../hooks/Auth";
 import { useHistory } from "react-router";
 import { useState } from "react";
@@ -14,16 +14,19 @@ export default function LoginPage(props) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [invalidPassword, setInvalidPassword] = useState(false);
 
   const HandleLogin = (event) => {
     event.preventDefault();
     if (email === playerEmail && password === playerPassword) {
+      setInvalidPassword(false);
       auth.signin(true, () => {});
       history.push("/profile");
     } else if (email === adminEmail && password === adminPassword) {
+      setInvalidPassword(false);
       auth.signin(true, () => {});
     } else {
-      // Show error message here
+      setInvalidPassword(true);
     }
   };
 
@@ -38,6 +41,9 @@ export default function LoginPage(props) {
       <Container maxWidth="sm">
         {/* put error box here */}
         <Box component="form" onSubmit={HandleLogin}>
+          { invalidPassword && (
+            <Alert severity="error">Invalid credentials.</Alert>
+          )}
           <TextField
             value={email}
             onChange={(e) => setEmail(e.target.value)}
