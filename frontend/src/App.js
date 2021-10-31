@@ -3,7 +3,7 @@ import PrivateRoute from './components/Authentication/PrivateRoute';
 import Navbar from './components/Navbar/Navbar';
 import ProfilePage from './views/Profile';
 import HomePage from './views/Home/HomePage';
-import LoginPage from './views/LoginPage';
+import LoginPage from './views/Login/LoginPage';
 import RegisterPage from './views/Register/RegisterPage';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
