@@ -9,7 +9,7 @@ export default function RegisterPage(props) {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  function handleRegistration(event) {
+  const handleRegistration = (event) => {
     event.preventDefault();
 
     if (password === passwordConfirm) {

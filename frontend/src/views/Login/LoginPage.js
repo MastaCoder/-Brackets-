@@ -1,5 +1,5 @@
 import { Container, Box, Button, TextField, Typography, Alert } from "@mui/material";
-import { useAuth } from "../hooks/Auth";
+import { useAuth } from "../../hooks/Auth";
 import { useHistory } from "react-router";
 import { useState } from "react";
 
@@ -31,22 +31,18 @@ export default function LoginPage(props) {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          mt: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="h4" sx={{ mb: 5, fontWeight: "bold" }}>
-          Log In
+    <>
+      <Box textAlign="center" mt={5} mb={3}>
+        <Typography variant="h4" component="h1">
+          Log in to your account
         </Typography>
+      </Box>
+
+      <Container maxWidth="sm">
+        { invalidPassword && (
+          <Alert severity="error">Invalid credentials.</Alert>
+        )}
         <Box component="form" onSubmit={HandleLogin}>
-          { invalidPassword && (
-            <Alert severity="error">Invalid credentials.</Alert>
-          )}
           <TextField
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -64,16 +60,18 @@ export default function LoginPage(props) {
             label="Password"
             type="password"
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 5 }}
-          >
-            Log In
-          </Button>
+          <Box textAlign="center" mt={1}>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+            >
+              Login
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </>
+
   )
 };
