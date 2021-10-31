@@ -1,7 +1,7 @@
 import { Container, Box, Button, TextField, Typography, Alert } from "@mui/material";
 import { useState } from "react"
 
-export default function RegistrationPage(props) {
+export default function RegisterPage(props) {
   const [passwordMismatch, setPasswordMistmatch] = useState(false);
 
   const [username, setUsername] = useState("");
@@ -20,22 +20,18 @@ export default function RegistrationPage(props) {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          mt: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="h4" sx={{ mb: 5, fontWeight: "bold" }}>
-          Register
+    <>
+      <Box textAlign="center" mt={5} mb={3}>
+        <Typography variant="h4" component="h1">
+          Register for an account
         </Typography>
+      </Box>
+
+      <Container maxWidth="sm">
+        { passwordMismatch && (
+          <Alert severity="error">Passwords do not match.</Alert>
+        )}
         <Box component="form" onSubmit={handleRegistration}>
-          { passwordMismatch && (
-            <Alert severity="error">Passwords do not match.</Alert>  
-          )}
           <TextField
             margin="normal"
             required
@@ -71,16 +67,17 @@ export default function RegistrationPage(props) {
             value={passwordConfirm}
             onChange={(e) => setPasswordConfirm(e.target.value)}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 5, fontWeight: "bold" }}
-          >
-            Register
-          </Button>
+          <Box textAlign="center" mt={1}>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+            >
+              Register
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </>
   )
 }
