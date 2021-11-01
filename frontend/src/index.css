@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@500&family=Roboto:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@500&family=Roboto:wght@400&display=swap');
 
 :root {
   --purple: rgb(53,52,131);
@@ -25,4 +25,9 @@ code {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  /* Remove this later */
+  font-family: "Kanit", sans-serif !important;
 }

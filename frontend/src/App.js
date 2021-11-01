@@ -1,7 +1,7 @@
 import ProvideAuth from './components/Authentication/ProvideAuth';
 import PrivateRoute from './components/Authentication/PrivateRoute';
 import Navbar from './components/Navbar/Navbar';
-import ProfilePage from './views/Profile';
+import ProfilePage from './views/Profile/ProfilePage';
 import HomePage from './views/Home/HomePage';
 import LoginPage from './views/Login/LoginPage';
 import RegisterPage from './views/Register/RegisterPage';
@@ -35,12 +35,12 @@ function App() {
             <Route exact path="/register">
               <RegisterPage/>
             </Route>
-            <Route exact path="/admin">
-              <AdminDashboard />
-            </Route>
-            <PrivateRoute exact path="/user">
+            <Route exact path="/user">
               <UserDashboard />
-            </PrivateRoute>
+            </Route>
+            {/*<PrivateRoute exact path="/user">*/}
+            {/*  <UserDashboard />*/}
+            {/*</PrivateRoute>*/}
             <PrivateRoute exact path="/dashboard">
               <AdminDashboard/>
             </PrivateRoute>

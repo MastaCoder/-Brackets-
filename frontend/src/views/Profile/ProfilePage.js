@@ -1,17 +1,18 @@
-import { Container, Box, Button, TextField, Typography, Alert } from "@mui/material";
+import {Container, Grid, Box, Button, TextField, Typography, Alert, Divider} from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from "react"
 
-export default function RegisterPage(props) {
+export default function ProfilePage(props) {
   const [passwordMismatch, setPasswordMismatch] = useState(false);
 
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [username, setUsername] = useState(props.username);
+  const [email, setEmail] = useState(props.email);
+  const [password, setPassword] = useState(props.password);
+  const [passwordConfirm, setPasswordConfirm] = useState(props.password);
 
-  const handleRegistration = (event) => {
+  function handleChangeInfo(event) {
     event.preventDefault();
-
     if (password === passwordConfirm) {
       event.currentTarget.submit();
     } else {
@@ -21,9 +22,9 @@ export default function RegisterPage(props) {
 
   return (
     <>
-      <Box textAlign="center" mt={5} mb={3}>
+      <Box textAlign="center" mt={5} mb={2}>
         <Typography variant="h4" component="h1">
-          Register for an account
+          Edit your profile
         </Typography>
       </Box>
 
@@ -31,18 +32,28 @@ export default function RegisterPage(props) {
         { passwordMismatch && (
           <Alert severity="error">Passwords do not match.</Alert>
         )}
-        <Box component="form" onSubmit={handleRegistration}>
+        <Box component="form" onSubmit={handleChangeInfo}>
           <TextField
             margin="normal"
-            required
             fullWidth
+            label="Confirm Password"
+            type="password"
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+          />
+
+          <Box my={2}>
+            <Divider />
+          </Box>
+
+          <TextField
+            fullWidth
+            margin="normal"
             label="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             margin="normal"
-            required
             fullWidth
             label="Email"
             type="email"
@@ -51,20 +62,16 @@ export default function RegisterPage(props) {
           />
           <TextField
             margin="normal"
-            required
             fullWidth
             label="Password"
             type="password"
-            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <TextField
             margin="normal"
-            required
             fullWidth
             label="Confirm Password"
             type="password"
-            value={passwordConfirm}
             onChange={(e) => setPasswordConfirm(e.target.value)}
           />
           <Box textAlign="center" mt={1}>
@@ -73,7 +80,7 @@ export default function RegisterPage(props) {
               variant="contained"
               size="large"
             >
-              Register
+              Update
             </Button>
           </Box>
         </Box>
