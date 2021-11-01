@@ -1,10 +1,9 @@
 import { useState } from "react";
 import TournamentCardList from "../../../components/Tournaments/TournamentList/TournamentCardList";
 import TournamentList from "../../../components/Tournaments/TournamentList/TournamentList";
-import Styles from "./UserDashboard.module.css";
-import {Box, Button, Chip, Divider, Grid, Paper, Typography} from "@mui/material";
+import {Box, Button, Chip, Divider, Grid, Paper, Typography, Badge} from "@mui/material";
 
-export default function UserDashboard() {
+export default function UserDashboardPage() {
   const [tournaments, setTournaments] = useState([
     {
       tournamentTitle: "Tournament 1",
@@ -49,7 +48,7 @@ export default function UserDashboard() {
       </Box>
 
       <Typography variant="h5" component="h2">
-        Current tournaments
+        Current tournaments (attending)
       </Typography>
       <Box mt={1} display="flex" flexDirection="row" gap={1}>
         <Box maxWidth={425}>
@@ -81,16 +80,32 @@ export default function UserDashboard() {
           </Paper>
         </Box>
       </Box>
-      <Box mt={2} mb={4}>
+      <Box mt={2} mb={4} display="flex" flexDirection="row" gap={1}>
         <Button variant="contained">
-          Create a new tournament
+          Join a tournament
+        </Button>
+        <Button variant="contained" color="secondary">
+          View attended history
         </Button>
       </Box>
-      THIS PAGE IS WORK IN PROGRESS WORK ON SOMETHING ELSE :) 
 
       <Typography variant="h5" component="h2">
-        Past Tournaments
+        Current tournaments (hosting)
       </Typography>
+      <Box mt={1} display="flex" flexDirection="row" gap={2.5}>
+        <Typography variant="body1">
+          You're not hosting any tournaments right now.
+        </Typography>
+      </Box>
+
+      <Box mt={2} mb={4} display="flex" flexDirection="row" gap={1}>
+        <Button variant="contained">
+          Create a tournament
+        </Button>
+        <Button variant="contained" color="secondary">
+          View created history
+        </Button>
+      </Box>
 
       {/*<div className={Styles.tournamentListsContainer}>*/}
       {/*  <TournamentCardList header="Current Tournaments" tournaments={tournaments}/>*/}

@@ -9,7 +9,7 @@ import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import AdminDashboard from './views/Dashboards/AdminDashboard/AdminDashboard';
-import UserDashboard from './views/Dashboards/UserDashboard/UserDashboard';
+import UserDashboardPage from './views/User/Dashboard/UserDashboardPage';
 
 function App() {
   const theme = createTheme({
@@ -36,10 +36,10 @@ function App() {
               <RegisterPage/>
             </Route>
             <Route exact path="/user">
-              <UserDashboard />
+              <UserDashboardPage />
             </Route>
             {/*<PrivateRoute exact path="/user">*/}
-            {/*  <UserDashboard />*/}
+            {/*  <Dashboard />*/}
             {/*</PrivateRoute>*/}
             <PrivateRoute exact path="/dashboard">
               <AdminDashboard/>
