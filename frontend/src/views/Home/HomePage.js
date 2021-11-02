@@ -1,7 +1,10 @@
 import styles from "./HomePage.module.css";
 import {Box, Typography, Button} from "@mui/material";
+import {useHistory} from "react-router";
 
 export default function HomePage() {
+  const history = useHistory();
+
   return (
     <Box className={styles.main}>
       <Box
@@ -23,7 +26,11 @@ export default function HomePage() {
             What are you waiting for?
           </Typography>
           <Box mt={1}>
-            <Button variant="contained" size="large">
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => { history.push("/register") }}
+            >
               Register for an account
             </Button>
           </Box>

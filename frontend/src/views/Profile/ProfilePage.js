@@ -2,6 +2,7 @@ import {Container, Grid, Box, Button, TextField, Typography, Alert, Divider} fro
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from "react"
+import PageTitle from "../../components/Layout/PageTitle";
 
 export default function ProfilePage(props) {
   const [passwordMismatch, setPasswordMismatch] = useState(false);
@@ -22,11 +23,9 @@ export default function ProfilePage(props) {
 
   return (
     <>
-      <Box textAlign="center" mt={5} mb={2}>
-        <Typography variant="h4" component="h1">
-          Edit your profile
-        </Typography>
-      </Box>
+      <PageTitle>
+        Edit your profile
+      </PageTitle>
 
       <Container maxWidth="sm">
         { passwordMismatch && (

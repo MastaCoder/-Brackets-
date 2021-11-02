@@ -2,6 +2,7 @@ import { Container, Box, Button, TextField, Typography, Alert } from "@mui/mater
 import { useAuth } from "../../hooks/Auth";
 import { useHistory } from "react-router";
 import { useState } from "react";
+import PageTitle from "../../components/Layout/PageTitle";
 
 const playerEmail = "user@user.com";
 const playerPassword = "user";
@@ -32,11 +33,9 @@ export default function LoginPage(props) {
 
   return (
     <>
-      <Box textAlign="center" mt={5} mb={3}>
-        <Typography variant="h4" component="h1">
-          Log in to your account
-        </Typography>
-      </Box>
+      <PageTitle>
+        Log in to your account
+      </PageTitle>
 
       <Container maxWidth="sm">
         { invalidPassword && (

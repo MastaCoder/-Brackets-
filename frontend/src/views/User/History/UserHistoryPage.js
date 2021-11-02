@@ -1,3 +1,7 @@
 export default function UserHistoryPage() {
-  return (<></>);
+  return (
+    <>
+
+    </>
+  );
 }

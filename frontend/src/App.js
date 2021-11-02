@@ -10,6 +10,7 @@ import { ThemeProvider } from '@emotion/react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import AdminDashboard from './views/Dashboards/AdminDashboard/AdminDashboard';
 import UserDashboardPage from './views/User/Dashboard/UserDashboardPage';
+import UserHistoryPage from "./views/User/History/UserHistoryPage";
 
 function App() {
   const theme = createTheme({
@@ -38,13 +39,16 @@ function App() {
             <Route exact path="/user">
               <UserDashboardPage />
             </Route>
+            <Route exact path="/user/history">
+              <UserHistoryPage />
+            </Route>
             {/*<PrivateRoute exact path="/user">*/}
             {/*  <Dashboard />*/}
             {/*</PrivateRoute>*/}
             <PrivateRoute exact path="/dashboard">
               <AdminDashboard/>
             </PrivateRoute>
-            <PrivateRoute exact path="/profile">
+            <PrivateRoute exact path="/settings">
               <ProfilePage
                 username="user"
                 email="user@user.com"
