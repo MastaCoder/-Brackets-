@@ -1,5 +1,4 @@
 import {Box, Button, Container, Grid, Typography} from "@mui/material";
-import TournamentCard from "../../../components/TournamentList/TournamentCard/TournamentCard";
 import {useHistory} from "react-router";
 import PageTitle from "../../../components/Layout/PageTitle";
 import PageSubTitle from "../../../components/Layout/PageSubTitle";
@@ -62,7 +61,11 @@ export default function UserDashboardPage() {
         >
           Create a tournament
         </Button>
-        <Button variant="contained" color="secondary">
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => { history.push("/org/history") }}
+        >
           View created history
         </Button>
       </Box>
