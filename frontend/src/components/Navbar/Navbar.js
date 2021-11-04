@@ -24,6 +24,7 @@ const Navbar = () => {
   const [ anchorEl, setAnchorEl ] = useState(null);
   const classes = useStyles();
   
+  // Handlers
   const handleAvatarClick = (e) => {
     setAnchorEl(e.target);
     setOpen(!open);
@@ -38,13 +39,15 @@ const Navbar = () => {
     handleMenuClose();
     auth.signout(() => console.log("Logout Successful"));
   }
-  
 
+  // Conditionally renders the Navbar based on auth state and access level
   const renderNavbar = () => {
     return auth.user ? 
     (
       <>
-        <NavLink className={styles.navLink} activeClassName={styles.activeNavLink} to="/user">User Dashboard</NavLink>
+        { auth.user.access === 'user' ? 
+        <NavLink className={styles.navLink} activeClassName={styles.activeNavLink} to="/user">User Dashboard</NavLink> : 
+        <NavLink className={styles.navLink} activeClassName={styles.activeNavLink} to="/dashboard">Admin Dashboard</NavLink> }
         <Avatar className={styles.avatar} alt="User Icon" onClick={handleAvatarClick}><AccountCircleIcon/></Avatar> 
       </>
     ) : (

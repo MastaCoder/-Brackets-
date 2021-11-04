@@ -18,10 +18,14 @@ export default function LoginPage(props) {
   const HandleLogin = (event) => {
     event.preventDefault();
     if (email === playerEmail && password === playerPassword) {
-      auth.signin(true, () => {});
-      history.push("/profile");
+      auth.signin({access: 'user'}, () => {
+        history.push("/user");
+      });
+      
     } else if (email === adminEmail && password === adminPassword) {
-      auth.signin(true, () => {});
+      auth.signin({access: 'admin'}, () => {
+        history.push("/dashboard");
+      });
     } else {
       // Show error message here
     }
