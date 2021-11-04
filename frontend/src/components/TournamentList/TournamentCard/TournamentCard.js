@@ -55,7 +55,7 @@ export default function TournamentCard(props) {
             <Button
               variant="outlined"
               size="small"
-              onClick={() => { history.push("/event/1") }}
+              onClick={() => { history.push(`/event/${props.id}`) }}
             >
               View Event Details
             </Button>

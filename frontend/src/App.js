@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import AdminDashboard from './views/Dashboards/AdminDashboard/AdminDashboard';
 import UserDashboardPage from './views/User/Dashboard/UserDashboardPage';
 import UserHistoryPage from "./views/User/History/UserHistoryPage";
+import UserJoinPage from "./views/User/Join/UserJoinPage";
 
 function App() {
   const theme = createTheme({
@@ -41,6 +42,9 @@ function App() {
             </Route>
             <Route exact path="/user/history">
               <UserHistoryPage />
+            </Route>
+            <Route exact path="/user/join">
+              <UserJoinPage />
             </Route>
             {/*<PrivateRoute exact path="/user">*/}
             {/*  <Dashboard />*/}
