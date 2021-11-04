@@ -1,26 +1,7 @@
-
-.tournamentInfoContainer {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    margin: 2rem 0;
-}
-
-.tournamentInfoTag {
-    padding: 8px 16px;
-    border-radius: 8px;
-    color: white;
-    font-family: "Kanit";
-}
-
-.descriptionContainer {
-    padding: 0 1rem;
-}
-
-.title {
-    white-space: nowrap;
+.description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 1rem;
 }
-

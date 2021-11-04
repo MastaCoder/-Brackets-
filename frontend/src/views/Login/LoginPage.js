@@ -1,7 +1,8 @@
-import { Container, Box, Button, TextField, Typography } from "@mui/material";
-import { useAuth } from "../hooks/Auth";
+import { Container, Box, Button, TextField, Typography, Alert } from "@mui/material";
+import { useAuth } from "../../hooks/Auth";
 import { useHistory } from "react-router";
 import { useState } from "react";
+import PageTitle from "../../components/Layout/PageTitle";
 
 const playerEmail = "user@user.com";
 const playerPassword = "user";
@@ -14,36 +15,32 @@ export default function LoginPage(props) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [invalidPassword, setInvalidPassword] = useState(false);
 
   const HandleLogin = (event) => {
     event.preventDefault();
     if (email === playerEmail && password === playerPassword) {
-      auth.signin({access: 'user'}, () => {
-        history.push("/user");
-      });
-      
+      setInvalidPassword(false);
+      auth.signin(true, () => {});
+      history.push("/user");
     } else if (email === adminEmail && password === adminPassword) {
-      auth.signin({access: 'admin'}, () => {
-        history.push("/dashboard");
-      });
+      setInvalidPassword(false);
+      auth.signin(true, () => {});
     } else {
-      // Show error message here
+      setInvalidPassword(true);
     }
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          mt: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="h4" sx={{ mb: 5, fontWeight: "bold" }}>
-          Log In
-        </Typography>
+    <>
+      <PageTitle>
+        Log in to your account
+      </PageTitle>
+
+      <Container maxWidth="sm">
+        { invalidPassword && (
+          <Alert severity="error">Invalid credentials.</Alert>
+        )}
         <Box component="form" onSubmit={HandleLogin}>
           <TextField
             value={email}
@@ -62,16 +59,18 @@ export default function LoginPage(props) {
             label="Password"
             type="password"
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 5 }}
-          >
-            Log In
-          </Button>
+          <Box textAlign="center" mt={1}>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+            >
+              Login
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </>
+
   )
 };

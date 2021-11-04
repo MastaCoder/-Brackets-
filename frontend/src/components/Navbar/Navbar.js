@@ -1,81 +1,48 @@
-import{ useState } from 'react';
-import { Link, NavLink } from "react-router-dom";
-import styles from './Navbar.module.css';
-import { useAuth } from '../../hooks/Auth'; 
-import { Avatar, Menu, MenuItem } from "@mui/material";
-import { AccountCircle as AccountCircleIcon } from '@mui/icons-material';
-import { makeStyles } from '@mui/styles';
+import { AppBar, Box, Toolbar, Typography, Button } from "@mui/material";
+import { Link } from "react-router-dom";
+import { useAuth } from '../../hooks/Auth.js';
+import { useHistory } from "react-router";
+import styles from "./Navbar.module.css";
 
-const useStyles = makeStyles({
-  menu: {
-    "& .MuiMenu-paper": {
-      backgroundColor: "rgb(53,52,131)",
-      width: '150px',
-      marginTop: '10px',
-      color: 'white',
-      fontWeight: 'bold'
-    }
-  }
-})
-
-const Navbar = () => {
-  const auth = useAuth();
-  const [ open, setOpen ] = useState(false);
-  const [ anchorEl, setAnchorEl ] = useState(null);
-  const classes = useStyles();
+export default function Navbar() {
+  const {user, signout} = useAuth();
+  const history = useHistory();
   
-  // Handlers
-  const handleAvatarClick = (e) => {
-    setAnchorEl(e.target);
-    setOpen(!open);
-  }
-  
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    setOpen(!open);
-  } 
-
-  const handleSignOut = () => {
-    handleMenuClose();
-    auth.signout(() => console.log("Logout Successful"));
-  }
-
-  // Conditionally renders the Navbar based on auth state and access level
-  const renderNavbar = () => {
-    return auth.user ? 
-    (
-      <>
-        { auth.user.access === 'user' ? 
-        <NavLink className={styles.navLink} activeClassName={styles.activeNavLink} to="/user">User Dashboard</NavLink> : 
-        <NavLink className={styles.navLink} activeClassName={styles.activeNavLink} to="/dashboard">Admin Dashboard</NavLink> }
-        <Avatar className={styles.avatar} alt="User Icon" onClick={handleAvatarClick}><AccountCircleIcon/></Avatar> 
-      </>
-    ) : (
-      <>
-        <NavLink className={styles.navLink} activeClassName={styles.activeNavLink} to="/register">Register</NavLink>
-        <NavLink className={styles.navLink} activeClassName={styles.activeNavLink} to="/login">Login</NavLink>
-      </>
-    )
-  }
-
   return (
-    <div className={styles.bracketsNavbar}>
-      <div className={styles.bracketsLogo}>
-        <Link to="/">[Brackets]</Link>
-      </div>
-      <div className={styles.bracketsNavbarOpts}>
-        {renderNavbar()}
-      </div>
-      <Menu classes={{ root: classes.menu }} open={open} anchorEl={anchorEl} onClose={handleMenuClose}>
-          <MenuItem onClick={handleMenuClose}>
-            <Link className={styles.link} to="/profile">Profile</Link>
-          </MenuItem>
-          <MenuItem onClick={handleSignOut}>
-            Sign Out
-          </MenuItem>
-        </Menu>
-    </div>
+    <Box flexGrow={1}>
+      <AppBar position="static" sx={{ boxShadow: "none", backgroundColor: "#3D3B8E" }}>
+      {/*<AppBar position="static" className={styles.main}>*/}
+        <Toolbar>
+          <Box flexGrow={1}>
+            <Typography variant="h6" component="div">
+              <Link to="/" className={styles.navLink}>
+                [ Brackets ]
+              </Link>
+            </Typography>
+          </Box>
+          {!user ? 
+            <>
+              <Link to="/register" className={styles.navLink}>
+                <Button color="inherit">Register</Button>
+              </Link>
+              <Link to="/login" className={styles.navLink}>
+                <Button color="inherit">Login</Button>
+              </Link>
+            </> 
+            : 
+            <>
+              <Link to="/user" className={styles.navLink}>
+                <Button color="inherit">Dashboard</Button>
+              </Link>
+              <Link to="/profile" className={styles.navLink}>
+                <Button color="inherit">Profile</Button>
+              </Link>
+              <Link to="/" className={styles.navLink} onClick={() => signout(() => history.push("/"))}>
+                <Button color="inherit">Logout</Button>
+              </Link>
+            </>}
+        </Toolbar>
+      </AppBar>
+    </Box>
   )
 }
-
-export default Navbar;
