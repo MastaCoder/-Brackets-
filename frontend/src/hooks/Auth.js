@@ -11,14 +11,14 @@ const useProvideAuth = () => {
   const [user, setUser] = useState(false);
 
   /* Add your function handlers */
-  const signin = (newUser, cb) => {
+  const signin = (newUser, cb = () => {}) => { 
     setUser(newUser);
-    if(user) cb();
+    cb();
   };
 
-  const signout = (cb) => {
-    setUser(false);
-    if(user) cb();
+  const signout = (cb = () => {}) => {
+    setUser(null);
+    cb();
   };
 
   return { user, signin, signout };

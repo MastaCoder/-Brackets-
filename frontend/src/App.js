@@ -37,11 +37,17 @@ function App() {
             <Route exact path="/register">
               <RegisterPage/>
             </Route>
-            <Route exact path="/user">
+            <PrivateRoute exact path="/user">
               <UserDashboardPage />
-            </Route>
-            <Route exact path="/user/history">
+            </PrivateRoute>
+            <PrivateRoute exact path="/user/history">
               <UserHistoryPage />
+            </PrivateRoute>
+            <PrivateRoute exact path="/user">
+             <UserDashboardPage />
+            </PrivateRoute>
+            <Route exact path="/tournament/:id">
+              {/* Add your Tournament view here */}
             </Route>
             <Route exact path="/user/join">
               <UserJoinPage />

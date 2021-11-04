@@ -22,7 +22,7 @@ export default function LoginPage(props) {
     if (email === playerEmail && password === playerPassword) {
       setInvalidPassword(false);
       auth.signin(true, () => {});
-      history.push("/profile");
+      history.push("/user");
     } else if (email === adminEmail && password === adminPassword) {
       setInvalidPassword(false);
       auth.signin(true, () => {});
