@@ -27,7 +27,7 @@ export default function LoginPage(props) {
 		} else if (email === adminEmail && password === adminPassword) {
 			setInvalidPassword(false);
 			auth.signin({ type: 'admin' }, () => {
-				history.push('/user');
+				history.push('/dashboard');
 			});
 		} else {
 			setInvalidPassword(true);

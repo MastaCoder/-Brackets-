@@ -14,6 +14,7 @@ import UserHistoryPage from './views/User/History/UserHistoryPage';
 import UserJoinPage from './views/User/Join/UserJoinPage';
 import OrganizerCreatePage from './views/Organizer/Create/OrganizerCreatePage';
 import OrganizerHistoryPage from './views/Organizer/History/OrganizerHistoryPage';
+import AdminViewUserPage from './views/Admin/Users/AdminViewUsers';
 
 function App() {
 	const theme = createTheme({
@@ -48,6 +49,9 @@ function App() {
 						</PrivateRoute>
 						<PrivateRoute exact path="/dashboard">
 							<AdminDashboard />
+						</PrivateRoute>
+						<PrivateRoute exact path="/admin/users">
+							<AdminViewUserPage />
 						</PrivateRoute>
 						<PrivateRoute exact path="/user">
 							<UserDashboardPage />
