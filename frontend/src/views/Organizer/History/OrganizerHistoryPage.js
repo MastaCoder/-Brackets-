@@ -2,15 +2,15 @@ import {Box, Container, Grid, Typography} from "@mui/material";
 import PageTitle from "../../../components/Layout/PageTitle";
 import TournamentCardList from "../../../components/TournamentList/TournamentCardList";
 
-export default function UserHistoryPage() {
+export default function OrganizerHistoryPage() {
   return (
     <Container maxWidth="xl">
       <PageTitle>
-        Your attended history
+        Your created history
       </PageTitle>
 
       <Typography variant="h5" component="h2">
-        Events you've attended
+        Events you've hosted
       </Typography>
       <TournamentCardList
         cards={[]}

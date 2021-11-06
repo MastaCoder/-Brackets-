@@ -11,6 +11,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import AdminDashboard from './views/Dashboards/AdminDashboard/AdminDashboard';
 import UserDashboardPage from './views/User/Dashboard/UserDashboardPage';
 import UserHistoryPage from "./views/User/History/UserHistoryPage";
+import UserJoinPage from "./views/User/Join/UserJoinPage";
+import OrganizerCreatePage from "./views/Organizer/Create/OrganizerCreatePage";
+import OrganizerHistoryPage from "./views/Organizer/History/OrganizerHistoryPage";
 
 function App() {
   const theme = createTheme({
@@ -30,24 +33,46 @@ function App() {
             <Route exact path="/">
               <HomePage />
             </Route>
+
             <Route exact path="/login">
               <LoginPage/>
             </Route>
             <Route exact path="/register">
               <RegisterPage/>
             </Route>
+            <PrivateRoute exact path="/settings">
+              <ProfilePage
+                username="user"
+                email="user@user.com"
+                password="user"
+              />
+            </PrivateRoute>
+
+            <PrivateRoute exact path="/dashboard">
+              <AdminDashboard/>
+            </PrivateRoute>
+
             <PrivateRoute exact path="/user">
               <UserDashboardPage />
             </PrivateRoute>
             <PrivateRoute exact path="/user/history">
               <UserHistoryPage />
             </PrivateRoute>
-            <PrivateRoute exact path="/user">
-             <UserDashboardPage />
+            <PrivateRoute exact path="/user/join">
+             <UserJoinPage />
             </PrivateRoute>
+
+            <Route exact path="/org/create">
+              <OrganizerCreatePage />
+            </Route>
+            <Route exact path="/org/history">
+              <OrganizerHistoryPage />
+            </Route>
+
             <Route exact path="/tournament/:id">
               {/* Add your Tournament view here */}
             </Route>
+<<<<<<< HEAD
             <PrivateRoute exact path="/dashboard">
               <AdminDashboard/>
             </PrivateRoute>
@@ -58,6 +83,13 @@ function App() {
                 password="user"
               />
             </PrivateRoute>
+=======
+
+            {/*<PrivateRoute exact path="/user">*/}
+            {/*  <Dashboard />*/}
+            {/*</PrivateRoute>*/}
+
+>>>>>>> b472f05df0d7e1bc94c991a1e97823353a202855
           </Switch>
         </Router>
       </ThemeProvider>

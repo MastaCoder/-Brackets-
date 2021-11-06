@@ -1,4 +1,4 @@
-import { Container, Box, Button, TextField, Typography, Alert } from "@mui/material";
+import { Container, Box, Button, TextField, Alert } from "@mui/material";
 import { useAuth } from "../../hooks/Auth";
 import { useHistory } from "react-router";
 import { useState } from "react";
@@ -35,45 +35,42 @@ export default function LoginPage(props) {
   };
 
   return (
-    <>
+    <Container maxWidth="sm">
       <PageTitle>
         Log in to your account
       </PageTitle>
 
-      <Container maxWidth="sm">
-        { invalidPassword && (
-          <Alert severity="error">Invalid credentials.</Alert>
-        )}
-        <Box component="form" onSubmit={HandleLogin}>
-          <TextField
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            margin="normal"
-            required
-            fullWidth
-            label="Email Address"
-          />
-          <TextField
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            margin="normal"
-            required
-            fullWidth
-            label="Password"
-            type="password"
-          />
-          <Box textAlign="center" mt={1}>
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-            >
-              Login
-            </Button>
-          </Box>
+      { invalidPassword && (
+        <Alert severity="error">Invalid credentials.</Alert>
+      )}
+      <Box component="form" onSubmit={HandleLogin}>
+        <TextField
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          margin="normal"
+          required
+          fullWidth
+          label="Email Address"
+        />
+        <TextField
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          margin="normal"
+          required
+          fullWidth
+          label="Password"
+          type="password"
+        />
+        <Box textAlign="center" mt={1}>
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+          >
+            Login
+          </Button>
         </Box>
-      </Container>
-    </>
-
-  )
+      </Box>
+    </Container>
+  );
 };
