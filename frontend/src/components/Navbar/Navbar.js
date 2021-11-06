@@ -31,7 +31,7 @@ export default function Navbar() {
             </> 
             : 
             <>
-              <Link to="/user" className={styles.navLink}>
+              <Link to="/dashboard" className={styles.navLink}>
                 <Button color="inherit">Dashboard</Button>
               </Link>
               <Link to="/profile" className={styles.navLink}>

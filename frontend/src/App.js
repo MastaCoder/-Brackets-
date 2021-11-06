@@ -51,7 +51,7 @@ function App() {
             <PrivateRoute exact path="/dashboard">
               <AdminDashboard/>
             </PrivateRoute>
-            <PrivateRoute exact path="/settings">
+            <PrivateRoute exact path="/profile">
               <ProfilePage
                 username="user"
                 email="user@user.com"
