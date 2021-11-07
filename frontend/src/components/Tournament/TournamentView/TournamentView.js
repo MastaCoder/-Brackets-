@@ -83,10 +83,10 @@ export default function TournamentView(props) {
             <Button
             size="large"
             variant="contained"
-            color="info"
+            color={tournamentView ? 'secondary' : 'info'}
             onClick={() => setTournamentView(!tournamentView)}
             >
-              View Tournament Bracket
+              View Tournament {tournamentView ? 'Details' : 'Bracket'}
             </Button>
           ))}
         </Box>
@@ -169,9 +169,13 @@ export default function TournamentView(props) {
               <PageSubTitle>Event Settings</PageSubTitle>
     
               <Box mt={2} mb={4} display="flex" gap={1}>
+                <Button variant="contained" onClick={handleOpen}>
+                  Update the Tournament
+                </Button>
                 {props.tournament.status === 0 &&
                   <Button
                     variant="contained"
+                    color="success"
                     onClick={handleStartTournamentClk}
                   >
                     Start Tournament
@@ -180,14 +184,12 @@ export default function TournamentView(props) {
                 {props.tournament.status === 1 &&
                   <Button
                     variant="contained"
+                    color="error"
                     onClick={handleEndTournamentClk}
                   >
-                    End Tournament
+                    End Tournament Early
                   </Button>
                 }
-                <Button variant="contained" onClick={handleOpen}>
-                  Update the Tournament
-                </Button>
               </Box>
             </>
           )}
