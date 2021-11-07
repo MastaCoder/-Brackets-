@@ -96,6 +96,28 @@ const data = {
         maxTeamMembers: 1,
         status: 1,
         host: 'randomuser'
+      }, { // user not in this event, not started
+        id: 6,
+        name: "Random event I've created",
+        description: "Just a random filler event to test user event creation.",
+        public: true,
+        maxMembers: 100,
+        members: [],
+        teams: {},
+        maxTeamMembers: 5,
+        status: 0,
+        host: 'user'
+      }, { // user not in this event, ended
+        id: 6,
+        name: "Random event I've created 2!",
+        description: "Just a random filler event to test user event creation.",
+        public: true,
+        maxMembers: 420,
+        members: [],
+        teams: {},
+        maxTeamMembers: 10,
+        status: 2,
+        host: 'user'
       }
     ],
 }
