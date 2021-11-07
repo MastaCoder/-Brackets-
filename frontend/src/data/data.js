@@ -38,7 +38,7 @@ const allPlayers = [
 ];
 
 const data = {
-    userLogs: [],
+    userLogs: [{user: "danny1337", action: "Tournament Create", date: Date().toLocaleString()}],
     users: allPlayers,
     attendingTournaments: [],
     hostingTournaments: [],
