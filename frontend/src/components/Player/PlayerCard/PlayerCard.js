@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 	},
 });
 
-const PlayerCard = ({ player }) => {
+const PlayerCard = ({ player, handlePlayerUpdate }) => {
 	const classes = useStyles();
 
 	return (
@@ -58,7 +58,12 @@ const PlayerCard = ({ player }) => {
 					/>
 				</Box>
 				<Typography variant="subtitle1">{player.email}</Typography>
-				<Button variant="contained" className={classes.button} disableElevation>
+				<Button
+					variant="contained"
+					className={classes.button}
+					onClick={() => handlePlayerUpdate(player.id)}
+					disableElevation
+				>
 					{player.isBanned ? 'Revert Ban' : 'Ban Player'}
 				</Button>
 			</Box>
