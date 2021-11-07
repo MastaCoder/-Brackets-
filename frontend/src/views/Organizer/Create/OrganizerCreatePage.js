@@ -11,7 +11,6 @@ import { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import DataContext from '../../../contexts/dataContext';
 import { useAuth } from '../../../hooks/Auth';
-import { uid } from 'react-uid';
 
 export default function OrganizerCreatePage() {
 	const history = useHistory();
@@ -42,7 +41,7 @@ export default function OrganizerCreatePage() {
 		const tournaments = [...data.tournaments];
 
 		tournaments.push({
-			id: uid(tournaments.length + 1),
+			id: tournaments.length + 1,
 			status: 0,
 			name: formData.name,
 			description: formData.description,
@@ -51,7 +50,7 @@ export default function OrganizerCreatePage() {
 			public: formData.public,
 			members: [],
 			teams: {},
-			host: user.id,
+			host: 'user',
 		});
 		console.log(tournaments);
 		setData({ ...data, tournaments: tournaments });

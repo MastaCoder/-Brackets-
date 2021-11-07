@@ -29,12 +29,12 @@ export default function TournamentChips(props) {
       )}
       <Chip
         color="secondary"
-        label={`${props.maxMembers} Member${props.maxMembers === 1 ? '' : 's'}`}
+        label={`${props.membersCount} of ${props.maxMembers} Member${props.membersCount === 1 ? '' : 's'}`}
         size={props.size}
       />
       <Chip
         color="primary"
-        label={`${props.maxTeams} Team${props.maxTeams === 1 ? '' : 's'}`}
+        label={`${props.teamsCount} Team${props.teamsCount === 1 ? '' : 's'}`}
         size={props.size}
       />
     </Box>

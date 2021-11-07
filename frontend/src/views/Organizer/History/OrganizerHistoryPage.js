@@ -1,9 +1,22 @@
 import {Box, Container, Grid, Typography} from "@mui/material";
 import PageTitle from "../../../components/Layout/PageTitle";
 import TournamentCardList from "../../../components/Tournament/TournamentList/TournamentCardList";
-import PaginatedTable from "../../../components/Table/PaginatedTable";
+import {useContext, useEffect, useState} from "react";
+import DataContext from "../../../contexts/dataContext";
 
 export default function OrganizerHistoryPage() {
+  const [eventHistory, setEventHistory] = useState([]);
+  const [data, setData] = useContext(DataContext);
+
+  // This will be an API call later (attending events)
+  useEffect(() => {
+    let events = [];
+    data.tournaments.forEach((tournament) => {
+      if (tournament.host === 'user' && tournament.status === 2)
+        events.push(tournament);
+    });
+    setEventHistory(events);
+  }, [data]);
 
   return (
     <Container maxWidth="xl">
@@ -15,7 +28,7 @@ export default function OrganizerHistoryPage() {
         Events you've hosted
       </Typography>
       <TournamentCardList
-        cards={[]}
+        cards={eventHistory}
       />
 
       <Box mt={1}>

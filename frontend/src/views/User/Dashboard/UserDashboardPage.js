@@ -8,17 +8,26 @@ import DataContext from "../../../contexts/dataContext";
 
 export default function UserDashboardPage() {
   const [attendingEvents, setAttendingEvents] = useState([]);
+  const [hostingEvents, setHostingEvents] = useState([]);
+
   const history = useHistory();
   const [data, setData] = useContext(DataContext);
 
-  // This will be an API call later (attending events)
+  // This will be an API call later
   useEffect(() => {
     let attending = [];
     data.tournaments.forEach((tournament) => {
-      if (tournament.members.includes('user'))
+      if (tournament.members.includes('user') && tournament.status !== 2)
         attending.push(tournament);
     });
     setAttendingEvents(attending);
+
+    let hosting = [];
+    data.tournaments.forEach((tournament) => {
+      if (tournament.host === 'user' && tournament.status !== 2)
+        hosting.push(tournament);
+    });
+    setHostingEvents(hosting);
   }, [data]);
 
   return (
@@ -52,11 +61,7 @@ export default function UserDashboardPage() {
 
       {/* Hosting */}
       <PageSubTitle>Current tournaments (hosting)</PageSubTitle>
-      {/*{data.hostingTournaments.length ? (*/}
-      {/*  <TournamentCardList cards={data.hostingTournaments} />*/}
-      {/*) : (*/}
-      {/*  "You're not hosting any tournaments right now."*/}
-      {/*)}*/}
+      <TournamentCardList cards={hostingEvents} />
       <Box mt={2} mb={4} display="flex" gap={1}>
         <Button
           variant="contained"
