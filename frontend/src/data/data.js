@@ -17,7 +17,8 @@ const data = {
           'g3': ['u5', 'u6']
         },
         maxTeamMembers: 2,
-        status: 0
+        status: 0,
+        host: 'randomuser'
       }, { // user in this event, started
         name: "PUBG Mobile Tournament",
         description: "This is the galaxy games PUBG mobile tournament, searching for the winner of the $25,000 grand " +
@@ -39,7 +40,23 @@ const data = {
           'me group': ['user']
         },
         maxTeamMembers: 2,
-        status: 1
+        status: 1,
+        host: 'randomuser'
+      }, { // user in this event, ended
+        name: "Random Tourny APEX Legends",
+        description: "The boys played this for fun.",
+        public: false,
+        maxMembers: 4,
+        members: ['user', 'u1', 'u2', 'u3'],
+        teams: {
+          'g1': ['u1'],
+          'edfgdfg': ['u2'],
+          'something': ['u3'],
+          'big fat team': ['user'],
+        },
+        maxTeamMembers: 1,
+        status: 2,
+        host: 'randomuser'
       }, { // user not in this event, hasn't started yet
         name: "CSC309 Minecraft Hunger Games",
         description: "Person to end this game as the winner will receive a 100% in the course, so just keep that in " +
@@ -56,7 +73,8 @@ const data = {
           ['u10'],
         ],
         maxTeamMembers: 3,
-        status: 0
+        status: 0,
+        host: 'randomuser'
       }, { // user not in this event, hasn't started yet
         name: "Random Mini-Game (Crab Game)",
         description: "We are playing crab game, view full details at discord.gg/invitelink.",
@@ -71,7 +89,8 @@ const data = {
           ['u5'],
         ],
         maxTeamMembers: 1,
-        status: 1
+        status: 1,
+        host: 'randomuser'
       }
     ],
 }

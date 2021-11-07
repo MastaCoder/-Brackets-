@@ -5,7 +5,7 @@ export default function TournamentCardList(props) {
   return (
     <Grid container spacing={2}>
       {props.cards.length > 0 ? (
-        props.cards.map((e, i) => (
+        props.cards.map((e) => (
           <Grid xs={12} md={6} lg={4} item>
             <TournamentCard
               id={e.id}
