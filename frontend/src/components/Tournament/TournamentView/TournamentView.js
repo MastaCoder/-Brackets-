@@ -14,10 +14,13 @@ import TournamentViewTeamCardList from "./TournamentViewTeamCardList/TournamentV
 import TournamentViewTeamCard from "./TournamentViewTeamCardList/TournamentViewTeamCard/TournamentViewTeamCard";
 import { useHistory } from "react-router";
 import TournamentUpdateModal from "../TournamentUpdateModal/TournamentUpdateModal";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import DataContext from "../../../contexts/dataContext";
 
 export default function TournamentView(props) {
   const history = useHistory();
+
+  const [data, setData] = useContext(DataContext);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -25,6 +28,18 @@ export default function TournamentView(props) {
 
   if (!props.tournament.id) {
     return <PageTitle>Event not found!</PageTitle>;
+  }
+
+  const handleStartTournamentClk = () => {
+    const tournaments = [...data.tournaments];
+    tournaments[props.tournament.id - 1].status = 1;
+    setData({...data, tournaments})
+  }
+
+  const handleEndTournamentClk = () => {
+    const tournaments = [...data.tournaments];
+    tournaments[props.tournament.id - 1].status = 2;
+    setData({...data, tournaments})
   }
 
   return (
@@ -123,14 +138,22 @@ export default function TournamentView(props) {
           <PageSubTitle>Event Settings</PageSubTitle>
 
           <Box mt={2} mb={4} display="flex" gap={1}>
-            <Button
-              variant="contained"
-              onClick={() => {
-                history.push("/org/create");
-              }}
-            >
-              Start Tournament
-            </Button>
+            {props.tournament.status === 0 &&
+              <Button
+                variant="contained"
+                onClick={handleStartTournamentClk}
+              >
+                Start Tournament
+              </Button>
+            }
+            {props.tournament.status === 1 &&
+              <Button
+                variant="contained"
+                onClick={handleEndTournamentClk}
+              >
+                End Tournament
+              </Button>
+            }
             <Button variant="contained" onClick={handleOpen}>
               Update the Tournament
             </Button>
