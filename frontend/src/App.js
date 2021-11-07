@@ -16,6 +16,7 @@ import OrganizerCreatePage from "./views/Organizer/Create/OrganizerCreatePage";
 import OrganizerHistoryPage from "./views/Organizer/History/OrganizerHistoryPage";
 import AdminViewUserPage from "./views/Admin/Users/AdminViewUsers";
 import AdminViewUserLogs from "./views/Admin/Archive/AdminViewUserLogs";
+import AdminViewTournaments from "./views/Admin/Tournaments/AdminViewTournaments";
 import DataContext from "./contexts/dataContext";
 import data from "./data/data";
 import { useState } from "react";
@@ -64,6 +65,7 @@ function App() {
               <PrivateRoute exact path="/admin/userLogs">
                 <AdminViewUserLogs />
               </PrivateRoute>
+              <PrivateRoute exact path="/admin/tournaments/:filter" component={AdminViewTournaments} />
               <PrivateRoute exact path="/user">
                 <UserDashboardPage />
               </PrivateRoute>

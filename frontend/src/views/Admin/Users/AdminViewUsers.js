@@ -1,66 +1,28 @@
 import { Container } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useContext } from 'react';
 import PageTitle from '../../../components/Layout/PageTitle';
 import PlayerList from '../../../components/Player/PlayerList/PlayerList';
-
-const allPlayers = [
-	{
-		type: 'user',
-		id: 1,
-		name: 'im_too_sexy',
-		email: 'waytoosexy@mail.com',
-		isBanned: false,
-	},
-	{
-		type: 'user',
-		id: 2,
-		name: 'im_tooo_sexy',
-		email: 'waytoosexy@mail.com',
-		isBanned: false,
-	},
-	{
-		type: 'user',
-		id: 3,
-		name: 'im_tooo_sexy',
-		email: 'waytoosexy@mail.com',
-		isBanned: false,
-	},
-	{
-		type: 'user',
-		id: 4,
-		name: 'ayo_pierre',
-		email: 'pierre@mail.com',
-		isBanned: true,
-	},
-	{
-		type: 'user',
-		id: 5,
-		name: 'damnBoi1782',
-		email: 'dammit@mail.com',
-		isBanned: false,
-	},
-];
+import DataContext from '../../../contexts/dataContext';
 
 const AdminViewUsers = ({ displayUserType }) => {
-
-	const [players, setPlayers] = useState(allPlayers);
+	const [data, setData] = useContext(DataContext);
 	// We will make an API call to get the users
 	// Currently doing it manually
 	useEffect(() => {
 		if (displayUserType === 'banned') {
-			const bannedPlayers = players.filter((player) => player.isBanned);
-			setPlayers(bannedPlayers);
+			const bannedPlayers = data.players.filter((player) => player.isBanned);
+			setData({ ...data, players: bannedPlayers });
 		}
 	}, [displayUserType]);
 
 	const handlePlayerUpdate = (id) => {
-		const updatedPlayers = players.map((player) => {
+		const updatedPlayers = data.players.map((player) => {
 			if (player.id === id) {
 				return { ...player, isBanned: !player.isBanned };
 			}
 			return player;
 		});
-		setPlayers(updatedPlayers);
+		setData({ ...data, players: updatedPlayers });
 	};
 
 	return (
@@ -68,7 +30,7 @@ const AdminViewUsers = ({ displayUserType }) => {
 			<PageTitle variant="h4" sx={{ mb: 5, fontWeight: 'bold' }}>
 				Manage Users
 			</PageTitle>
-			<PlayerList players={players} handlePlayerUpdate={handlePlayerUpdate} />
+			<PlayerList players={data.players} handlePlayerUpdate={handlePlayerUpdate} />
 		</Container>
 	);
 };
