@@ -8,7 +8,7 @@ export default function OrganizerHistoryPage() {
   const [eventHistory, setEventHistory] = useState([]);
   const [data, setData] = useContext(DataContext);
 
-  // This will be an API call later (attending events)
+  // This will be an API call later
   useEffect(() => {
     let events = [];
     data.tournaments.forEach((tournament) => {

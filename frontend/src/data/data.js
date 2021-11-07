@@ -18,6 +18,7 @@ const data = {
 				g1: ['u1', 'u2'],
 				g2: ['u3', 'u4'],
 				g3: ['u5', 'u6'],
+				g4: ['user']
 			},
 			maxTeamMembers: 2,
 			status: 0,

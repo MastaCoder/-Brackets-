@@ -2,17 +2,13 @@ import {Box, Container, Typography} from "@mui/material";
 import PageTitle from "../../Layout/PageTitle";
 import TournamentChips from "../TournamentChips/TournamentChips";
 import PageSubTitle from "../../Layout/PageSubTitle";
+import TournamentViewUserChip from "./TournamentViewUserChip/TournamentViewUserChip";
 
 export default function TournamentView(props) {
   if (!props.tournament.id) {
     return (
       <PageTitle>Event not found!</PageTitle>
     );
-  }
-
-  // Remove user callback
-  const removeUser = (e) => {
-    console.log(e);
   }
 
   return (
@@ -24,11 +20,12 @@ export default function TournamentView(props) {
       <Typography variant="body1" textAlign="center">
         {props.tournament.description}
       </Typography>
-      <Box mt={2}>
+      <Box mt={2} mb={2}>
         <TournamentChips
           public={props.tournament.public}
-          maxTeams={props.tournament.maxTeams}
+          teamsCount={Object.keys(props.tournament.teams).length}
           status={props.tournament.status}
+          membersCount={props.tournament.members.length}
           maxMembers={props.tournament.maxMembers}
           size="medium"
           justify="center"
@@ -38,6 +35,17 @@ export default function TournamentView(props) {
       {/* Members */}
       <PageSubTitle>
         Registered members
+      </PageSubTitle>
+      <Box mb={3}>
+        <TournamentViewUserChip
+          members={props.tournament.members}
+          onKick={props.tournament.host === 'user' ? props.kickUser : null}
+        />
+      </Box>
+
+      {/* Teams */}
+      <PageSubTitle>
+        Teams
       </PageSubTitle>
     </Container>
   )
