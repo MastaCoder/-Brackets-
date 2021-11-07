@@ -1,5 +1,5 @@
 import PageTitle from "../../../components/Layout/PageTitle";
-import TournamentCardList from "../../../components/TournamentList/TournamentCardList";
+import TournamentCardList from "../../../components/Tournament/TournamentList/TournamentCardList";
 import {Box, Container} from "@mui/material";
 import PageSubTitle from "../../../components/Layout/PageSubTitle";
 

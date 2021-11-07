@@ -1,6 +1,6 @@
-import {Box, Container, Grid, Typography} from "@mui/material";
+import {Box, Container, Typography} from "@mui/material";
 import PageTitle from "../../../components/Layout/PageTitle";
-import TournamentCardList from "../../../components/TournamentList/TournamentCardList";
+import TournamentCardList from "../../../components/Tournament/TournamentList/TournamentCardList";
 
 export default function UserHistoryPage() {
   return (

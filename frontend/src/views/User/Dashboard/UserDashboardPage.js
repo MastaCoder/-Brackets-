@@ -1,15 +1,25 @@
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import { useHistory } from "react-router";
 import PageTitle from "../../../components/Layout/PageTitle";
 import PageSubTitle from "../../../components/Layout/PageSubTitle";
-import TournamentCardList from "../../../components/TournamentList/TournamentCardList";
-import { useContext } from "react";
+import TournamentCardList from "../../../components/Tournament/TournamentList/TournamentCardList";
+import {useContext, useEffect, useState} from "react";
 import DataContext from "../../../contexts/dataContext";
 
 export default function UserDashboardPage() {
+  const [attendingEvents, setAttendingEvents] = useState([]);
   const history = useHistory();
-
   const [data, setData] = useContext(DataContext);
+
+  // This will be an API call later (attending events)
+  useEffect(() => {
+    let attending = [];
+    data.tournaments.forEach((tournament) => {
+      if (tournament.members.includes('user'))
+        attending.push(tournament);
+    });
+    setAttendingEvents(attending);
+  }, [data]);
 
   return (
     <Container maxWidth="xl">
@@ -17,7 +27,9 @@ export default function UserDashboardPage() {
 
       {/* Attending */}
       <PageSubTitle>Current tournaments (attending)</PageSubTitle>
-      <TournamentCardList cards={data.attendingTournaments} />
+      <Box>
+        <TournamentCardList cards={attendingEvents} />
+      </Box>
       <Box mt={2} mb={4} display="flex" gap={1}>
         <Button
           variant="contained"
@@ -40,13 +52,11 @@ export default function UserDashboardPage() {
 
       {/* Hosting */}
       <PageSubTitle>Current tournaments (hosting)</PageSubTitle>
-      <Typography variant="body1">
-        {data.hostingTournaments.length ? (
-          <TournamentCardList cards={data.hostingTournaments} />
-        ) : (
-          "You're not hosting any tournaments right now."
-        )}
-      </Typography>
+      {/*{data.hostingTournaments.length ? (*/}
+      {/*  <TournamentCardList cards={data.hostingTournaments} />*/}
+      {/*) : (*/}
+      {/*  "You're not hosting any tournaments right now."*/}
+      {/*)}*/}
       <Box mt={2} mb={4} display="flex" gap={1}>
         <Button
           variant="contained"

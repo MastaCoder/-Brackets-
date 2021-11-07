@@ -1,6 +1,6 @@
 import {Box, Container, Grid, Typography} from "@mui/material";
 import PageTitle from "../../../components/Layout/PageTitle";
-import TournamentCardList from "../../../components/TournamentList/TournamentCardList";
+import TournamentCardList from "../../../components/Tournament/TournamentList/TournamentCardList";
 import PaginatedTable from "../../../components/Table/PaginatedTable";
 
 export default function OrganizerHistoryPage() {

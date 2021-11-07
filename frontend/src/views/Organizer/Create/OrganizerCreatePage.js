@@ -35,29 +35,19 @@ export default function OrganizerCreatePage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const hostingTournaments = data.hostingTournaments;
-    const tournaments = data.tournaments;
-
-    hostingTournaments.push({
-      id: 1,
-      status: 1,
-      name: formData.name,
-      description: formData.description,
-      members: parseInt(formData.maxMembers),
-      teams: parseInt(formData.maxTeamSize),
-      public: formData.public,
-    });
+    const hostingTournaments = [...data.hostingTournaments];
+    const tournaments = [...data.tournaments];
 
     tournaments.push({
-      id: 1,
-      status: 1,
+      status: 0,
       name: formData.name,
       description: formData.description,
-      members: parseInt(formData.maxMembers),
-      teams: parseInt(formData.maxTeamSize),
-      public: formData.public,
+      maxMembers: parseInt(formData.maxMembers),
+      maxTeams: parseInt(formData.maxTeamSize),
+      public: formData.public
     });
 
+    hostingTournaments.push(tournaments.length); // its been incremented by 1
 
     setData({ ...data, hostingTournaments, tournaments });
     history.push("/user");

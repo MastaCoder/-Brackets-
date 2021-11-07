@@ -19,6 +19,7 @@ import AdminViewUserLogs from "./views/Admin/Archive/AdminViewUserLogs";
 import DataContext from "./contexts/dataContext";
 import data from "./data/data";
 import { useState } from "react";
+import TournamentViewPage from "./views/Tournament/View/TournamentViewPage";
 
 function App() {
   const theme = createTheme({
@@ -78,9 +79,7 @@ function App() {
               <Route exact path="/org/history">
                 <OrganizerHistoryPage />
               </Route>
-              <Route exact path="/tournament/:id">
-                {/* Add your Tournament view here */}
-              </Route>
+              <Route exact path="/tournament/:id" component={TournamentViewPage} />
               {/*<PrivateRoute exact path="/user">*/}
               {/*  <Dashboard />*/}
               {/*</PrivateRoute>*/}
