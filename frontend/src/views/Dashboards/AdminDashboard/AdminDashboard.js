@@ -11,6 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import styles from './AdminDashboard.module.css';
 import { useHistory } from 'react-router';
+import data from '../../../data/data';
 
 export default function AdminDashboard(props) {
 	const cardStyles = {
@@ -57,18 +58,22 @@ export default function AdminDashboard(props) {
 						<Card style={cardStyles}>
 							<CardContent>
 								<Typography gutterBottom variant="h6" component="div">
-									Tournaments: 40
+									Tournaments: { data.tournaments.length }
 								</Typography>
 								<Typography variant="body2" color="text.secondary">
-									There are currently <strong>40</strong> registered tournaments
-									and <strong>2</strong> active tournaments.
+									There are currently <strong>{ data.tournaments.length }</strong> registered tournaments, <strong>{ data.tournaments.filter(tournament => tournament.status === 0).length }</strong> tournaments yet to start, and <strong>{ data.tournaments.filter(tournament => tournament.status === 1).length }</strong> tournaments ongoing.
 								</Typography>
 							</CardContent>
 							<CardActions>
-								<Button size="small">View All</Button>
-								<Button size="small" color="success">
-									View Ongoing
-								</Button>
+								<Link to="/admin/tournaments/all" className={styles.link}>
+									<Button size="small">View All</Button>
+								</Link>
+								<Link to="/admin/tournaments/notstarted" className={styles.link}>
+									<Button size="small" color="secondary">View Not Started</Button>
+								</Link>
+								<Link to="/admin/tournaments/ongoing" className={styles.link}>
+									<Button size="small" color="success">View Ongoing</Button>
+								</Link>
 							</CardActions>
 						</Card>
 					</Grid>
@@ -84,7 +89,9 @@ export default function AdminDashboard(props) {
 								</Typography>
 							</CardContent>
 							<CardActions>
-								<Button size="small">Past Tournaments</Button>
+								<Link to="/admin/tournaments/finished" className={styles.link}>
+									<Button size="small" color="error">Past Tournaments</Button>
+								</Link>
 								<Button size="small" onClick={() => history.push("/admin/userLogs")}>User Logs</Button>
 							</CardActions>
 						</Card>
