@@ -47,9 +47,7 @@ export default function AdminDashboard(props) {
 								</Typography>
 							</CardContent>
 							<CardActions>
-								<Link to="/admin/users" className={styles.link}>
-									<Button size="small">Manage Users</Button>
-								</Link>
+                <Button size="small" onClick={() => history.push("/admin/users")}>Manage Users</Button>
 							</CardActions>
 						</Card>
 					</Grid>
@@ -65,15 +63,9 @@ export default function AdminDashboard(props) {
 								</Typography>
 							</CardContent>
 							<CardActions>
-								<Link to="/admin/tournaments/all" className={styles.link}>
-									<Button size="small">View All</Button>
-								</Link>
-								<Link to="/admin/tournaments/notstarted" className={styles.link}>
-									<Button size="small" color="secondary">View Not Started</Button>
-								</Link>
-								<Link to="/admin/tournaments/ongoing" className={styles.link}>
-									<Button size="small" color="success">View Ongoing</Button>
-								</Link>
+                <Button size="small" onClick={() => history.push("/admin/tournaments/all")}>View All</Button>
+                <Button size="small" color="secondary" onClick={() => history.push("/admin/tournaments/notstarted")}>View Not Started</Button>
+                <Button size="small" color="success" onClick={() => history.push("/admin/tournaments/ongoing")}>View Ongoing</Button>
 							</CardActions>
 						</Card>
 					</Grid>
@@ -89,9 +81,7 @@ export default function AdminDashboard(props) {
 								</Typography>
 							</CardContent>
 							<CardActions>
-								<Link to="/admin/tournaments/finished" className={styles.link}>
-									<Button size="small" color="error">Past Tournaments</Button>
-								</Link>
+                <Button size="small" color="error" onClick={() => history.push("/admin/tournaments/finished")}>Past Tournaments</Button>
 								<Button size="small" onClick={() => history.push("/admin/userLogs")}>User Logs</Button>
 							</CardActions>
 						</Card>
