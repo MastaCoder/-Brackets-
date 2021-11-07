@@ -10,11 +10,14 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import styles from './AdminDashboard.module.css';
+import { useHistory } from 'react-router';
 
 export default function AdminDashboard(props) {
 	const cardStyles = {
 		height: '100%',
 	};
+
+	const history = useHistory();
 
 	return (
 		<Container component="main" maxWidth="md">
@@ -82,7 +85,7 @@ export default function AdminDashboard(props) {
 							</CardContent>
 							<CardActions>
 								<Button size="small">Past Tournaments</Button>
-								<Button size="small">User Logs</Button>
+								<Button size="small" onClick={() => history.push("/admin/userLogs")}>User Logs</Button>
 							</CardActions>
 						</Card>
 					</Grid>
