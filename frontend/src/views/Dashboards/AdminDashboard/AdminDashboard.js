@@ -8,12 +8,13 @@ import {
 	Typography,
 	Grid,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
-import styles from './AdminDashboard.module.css';
 import { useHistory } from 'react-router';
-import data from '../../../data/data';
+import DataContext from '../../../contexts/dataContext';
+import { useContext } from 'react';
 
 export default function AdminDashboard(props) {
+  const [data, setData] = useContext(DataContext)
+
 	const cardStyles = {
 		height: '100%',
 	};
@@ -38,12 +39,12 @@ export default function AdminDashboard(props) {
 						<Card style={cardStyles}>
 							<CardContent>
 								<Typography gutterBottom variant="h6" component="div">
-									Registered Users: 1013
+									Registered Users: { data.players.length }
 								</Typography>
 								<Typography variant="body2" color="text.secondary">
 									As of {Date().toLocaleString()}, [Brackets] has{' '}
-									<strong>1013</strong> registered users and <strong>49</strong>{' '}
-									banned users.
+									<strong>{ data.players.length }</strong> registered user(s) and <strong>{ data.players.filter(player => player.isBanned).length }</strong>{' '}
+									banned user(s).
 								</Typography>
 							</CardContent>
 							<CardActions>
