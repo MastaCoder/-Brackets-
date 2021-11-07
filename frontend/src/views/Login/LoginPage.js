@@ -21,12 +21,12 @@ export default function LoginPage(props) {
 		event.preventDefault();
 		if (email === playerEmail && password === playerPassword) {
 			setInvalidPassword(false);
-			auth.signin({ type: 'user' }, () => {
+			auth.signin({ type: 'user', id: 10 }, () => {
 				history.push('/user');
 			});
 		} else if (email === adminEmail && password === adminPassword) {
 			setInvalidPassword(false);
-			auth.signin({ type: 'admin' }, () => {
+			auth.signin({ type: 'admin', id: 11 }, () => {
 				history.push('/dashboard');
 			});
 		} else {
