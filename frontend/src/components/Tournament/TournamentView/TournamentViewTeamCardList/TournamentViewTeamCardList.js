@@ -10,6 +10,8 @@ export default function TournamentViewTeamCardList(props) {
             teamName={teamName}
             team={team}
             onNameUpdate={props.onNameUpdate ?? null}
+            maxTeamMembers={props.maxTeamMembers}
+            canUserJoin={props.canUserJoin}
           />
         </Grid>
       ))}

@@ -97,7 +97,7 @@ const data = {
 				'Person to end this game as the winner will receive a 100% in the course, so just keep that in ' +
 				"mind when playing to ensure you're the one that ends up getting the grade. I'm just typing now to see if " +
 				'I can reach the max description length.',
-			public: false,
+			public: true,
 			maxMembers: 50,
 			members: ['u1', 'u2', 'u3', 'u4', 'u5', 'u6', 'u7', 'u8', 'u9', 'u10'],
 			teams: {

@@ -4,7 +4,7 @@ export default function TournamentChips(props) {
   const statusChip = (status) => {
     switch (status) {
       case 0: // open
-        return (<Chip color="info" label="Open" size={props.size}  />);
+        return (<Chip color="info" label="Not Started" size={props.size}  />);
       case 1: // on-going
         return (<Chip color="warning" label="On-going" size={props.size}  />);
       case 2:

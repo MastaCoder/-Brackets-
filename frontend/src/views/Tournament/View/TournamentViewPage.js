@@ -43,8 +43,10 @@ export default function TournamentViewPage(props) {
 
   // kicks a user from a team, forms their own new team
   const onKickFromTeam = (userName) => {
-    if (userName === 'user')
+    if (userName === 'user') {
       alert("You can't kick yourself!");
+      return;
+    }
 
     let tournaments = [...data.tournaments];
     for (const [teamName] of Object.entries(tournaments[index].teams)) {
@@ -59,6 +61,7 @@ export default function TournamentViewPage(props) {
     setData({ ...data, tournaments: tournaments });
   }
 
+  // Update the name of a team
   const onNameUpdate = (oldName, newName) => {
     let tournaments = [...data.tournaments];
     tournaments[index].teams[newName] = tournaments[index].teams[oldName];
@@ -72,9 +75,9 @@ export default function TournamentViewPage(props) {
   return (
     <TournamentView
       tournament={data.tournaments[index]}
-      kickUser={kickUser}
-      kickFromTeam={onKickFromTeam}
-      onNameUpdate={onNameUpdate}
+      onKickUser={kickUser}
+      onKickFromTeam={onKickFromTeam}
+      onTeamNameUpdate={onNameUpdate}
     />
   );
 }

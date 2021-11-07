@@ -1,4 +1,4 @@
-import {Box, Divider, Paper, TextField, Typography} from "@mui/material";
+import {Box, Button, Divider, Paper, TextField, Typography} from "@mui/material";
 import TournamentViewUserChip from "../../TournamentViewUserChip/TournamentViewUserChip";
 import {useState} from "react";
 
@@ -40,6 +40,21 @@ export default function TournamentViewTeamCard(props) {
           onKick={props.onKick ?? null}
           size="small"
         />
+
+        {/* Neat little trick, if the user can edit then they can't join */}
+        {(props.onNameUpdate === null && props.canUserJoin) && (
+          <Box textAlign="center" mt={1}>
+            <Button
+              variant="outlined"
+              size="small"
+              color="success"
+              disabled={props.team.length >= props.maxTeamMembers}
+              onClick={() => alert("To be implemented in phase 2!")}
+            >
+              Join team
+            </Button>
+          </Box>
+        )}
       </Box>
     </Paper>
   )
