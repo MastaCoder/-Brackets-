@@ -1,28 +1,38 @@
-import {Box, Button, Container, Grid, TextField, Typography} from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import PageTitle from "../../Layout/PageTitle";
 import TournamentChips from "../TournamentChips/TournamentChips";
 import PageSubTitle from "../../Layout/PageSubTitle";
 import TournamentViewUserChip from "./TournamentViewUserChip/TournamentViewUserChip";
 import TournamentViewTeamCardList from "./TournamentViewTeamCardList/TournamentViewTeamCardList";
 import TournamentViewTeamCard from "./TournamentViewTeamCardList/TournamentViewTeamCard/TournamentViewTeamCard";
+import { useHistory } from "react-router";
+import TournamentUpdateModal from "../TournamentUpdateModal/TournamentUpdateModal";
+import { useState } from "react";
 
 export default function TournamentView(props) {
+  const history = useHistory();
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   if (!props.tournament.id) {
-    return (
-      <PageTitle>Event not found!</PageTitle>
-    );
+    return <PageTitle>Event not found!</PageTitle>;
   }
 
   return (
     <Container maxWidth="xl">
       {/* Header */}
-      <PageTitle>
-        {props.tournament.name}
-      </PageTitle>
+      <PageTitle>{props.tournament.name}</PageTitle>
       <Box textAlign="center">
-        <Typography variant="body1">
-          {props.tournament.description}
-        </Typography>
+        <Typography variant="body1">{props.tournament.description}</Typography>
         <Typography variant="body1">
           Host: <strong>{props.tournament.host}</strong>
         </Typography>
@@ -38,32 +48,36 @@ export default function TournamentView(props) {
           justify="center"
         />
       </Box>
-      {props.tournament.userTeam === null && !props.tournament.status && props.tournament.public && (
-        <Box textAlign="center" my={2}>
-          <Button
-            size="large"
-            variant="contained"
-            color="success"
-            onClick={() => alert("To be implemented in phase 2")}
-          >
-            Join event
-          </Button>
-        </Box>
-      )}
+      {props.tournament.userTeam === null &&
+        !props.tournament.status &&
+        props.tournament.public && (
+          <Box textAlign="center" my={2}>
+            <Button
+              size="large"
+              variant="contained"
+              color="success"
+              onClick={() => alert("To be implemented in phase 2")}
+            >
+              Join event
+            </Button>
+          </Box>
+        )}
 
       {/* Your team */}
       {props.tournament.userTeam !== null && (
         <>
-          <PageSubTitle>
-            Your Team
-          </PageSubTitle>
+          <PageSubTitle>Your Team</PageSubTitle>
           <Grid container mb={3}>
             <Grid item xs={3}>
               <TournamentViewTeamCard
                 teamName={props.tournament.userTeam}
                 team={props.tournament.teams[props.tournament.userTeam]}
-                onKick={props.tournament.status !== 2 ? props.onKickFromTeam : null}
-                onNameUpdate={props.tournament.status !== 2 ? props.onTeamNameUpdate : null}
+                onKick={
+                  props.tournament.status !== 2 ? props.onKickFromTeam : null
+                }
+                onNameUpdate={
+                  props.tournament.status !== 2 ? props.onTeamNameUpdate : null
+                }
               />
             </Grid>
           </Grid>
@@ -83,22 +97,20 @@ export default function TournamentView(props) {
       )}
 
       {/* Members */}
-      <PageSubTitle>
-        Registered members
-      </PageSubTitle>
+      <PageSubTitle>Registered members</PageSubTitle>
       <Box mb={3}>
         <TournamentViewUserChip
           members={props.tournament.members}
-          onKick={props.tournament.host === 'user' ? props.onKickUser : null}
-          onNameUpdate={props.tournament.host === 'user' ? props.onTeamNameUpdate : null}
+          onKick={props.tournament.host === "user" ? props.onKickUser : null}
+          onNameUpdate={
+            props.tournament.host === "user" ? props.onTeamNameUpdate : null
+          }
           size="medium"
         />
       </Box>
 
       {/* Teams */}
-      <PageSubTitle>
-        Teams
-      </PageSubTitle>
+      <PageSubTitle>Teams</PageSubTitle>
       <TournamentViewTeamCardList
         teams={props.tournament.teams}
         canUserJoin={props.tournament.userTeam !== null}
@@ -106,14 +118,34 @@ export default function TournamentView(props) {
       />
 
       {/* Settings */}
-      {props.tournament.host === 'user' && (
+      {props.tournament.host === "user" && (
         <Box>
-          <PageSubTitle>
-            Event Settings
-          </PageSubTitle>
-          
+          <PageSubTitle>Event Settings</PageSubTitle>
+
+          <Box mt={2} mb={4} display="flex" gap={1}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                history.push("/org/create");
+              }}
+            >
+              Start Tournament
+            </Button>
+            <Button variant="contained" onClick={handleOpen}>
+              Update the Tournament
+            </Button>
+          </Box>
         </Box>
       )}
+
+      {props.tournament.host === "user" && (
+        <TournamentUpdateModal
+          open={open}
+          handleClose={handleClose}
+          public={props.tournament.public}
+          id={props.tournament.id}
+        />
+      )}
     </Container>
-  )
+  );
 }
