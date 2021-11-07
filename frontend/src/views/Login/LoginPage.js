@@ -4,27 +4,22 @@ import { useHistory } from 'react-router';
 import { useState } from 'react';
 import PageTitle from '../../components/Layout/PageTitle';
 
-const playerEmail = 'user@user.com';
-const playerPassword = 'user';
-const adminEmail = 'admin@admin.com';
-const adminPassword = 'admin';
-
 export default function LoginPage(props) {
 	const auth = useAuth();
 	const history = useHistory();
 
-	const [email, setEmail] = useState('');
+	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [invalidPassword, setInvalidPassword] = useState(false);
 
 	const HandleLogin = (event) => {
 		event.preventDefault();
-		if (email === playerEmail && password === playerPassword) {
+		if (username === 'user' && password === 'user') {
 			setInvalidPassword(false);
 			auth.signin({ type: 'user', id: 10 }, () => {
 				history.push('/user');
 			});
-		} else if (email === adminEmail && password === adminPassword) {
+		} else if (username === 'admin' && password === 'admin') {
 			setInvalidPassword(false);
 			auth.signin({ type: 'admin', id: 11 }, () => {
 				history.push('/dashboard');
@@ -41,12 +36,12 @@ export default function LoginPage(props) {
 			{invalidPassword && <Alert severity="error">Invalid credentials.</Alert>}
 			<Box component="form" onSubmit={HandleLogin}>
 				<TextField
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
 					margin="normal"
 					required
 					fullWidth
-					label="Email Address"
+					label="Username"
 				/>
 				<TextField
 					value={password}

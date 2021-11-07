@@ -190,6 +190,22 @@ const data = {
       email: 'dammit@mail.com',
       isBanned: false,
     },
+    {
+      type: 'user',
+      id: 6,
+      name: 'user',
+      email: 'user@user.com',
+      isBanned: false
+    }
+  ],
+  admins: [
+    {
+      type: 'admin',
+      id: 7,
+      name: 'admin',
+      email: 'admin@admin.com',
+      isBanned: false
+    }
   ]
 };
 
