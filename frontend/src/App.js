@@ -60,7 +60,7 @@ function App() {
               <PrivateRoute exact path="/admin/users">
                 <AdminViewUserPage />
               </PrivateRoute>
-              <PrivateRoute>
+              <PrivateRoute exact path="/admin/userLogs">
                 <AdminViewUserLogs />
               </PrivateRoute>
               <PrivateRoute exact path="/user">

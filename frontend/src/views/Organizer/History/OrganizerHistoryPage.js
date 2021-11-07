@@ -1,8 +1,10 @@
 import {Box, Container, Grid, Typography} from "@mui/material";
 import PageTitle from "../../../components/Layout/PageTitle";
 import TournamentCardList from "../../../components/TournamentList/TournamentCardList";
+import PaginatedTable from "../../../components/Table/PaginatedTable";
 
 export default function OrganizerHistoryPage() {
+
   return (
     <Container maxWidth="xl">
       <PageTitle>
@@ -21,6 +23,7 @@ export default function OrganizerHistoryPage() {
           Note: only your last 50 events are shown
         </Typography>
       </Box>
+
     </Container>
   );
 }

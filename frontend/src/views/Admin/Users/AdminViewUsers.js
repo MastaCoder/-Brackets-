@@ -1,16 +1,49 @@
 import { Container } from '@mui/material';
-import { useEffect, useState, useContext } from 'react';
-import DataContext from '../../../contexts/dataContext';
+import { useEffect, useState } from 'react';
 import PageTitle from '../../../components/Layout/PageTitle';
 import PlayerList from '../../../components/Player/PlayerList/PlayerList';
 
-
+const allPlayers = [
+	{
+		type: 'user',
+		id: 1,
+		name: 'im_too_sexy',
+		email: 'waytoosexy@mail.com',
+		isBanned: false,
+	},
+	{
+		type: 'user',
+		id: 2,
+		name: 'im_tooo_sexy',
+		email: 'waytoosexy@mail.com',
+		isBanned: false,
+	},
+	{
+		type: 'user',
+		id: 3,
+		name: 'im_tooo_sexy',
+		email: 'waytoosexy@mail.com',
+		isBanned: false,
+	},
+	{
+		type: 'user',
+		id: 4,
+		name: 'ayo_pierre',
+		email: 'pierre@mail.com',
+		isBanned: true,
+	},
+	{
+		type: 'user',
+		id: 5,
+		name: 'damnBoi1782',
+		email: 'dammit@mail.com',
+		isBanned: false,
+	},
+];
 
 const AdminViewUsers = ({ displayUserType }) => {
 
-	const [data, setData] = useContext(DataContext);
-
-	const [players, setPlayers] = useState(data.users);
+	const [players, setPlayers] = useState(allPlayers);
 	// We will make an API call to get the users
 	// Currently doing it manually
 	useEffect(() => {
@@ -28,7 +61,6 @@ const AdminViewUsers = ({ displayUserType }) => {
 			return player;
 		});
 		setPlayers(updatedPlayers);
-		setData({...data, users: players})
 	};
 
 	return (

@@ -1,32 +1,73 @@
-import {Box, Button, Checkbox, Container, FormControlLabel, TextField} from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  FormControlLabel,
+  TextField,
+} from "@mui/material";
 import PageTitle from "../../../components/Layout/PageTitle";
-import {useState} from "react";
+import { useContext, useState } from "react";
+import { useHistory } from "react-router";
+import DataContext from "../../../contexts/dataContext";
 
 export default function OrganizerCreatePage() {
+  const history = useHistory();
+  const [data, setData] = useContext(DataContext);
+
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     maxMembers: 0,
     maxTeamSize: 0,
-    public: true
+    public: true,
   });
 
   const onPublicChange = (v) => {
-    setFormData({...formData, public: v});
-  }
+    setFormData({ ...formData, public: v });
+  };
 
   const onChange = (e) => {
     console.log(formData);
-    setFormData({...formData, [e.target.name]: e.target.value});
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const hostingTournaments = data.hostingTournaments;
+    const tournaments = data.tournaments;
+
+    hostingTournaments.push({
+      id: 1,
+      status: 1,
+      name: formData.name,
+      description: formData.description,
+      members: parseInt(formData.maxMembers),
+      teams: parseInt(formData.maxTeamSize),
+      public: formData.public,
+    });
+
+    tournaments.push({
+      id: 1,
+      status: 1,
+      name: formData.name,
+      description: formData.description,
+      members: parseInt(formData.maxMembers),
+      teams: parseInt(formData.maxTeamSize),
+      public: formData.public,
+    });
+
+
+    setData({ ...data, hostingTournaments, tournaments });
+    history.push("/user");
+  };
 
   return (
     <Container maxWidth="md">
-      <PageTitle>
-        Create an event
-      </PageTitle>
+      <PageTitle>Create an event</PageTitle>
 
-      <Box component="form">
+      <Box component="form" onSubmit={handleSubmit}>
         <TextField
           margin="normal"
           required
@@ -69,11 +110,7 @@ export default function OrganizerCreatePage() {
           onChange={(e) => onPublicChange(e.target.checked)}
         />
         <Box textAlign="center" mt={1}>
-          <Button
-            type="submit"
-            variant="contained"
-            size="large"
-          >
+          <Button type="submit" variant="contained" size="large">
             Create
           </Button>
         </Box>
