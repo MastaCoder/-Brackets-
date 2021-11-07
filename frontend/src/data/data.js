@@ -155,6 +155,59 @@ const data = {
 			host: 'user',
 		},
 	],
+  players: [
+    {
+      type: 'user',
+      id: 1,
+      name: 'im_too_sexy',
+      email: 'waytoosexy@mail.com',
+      isBanned: false,
+    },
+    {
+      type: 'user',
+      id: 2,
+      name: 'im_tooo_sexy',
+      email: 'waytoosexy@mail.com',
+      isBanned: false,
+    },
+    {
+      type: 'user',
+      id: 3,
+      name: 'im_tooo_sexy',
+      email: 'waytoosexy@mail.com',
+      isBanned: false,
+    },
+    {
+      type: 'user',
+      id: 4,
+      name: 'ayo_pierre',
+      email: 'pierre@mail.com',
+      isBanned: true,
+    },
+    {
+      type: 'user',
+      id: 5,
+      name: 'damnBoi1782',
+      email: 'dammit@mail.com',
+      isBanned: false,
+    },
+    {
+      type: 'user',
+      id: 6,
+      name: 'user',
+      email: 'user@user.com',
+      isBanned: false
+    }
+  ],
+  admins: [
+    {
+      type: 'admin',
+      id: 7,
+      name: 'admin',
+      email: 'admin@admin.com',
+      isBanned: false
+    }
+  ]
 };
 
 export default data;

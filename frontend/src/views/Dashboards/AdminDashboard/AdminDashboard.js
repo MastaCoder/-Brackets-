@@ -8,11 +8,13 @@ import {
 	Typography,
 	Grid,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
-import styles from './AdminDashboard.module.css';
 import { useHistory } from 'react-router';
+import DataContext from '../../../contexts/dataContext';
+import { useContext } from 'react';
 
 export default function AdminDashboard(props) {
+  const [data, setData] = useContext(DataContext)
+
 	const cardStyles = {
 		height: '100%',
 	};
@@ -37,18 +39,16 @@ export default function AdminDashboard(props) {
 						<Card style={cardStyles}>
 							<CardContent>
 								<Typography gutterBottom variant="h6" component="div">
-									Registered Users: 1013
+									Registered Users: { data.players.length }
 								</Typography>
 								<Typography variant="body2" color="text.secondary">
 									As of {Date().toLocaleString()}, [Brackets] has{' '}
-									<strong>1013</strong> registered users and <strong>49</strong>{' '}
-									banned users.
+									<strong>{ data.players.length }</strong> registered user(s) and <strong>{ data.players.filter(player => player.isBanned).length }</strong>{' '}
+									banned user(s).
 								</Typography>
 							</CardContent>
 							<CardActions>
-								<Link to="/admin/users" className={styles.link}>
-									<Button size="small">Manage Users</Button>
-								</Link>
+                <Button size="small" onClick={() => history.push("/admin/users")}>Manage Users</Button>
 							</CardActions>
 						</Card>
 					</Grid>
@@ -57,18 +57,16 @@ export default function AdminDashboard(props) {
 						<Card style={cardStyles}>
 							<CardContent>
 								<Typography gutterBottom variant="h6" component="div">
-									Tournaments: 40
+									Tournaments: { data.tournaments.length }
 								</Typography>
 								<Typography variant="body2" color="text.secondary">
-									There are currently <strong>40</strong> registered tournaments
-									and <strong>2</strong> active tournaments.
+									There are currently <strong>{ data.tournaments.length }</strong> registered tournaments, <strong>{ data.tournaments.filter(tournament => tournament.status === 0).length }</strong> tournaments yet to start, and <strong>{ data.tournaments.filter(tournament => tournament.status === 1).length }</strong> tournaments ongoing.
 								</Typography>
 							</CardContent>
 							<CardActions>
-								<Button size="small">View All</Button>
-								<Button size="small" color="success">
-									View Ongoing
-								</Button>
+                <Button size="small" onClick={() => history.push("/admin/tournaments/all")}>View All</Button>
+                <Button size="small" color="secondary" onClick={() => history.push("/admin/tournaments/notstarted")}>View Not Started</Button>
+                <Button size="small" color="success" onClick={() => history.push("/admin/tournaments/ongoing")}>View Ongoing</Button>
 							</CardActions>
 						</Card>
 					</Grid>
@@ -84,7 +82,7 @@ export default function AdminDashboard(props) {
 								</Typography>
 							</CardContent>
 							<CardActions>
-								<Button size="small">Past Tournaments</Button>
+                <Button size="small" color="error" onClick={() => history.push("/admin/tournaments/finished")}>Past Tournaments</Button>
 								<Button size="small" onClick={() => history.push("/admin/userLogs")}>User Logs</Button>
 							</CardActions>
 						</Card>
