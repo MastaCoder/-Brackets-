@@ -23,9 +23,10 @@ export default function TournamentCard(props) {
           </Box>
           <TournamentChips
             public={props.public}
-            teams={props.teams}
+            teamsCount={props.teamsCount}
             status={props.status}
-            members={props.members}
+            membersCount={props.membersCount}
+            maxMembers={props.maxMembers}
             size="small"
           />
           <Box textAlign="center" mt={2}>

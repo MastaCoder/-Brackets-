@@ -12,8 +12,9 @@ export default function TournamentCardList(props) {
               title={e.name}
               description={e.description}
               public={e.public}
-              members={e.members}
-              teams={e.teams}
+              membersCount={e.members.length}
+              maxMembers={e.maxMembers}
+              teamsCount={Object.keys(e.teams).length}
               status={e.status}
             />
           </Grid>
