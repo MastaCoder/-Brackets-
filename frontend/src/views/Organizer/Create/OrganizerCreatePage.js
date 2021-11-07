@@ -51,6 +51,7 @@ export default function OrganizerCreatePage() {
 			members: [],
 			teams: {},
 			host: 'user',
+			userTeam: null
 		});
 		console.log(tournaments);
 		setData({ ...data, tournaments: tournaments });

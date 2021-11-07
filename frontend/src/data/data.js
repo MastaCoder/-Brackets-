@@ -13,16 +13,17 @@ const data = {
 				'registration done at the front office room BA1010',
 			public: true,
 			maxMembers: 20,
-			members: ['user', 'u1', 'u2', 'u3', 'u4', 'u5', 'u6'],
+			members: ['user', 'u1', 'u2', 'u3', 'u4', 'u5', 'u6', 'friend'],
 			teams: {
 				g1: ['u1', 'u2'],
 				g2: ['u3', 'u4'],
 				g3: ['u5', 'u6'],
-				g4: ['user']
+				g4: ['user', 'friend']
 			},
 			maxTeamMembers: 2,
 			status: 0,
 			host: 'randomuser',
+			userTeam: 'g4'
 		},
 		{
 			// user in this event, started
@@ -67,6 +68,7 @@ const data = {
 			maxTeamMembers: 2,
 			status: 1,
 			host: 'randomuser',
+			userTeam: 'me group'
 		},
 		{
 			// user in this event, ended
@@ -85,6 +87,7 @@ const data = {
 			maxTeamMembers: 1,
 			status: 2,
 			host: 'randomuser',
+			userTeam: "big fat team"
 		},
 		{
 			// user not in this event, hasn't started yet
@@ -107,6 +110,7 @@ const data = {
 			maxTeamMembers: 3,
 			status: 0,
 			host: 'randomuser',
+			userTeam: null
 		},
 		{
 			// user not in this event, hasn't started yet
@@ -127,6 +131,7 @@ const data = {
 			maxTeamMembers: 1,
 			status: 1,
 			host: 'randomuser',
+			userTeam: null
 		},
 		{
 			// user not in this event, not started
@@ -153,6 +158,7 @@ const data = {
 			maxTeamMembers: 10,
 			status: 2,
 			host: 'user',
+			userTeam: null
 		},
 	],
   players: [

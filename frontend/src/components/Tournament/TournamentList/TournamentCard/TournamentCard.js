@@ -7,7 +7,7 @@ export default function TournamentCard(props) {
   const history = useHistory();
 
   return (
-    <Box width="100%">
+    <Box>
       <Paper elevation={3}>
         <Box p={2} pt={1.25}>
           <Box>

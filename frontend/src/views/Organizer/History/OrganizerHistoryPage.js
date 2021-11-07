@@ -6,7 +6,7 @@ import DataContext from "../../../contexts/dataContext";
 
 export default function OrganizerHistoryPage() {
   const [eventHistory, setEventHistory] = useState([]);
-  const [data, setData] = useContext(DataContext);
+  const [data] = useContext(DataContext);
 
   // This will be an API call later
   useEffect(() => {
