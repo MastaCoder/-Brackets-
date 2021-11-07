@@ -7,7 +7,7 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import {useState, useContext} from "react";
-import DataContext from "../../../contexts/dataContext";
+import DataContext from "../../../../contexts/dataContext";
 
 const style = {
   position: "absolute",

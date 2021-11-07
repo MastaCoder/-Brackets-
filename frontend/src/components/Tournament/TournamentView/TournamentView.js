@@ -13,7 +13,7 @@ import TournamentViewUserChip from "./TournamentViewUserChip/TournamentViewUserC
 import TournamentViewTeamCardList from "./TournamentViewTeamCardList/TournamentViewTeamCardList";
 import TournamentViewTeamCard from "./TournamentViewTeamCardList/TournamentViewTeamCard/TournamentViewTeamCard";
 import { useHistory } from "react-router";
-import TournamentUpdateModal from "../TournamentUpdateModal/TournamentUpdateModal";
+import TournamentUpdateModal from "./TournamentUpdateModal/TournamentUpdateModal";
 import { useState, useContext } from "react";
 import DataContext from "../../../contexts/dataContext";
 
