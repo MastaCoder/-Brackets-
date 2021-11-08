@@ -25,11 +25,9 @@ export default function TournamentViewBrackets(props) {
     alert("To be done in phase 2: " + pairSelector);
   }
 
-  return (
-    <>
-      <PageSubTitle>
-        Brackets View
-      </PageSubTitle>
+	return (
+		<>
+			<PageSubTitle>Brackets View</PageSubTitle>
 
       <Box my={2}>
         <Bracket

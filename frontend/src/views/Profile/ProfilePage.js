@@ -33,7 +33,7 @@ export default function ProfilePage(props) {
           <TextField
             margin="normal"
             fullWidth
-            label="Confirm Password"
+            label="Enter Password to Edit"
             type="password"
             onChange={(e) => setPasswordConfirm(e.target.value)}
           />
