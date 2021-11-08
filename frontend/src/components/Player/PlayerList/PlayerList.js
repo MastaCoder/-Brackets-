@@ -5,17 +5,14 @@ import { uid } from 'react-uid';
 const PlayerList = ({ players, handlePlayerUpdate }) => {
 	return (
 		<Grid container spacing={2}>
-			{players.map((player) => {
-				return (
-					<Grid sm={6} md={4} item>
-						<PlayerCard
-							player={player}
-							key={uid(player)}
-							handlePlayerUpdate={handlePlayerUpdate}
-						/>
-					</Grid>
-				);
-			})}
+			{players.map((player) => (
+				<Grid key={uid(player)} sm={6} md={4} item>
+					<PlayerCard
+						player={player}
+						handlePlayerUpdate={handlePlayerUpdate}
+					/>
+				</Grid>
+			))}
 		</Grid>
 	);
 };

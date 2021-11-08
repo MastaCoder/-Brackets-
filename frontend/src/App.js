@@ -8,7 +8,7 @@ import RegisterPage from "./views/Register/RegisterPage";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@emotion/react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import AdminDashboard from "./views/Dashboards/AdminDashboard/AdminDashboard";
+import AdminDashboard from "./views/Admin/Dashboard/AdminDashboard";
 import UserDashboardPage from "./views/User/Dashboard/UserDashboardPage";
 import UserHistoryPage from "./views/User/History/UserHistoryPage";
 import UserJoinPage from "./views/User/Join/UserJoinPage";

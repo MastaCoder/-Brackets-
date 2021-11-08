@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container } from "@mui/material";
 import { useHistory } from "react-router";
 import PageTitle from "../../../components/Layout/PageTitle";
 import PageSubTitle from "../../../components/Layout/PageSubTitle";
@@ -11,7 +11,7 @@ export default function UserDashboardPage() {
   const [hostingEvents, setHostingEvents] = useState([]);
 
   const history = useHistory();
-  const [data, setData] = useContext(DataContext);
+  const [data] = useContext(DataContext);
 
   // This will be an API call later
   useEffect(() => {

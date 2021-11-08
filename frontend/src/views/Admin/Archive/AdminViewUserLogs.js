@@ -21,7 +21,7 @@ const userLogs = [
 ];
 
 export default function AdminViewUserLogs() {
-  const [logs, setUserLogs] = useState(userLogs);
+  const [logs] = useState(userLogs);
 
   return (
     <Container component="main">

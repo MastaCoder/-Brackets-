@@ -7,7 +7,7 @@ import DataContext from "../../../contexts/dataContext";
 
 export default function UserJoinPage() {
   const [publicEvents, setPublicEvents] = useState([]);
-  const [data, setData] = useContext(DataContext);
+  const [data] = useContext(DataContext);
 
   // This will be an API call later (attending events)
   useEffect(() => {

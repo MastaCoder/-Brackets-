@@ -1,4 +1,4 @@
-import { Card, Typography, Box, Avatar, Chip, Button } from '@mui/material';
+import {Typography, Box, Avatar, Chip, Button, Paper} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { makeStyles } from '@mui/styles';
 
@@ -40,7 +40,7 @@ const PlayerCard = ({ player, handlePlayerUpdate }) => {
 	const classes = useStyles();
 
 	return (
-		<Card className={classes.cardStyles} maxWidth="sm">
+		<Paper className={classes.cardStyles} maxWidth="sm">
 			<Avatar className={classes.avatarContainer}>
 				<AccountCircleIcon />
 			</Avatar>
@@ -67,7 +67,7 @@ const PlayerCard = ({ player, handlePlayerUpdate }) => {
 					{player.isBanned ? 'Revert Ban' : 'Ban Player'}
 				</Button>
 			</Box>
-		</Card>
+		</Paper>
 	);
 };
 

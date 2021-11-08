@@ -10,11 +10,9 @@ import PageTitle from '../../../components/Layout/PageTitle';
 import { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import DataContext from '../../../contexts/dataContext';
-import { useAuth } from '../../../hooks/Auth';
 
 export default function OrganizerCreatePage() {
 	const history = useHistory();
-	const { user } = useAuth();
 	const [data, setData] = useContext(DataContext);
 
 	const [formData, setFormData] = useState({

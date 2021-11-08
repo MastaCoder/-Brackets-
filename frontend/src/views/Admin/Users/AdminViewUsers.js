@@ -13,7 +13,7 @@ const AdminViewUsers = ({ displayUserType }) => {
 			const bannedPlayers = data.players.filter((player) => player.isBanned);
 			setData({ ...data, players: bannedPlayers });
 		}
-	}, [displayUserType]);
+	}, [displayUserType, data, setData]); // might wanna get rid of this later
 
 	const handlePlayerUpdate = (id) => {
 		const updatedPlayers = data.players.map((player) => {

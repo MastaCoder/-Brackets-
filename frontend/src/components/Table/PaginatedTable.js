@@ -72,7 +72,7 @@ export default function PaginatedTable(props) {
         page={page}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleRowsPerPageChange}
-      ></TablePagination>
+      />
       </>
   );
 }

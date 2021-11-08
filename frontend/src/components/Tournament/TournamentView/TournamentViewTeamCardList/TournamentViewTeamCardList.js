@@ -1,11 +1,12 @@
 import {Grid} from "@mui/material";
 import TournamentViewTeamCard from "./TournamentViewTeamCard/TournamentViewTeamCard";
+import {uid} from "react-uid";
 
 export default function TournamentViewTeamCardList(props) {
   return (
     <Grid container spacing={2}>
       {Object.entries(props.teams).map(([teamName, team]) => (
-        <Grid item xs={3}>
+        <Grid item xs={3} key={uid(teamName)}>
           <TournamentViewTeamCard
             teamName={teamName}
             team={team}

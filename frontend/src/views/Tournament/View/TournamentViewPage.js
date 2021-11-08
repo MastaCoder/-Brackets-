@@ -16,7 +16,7 @@ export default function TournamentViewPage(props) {
         <PageTitle>
           Event not found!
         </PageTitle>
-        <Typography variant="body1">
+        <Typography variant="body1" textAlign="center">
           Make sure you're visiting the correct link.
         </Typography>
       </>

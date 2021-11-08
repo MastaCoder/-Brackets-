@@ -1,4 +1,4 @@
-import {Box, Container, Grid, Typography} from "@mui/material";
+import {Box, Container, Typography} from "@mui/material";
 import PageTitle from "../../../components/Layout/PageTitle";
 import TournamentCardList from "../../../components/Tournament/TournamentList/TournamentCardList";
 import {useContext, useEffect, useState} from "react";

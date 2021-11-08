@@ -35,23 +35,7 @@ const data = {
 			public: true,
 			maxMembers: 17,
 			members: [
-				'u1',
-				'u2',
-				'u3',
-				'u4',
-				'u5',
-				'u6',
-				'u7',
-				'u8',
-				'u9',
-				'u10',
-				'u11',
-				'u12',
-				'u13',
-				'u14',
-				'u15',
-				'u16',
-				'user',
+				'u1', 'u2', 'u3', 'u4', 'u5', 'u6', 'u7', 'u8', 'u9', 'u10', 'u11', 'u12', 'u13', 'u14', 'u15', 'u16', 'user'
 			],
 			teams: {
 				g1: ['u1', 'u2'],
@@ -68,7 +52,25 @@ const data = {
 			maxTeamMembers: 2,
 			status: 1,
 			host: 'randomuser',
-			userTeam: 'me group'
+			userTeam: 'me group',
+			brackets: [
+				[ // round 1
+					['g1', 'g2'],
+					['g3', 'g4'],
+					['g5', 'g6'],
+					['g7', 'g8'],
+					['g9', 'me group'],
+				], [ // round 2
+					['g1', 'g4'],
+					['g5', 'g7'],
+					['me group', null],
+				], [ // round 3
+					['g1', 'g5'],
+					['me group', null]
+				], [ // round 4
+					['g5', 'me group'],
+				]
+			]
 		},
 		{
 			// user in this event, ended
@@ -87,9 +89,18 @@ const data = {
 			maxTeamMembers: 1,
 			status: 2,
 			host: 'randomuser',
-			userTeam: "big fat team"
-		},
-		{
+			userTeam: "big fat team",
+			brackets: [
+				[ // round 1
+					['g1', 'edfgdfg'],
+					['something', 'big fat team']
+				], [ // round 2
+					['g1', 'big fat team']
+				], [
+					['g1', null]
+				]
+			]
+		}, {
 			// user not in this event, hasn't started yet
 			id: 4,
 			name: 'CSC309 Minecraft Hunger Games',
@@ -131,7 +142,17 @@ const data = {
 			maxTeamMembers: 1,
 			status: 1,
 			host: 'randomuser',
-			userTeam: null
+			userTeam: null,
+			brackets: [
+				[ // round 1
+					['t1', 't2'],
+					['t3', 't4'],
+					['t5', null],
+				], [ // round 2
+					['t1', 't3'],
+					['t5', null]
+				]
+			]
 		},
 		{
 			// user not in this event, not started
@@ -139,13 +160,38 @@ const data = {
 			name: "Random event I've created",
 			description: 'Just a random filler event to test user event creation.',
 			public: true,
-			maxMembers: 100,
-			members: [],
-			teams: {},
+			maxMembers: 50,
+			members: [
+				'u1', 'u2', 'u3', 'u4', 'u5', 'u6', 'u7', 'u8', 'u9', 'u10', 'u11', 'u12', 'u13', 'u14', 'u15', 'u16', 'user'
+			],
+			teams: {
+				g1: ['u1', 'u2'],
+				g2: ['u3', 'u4'],
+				g3: ['u5', 'u6'],
+				g4: ['u7', 'u8'],
+				g5: ['u9'],
+				g6: ['u10'],
+				g7: ['u11', 'u12'],
+				g8: ['u13', 'u14'],
+				g9: ['u15', 'u16'],
+			},
 			maxTeamMembers: 5,
-			status: 0,
+			status: 1,
 			host: 'user',
-			userTeam: null
+			userTeam: null,
+			brackets: [
+				[ // round 1
+					['g1', 'g2'],
+					['g3', 'g4'],
+					['g5', 'g6'],
+					['g7', 'g8'],
+					['g9', null],
+				], [ // round 2
+					['g1', 'g4'],
+					['g5', 'g7'],
+					['g9', null]
+				]
+			]
 		},
 		{
 			// user not in this event, ended

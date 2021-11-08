@@ -1,26 +1,16 @@
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import {Box, Button, Container, Grid, TextField, Typography} from "@mui/material";
 import PageTitle from "../../Layout/PageTitle";
 import TournamentChips from "../TournamentChips/TournamentChips";
 import PageSubTitle from "../../Layout/PageSubTitle";
 import TournamentViewUserChip from "./TournamentViewUserChip/TournamentViewUserChip";
 import TournamentViewTeamCardList from "./TournamentViewTeamCardList/TournamentViewTeamCardList";
 import TournamentViewTeamCard from "./TournamentViewTeamCardList/TournamentViewTeamCard/TournamentViewTeamCard";
-import { useHistory } from "react-router";
 import TournamentUpdateModal from "./TournamentUpdateModal/TournamentUpdateModal";
 import TournamentViewBrackets from "./TournamentViewBrackets/TournamentViewBrackets";
 import { useState, useContext } from "react";
 import DataContext from "../../../contexts/dataContext";
 
 export default function TournamentView(props) {
-  const history = useHistory();
-
   const [tournamentView, setTournamentView] = useState(false);
   const [data, setData] = useContext(DataContext);
 
@@ -28,15 +18,11 @@ export default function TournamentView(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  if (!props.tournament.id) {
-    return <PageTitle>Event not found!</PageTitle>;
-  }
-
-  const handleStartTournamentClk = () => {
-    const tournaments = [...data.tournaments];
-    tournaments[props.tournament.id - 1].status = 1;
-    setData({...data, tournaments})
-  }
+  // const handleStartTournamentClk = () => {
+  //   const tournaments = [...data.tournaments];
+  //   tournaments[props.tournament.id - 1].status = 1;
+  //   setData({...data, tournaments})
+  // }
 
   const handleEndTournamentClk = () => {
     const tournaments = [...data.tournaments];
@@ -93,7 +79,9 @@ export default function TournamentView(props) {
       )}
 
       {tournamentView ? (
-        <TournamentViewBrackets />
+        <TournamentViewBrackets
+          tournament={props.tournament}
+        />
       ) : (
         <>
           {/*phase 2, put in its own component*/}
@@ -176,7 +164,7 @@ export default function TournamentView(props) {
                   <Button
                     variant="contained"
                     color="success"
-                    onClick={handleStartTournamentClk}
+                    onClick={() => alert("Assigning brackets done on API, PHASE 2 PHASE 2 PHASE 2")}
                   >
                     Start Tournament
                   </Button>
