@@ -69,6 +69,19 @@ Log in as a user first. Then,
 2. Click on the `Create a Tournament` button under 'Current Tournaments (hosting)'.
 3. Fill in the presented form with the required parameters, then click `Create` to make the new tournament.
 
+#### Changing your Teams Name
+If you're in an event that has NOT started yet you can change the name by clicking on your team name. This will bring up a textbox view where you can change and submit the name change.
+
+#### Viewing Tournament bracket
+On any on-going or ended event, click on the view brackets button to swap to brackets view.
+
+### Organizer Instructions
+#### Updating tournament progress
+If you're logged in as an organizer and are viewing an on-going event, you can update the brackets with winners:
+1. Go to the brackets view of an organizer you're hosting that is on-going
+2. Scroll down you will see a series of dropdowns
+3. You must select all the winning teams and click submit to setup the new round. (This is not complete since it needs a backend)
+
 ### Admin Instructions
 #### Login
 1. Click the login button on the top right of the navbar.
@@ -88,3 +101,10 @@ In addition to these, the admin can do all the activites that the user can do. S
 1. React, as the web framework 
 2. Material UI, for a consistent and clear user interface
 3. `react-brackets`, for rendering tournament brackets
+
+## Extras we've done
+Since we've already put every single component we want into a component and we have a data context storing all the tournaments, we thought it'd be helpful to get some of our complicated server functions demonstrated on the frontend. We did this mainly to get a headstart on phase 2 as our components are capable of updating, we just need an API middleman to setup the actual logic.
+
+1. We've implemented the ability to kick users from a tournament as an organizer, it shows how the team cards can be updated and how the number of teams/members is re-rendered.
+2. We've implemented the ability to kick users from a team, this will result in them joining their own team under their name.
+3. EXPIRMENTAL: You can change other team names as an organizer but clicking on the titles. This is a bit buggy since management is done in the frontend for now, it'll work when ported over to the backend.
