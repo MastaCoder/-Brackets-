@@ -102,14 +102,11 @@ export default function TournamentView(props) {
               </Grid>
               <Box maxWidth={500} mb={3}>
                 <TextField
-                  id="outlined-basic"
                   label="Team invite link (not functional - phase 2)"
                   variant="outlined"
                   defaultValue="http://localhost:3000/tournament/1/team/jsk18Z01kM23"
                   fullWidth
-                  InputProps={{
-                    readOnly: true,
-                  }}
+                  InputProps={{ readOnly: true }}
                 />
               </Box>
             </>
@@ -156,7 +153,7 @@ export default function TournamentView(props) {
             <>
               <PageSubTitle>Event Settings</PageSubTitle>
     
-              <Box mt={2} mb={4} display="flex" gap={1}>
+              <Box mt={2} mb={3} display="flex" gap={1}>
                 <Button variant="contained" onClick={handleOpen}>
                   Update the Tournament
                 </Button>
@@ -178,6 +175,15 @@ export default function TournamentView(props) {
                     End Tournament Early
                   </Button>
                 }
+              </Box>
+              <Box maxWidth={550}>
+                <TextField
+                  label="Direct Invite Link (not functional - phase 2)"
+                  variant="outlined"
+                  defaultValue="http://localhost:3000/tournament/1/23489dxfn12dx"
+                  fullWidth
+                  InputProps={{ readOnly: true }}
+                />
               </Box>
             </>
           )}
