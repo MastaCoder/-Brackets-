@@ -20,6 +20,8 @@
 ## Features
 [Brackets] is a tournament management software which allows users to join, participate in, and organize tournaments.
 
+Users are able to perform various different things in the website. Firstly, users are able to login/logout and update their account information. Although there is no proper authentication currently, the view for reseting password and other information is implemented. Users can create tournaments themselves, view any previously hosted tournaments and view previously attended events. For events that they have created, there are a few settings that allow you to start/end tournaments and update tournament information. Users can view the event details and teams with other registered users to the event and view the tournament bracket.
+
 ## Usage
 ### Setup
 [Brackets] is a React app. Hence, you will need `npm` installed locally to run the React development server. To start it:
