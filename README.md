@@ -10,7 +10,7 @@
     - [Login](#login)
     - [Profile updates](#profile-updates)
     - [Attending Tournaments](#attending-tournaments)
-    - [Starting/Ending/Updating Tournaments](#starting--ending--updating--tournaments)
+    - [Starting/Ending/Updating Tournaments](#startingendingupdating-tournaments)
     - [Creating a new Tournament](#creating-a-new-tournament)
   + [Admin Instructions](#admin-instructions)
     - [Login](#login-1)
@@ -83,5 +83,6 @@ In addition to these, the admin can do all the activites that the user can do. S
 
 ## Third-party Libraries
 [Brackets] uses the following third-party libraries:
-1. React
-2. Material UI
+1. React, as the web framework 
+2. Material UI, for a consistent and clear user interface
+3. `react-brackets`, for rendering tournament brackets
