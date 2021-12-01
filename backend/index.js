@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const { mongoose } = require('./db/mongoose');
 const { authRouter } = require('./routers/auth.router');
@@ -16,6 +17,7 @@ const checkMongooseConnection = (req, res, next) => {
 };
 
 /* ---------------- Middlewares ---------------- */
+app.use(cors());
 app.use(bodyParser.json());
 app.use(checkMongooseConnection);
 

@@ -3,14 +3,15 @@ const { createUser, getUser } = require('../controllers/user.controller');
 
 const authRouter = Router();
 
-authRouter.get('/test', (req, res) => {
-	res.send('Testing!');
+authRouter.get("/register", async (req, res) => {
+	console.log(req, res);
+	res.send("Registered");
 });
 
-authRouter.post('/signup', async (req, res) => {
-	// Do error checking here
-	await createUser(req.body);
-	res.send('Signed Up');
+authRouter.post("/register", async (req, res) => {
+	console.log(req, res);
+	res.send("Registered");
+	// await createUser(req.body);
 });
 
 module.exports = { authRouter };
