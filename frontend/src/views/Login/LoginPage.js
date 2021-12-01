@@ -10,22 +10,23 @@ export default function LoginPage(props) {
 
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [invalidPassword, setInvalidPassword] = useState(false);
+	const [invalidCreds, setInvalidCreds] = useState(false);
 
 	const HandleLogin = (event) => {
 		event.preventDefault();
+
 		if (username === 'user' && password === 'user') {
-			setInvalidPassword(false);
+			setInvalidCreds(false);
 			auth.signin({ type: 'user', id: 10 }, () => {
 				history.push('/user');
 			});
 		} else if (username === 'admin' && password === 'admin') {
-			setInvalidPassword(false);
+			setInvalidCreds(false);
 			auth.signin({ type: 'admin', id: 11 }, () => {
 				history.push('/dashboard');
 			});
 		} else {
-			setInvalidPassword(true);
+			setInvalidCreds(true);
 		}
 	};
 
@@ -33,7 +34,7 @@ export default function LoginPage(props) {
 		<Container maxWidth="sm">
 			<PageTitle>Log in to your account</PageTitle>
 
-			{invalidPassword && <Alert severity="error">Invalid credentials.</Alert>}
+			{invalidCreds && <Alert severity="error">Invalid credentials.</Alert>}
 			<Box component="form" onSubmit={HandleLogin}>
 				<TextField
 					value={username}

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Connect to the Users table
 mongoose.connect(
@@ -10,4 +10,4 @@ mongoose.connect(
 	}
 );
 
-module.exports = { mongoose };
+export default mongoose;

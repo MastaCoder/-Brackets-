@@ -1,8 +1,8 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { mongoose } = require('./db/mongoose');
-const { authRouter } = require('./routers/auth.router');
+import express from 'express';
+import cors from 'cors'
+import bodyParser from 'body-parser';
+import mongoose from './db/mongoose.mjs';
+import { authRouter } from './routers/auth.router.mjs';
 
 const app = express();
 const PORT = process.env.PORT || 5000;

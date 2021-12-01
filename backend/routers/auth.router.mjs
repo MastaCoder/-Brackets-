@@ -1,7 +1,7 @@
-const { Router } = require('express');
-const { createUser, getUser } = require('../controllers/user.controller');
+import { Router } from 'express';
+import { registerUser } from '../controllers/user.controller.mjs';
 
-const authRouter = Router();
+export const authRouter = Router();
 
 authRouter.post("/register", async (req, res) => {
 	const existingUsers = await getUser({
@@ -10,13 +10,11 @@ authRouter.post("/register", async (req, res) => {
 			{email: req.body.email}
 		]
 	});
-	console.log(existingUsers);
+
 	if (existingUsers.length !== 0) {
 		res.status(400).send();
 	} else {
-		await createUser(req.body);
+		await registerUser(req.body.username, req.body.email, req.body.password);
 		res.status(200).send();
 	}
 });
-
-module.exports = { authRouter };
