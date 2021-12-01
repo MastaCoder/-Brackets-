@@ -1,4 +1,4 @@
-import { User } from '../models/user.model.mjs';
+import { User } from '../models/user.model.js';
 
 export async function registerUser(username, email, password) {
 	const user = new User({

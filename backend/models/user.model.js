@@ -1,4 +1,4 @@
-import mongoose from "../db/mongoose.mjs";
+import mongoose from "../db/mongoose.js";
 
 // User Schema (Add stuff to this!)
 const UserSchema = new mongoose.Schema({
