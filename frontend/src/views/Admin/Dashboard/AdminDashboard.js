@@ -13,7 +13,7 @@ import AdminCounter from "../../../components/AdminCounter/AdminCounter";
 import PageSubTitle from "../../../components/Layout/PageSubTitle";
 
 export default function AdminDashboard() {
-  const [data] = useContext(DataContext);
+  	const [data] = useContext(DataContext);
 	const history = useHistory();
 
 	return (
