@@ -6,6 +6,7 @@ import axios from "axios"
 
 export default function RegisterPage(props) {
     const [passwordMismatch, setPasswordMismatch] = useState(false);
+    const [usernameTaken, setUsernameTaken] = useState(false);
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -15,7 +16,6 @@ export default function RegisterPage(props) {
 
     const handleRegistration = (event) => {
         event.preventDefault();
-        console.log("hello");
 
         if (password !== passwordConfirm) {
             setPasswordMismatch(true);
@@ -28,6 +28,8 @@ export default function RegisterPage(props) {
             password: password
         }).then(() => {
             history.push("/login");
+        }).catch(() => {
+            setUsernameTaken(true);
         });
     }
 
@@ -39,6 +41,9 @@ export default function RegisterPage(props) {
 
         {passwordMismatch && (
             <Alert severity="error">Passwords do not match.</Alert>
+        )}
+        {usernameTaken && (
+            <Alert severity="error">This username or email has already been taken.</Alert>
         )}
         <Box component="form" onSubmit={handleRegistration}>
             <TextField

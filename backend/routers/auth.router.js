@@ -3,15 +3,20 @@ const { createUser, getUser } = require('../controllers/user.controller');
 
 const authRouter = Router();
 
-authRouter.get("/register", async (req, res) => {
-	console.log(req, res);
-	res.send("Registered");
-});
-
 authRouter.post("/register", async (req, res) => {
-	console.log(req, res);
-	res.send("Registered");
-	// await createUser(req.body);
+	const existingUsers = await getUser({
+		$or: [
+			{username: req.body.username},
+			{email: req.body.email}
+		]
+	});
+	console.log(existingUsers);
+	if (existingUsers.length !== 0) {
+		res.status(400).send();
+	} else {
+		await createUser(req.body);
+		res.status(200).send();
+	}
 });
 
 module.exports = { authRouter };
