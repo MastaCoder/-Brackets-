@@ -3,6 +3,7 @@ import { useAuth } from '../../hooks/Auth';
 import { useHistory } from 'react-router';
 import { useState } from 'react';
 import PageTitle from '../../components/Layout/PageTitle';
+import axios from 'axios';
 
 export default function LoginPage(props) {
 	const auth = useAuth();
@@ -12,20 +13,20 @@ export default function LoginPage(props) {
 	const [password, setPassword] = useState('');
 	const [invalidCreds, setInvalidCreds] = useState(false);
 
-	const HandleLogin = (event) => {
+	const HandleLogin = async (event) => {
 		event.preventDefault();
 
-		if (username === 'user' && password === 'user') {
+		try {
 			setInvalidCreds(false);
-			auth.signin({ type: 'user', id: 10 }, () => {
-				history.push('/user');
+			const userType = (await axios.post('/api/auth/login', {
+				username: username,
+				password: password,
+			})).data;
+			console.log(userType);
+			auth.signin({ type: userType, id: 10 }, () => {
+				userType === 'user' ? history.push('/user') : history.push('/dashboard');
 			});
-		} else if (username === 'admin' && password === 'admin') {
-			setInvalidCreds(false);
-			auth.signin({ type: 'admin', id: 11 }, () => {
-				history.push('/dashboard');
-			});
-		} else {
+		} catch {
 			setInvalidCreds(true);
 		}
 	};

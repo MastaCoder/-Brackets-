@@ -14,23 +14,27 @@ export default function RegisterPage(props) {
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const history = useHistory();
 
-    const handleRegistration = (event) => {
+    const handleRegistration = async (event) => {
         event.preventDefault();
 
         if (password !== passwordConfirm) {
             setPasswordMismatch(true);
             return;
+        } else {
+            setPasswordMismatch(false);
+            
+            try {
+                setUsernameTaken(false);
+                await axios.post("/api/auth/register", {
+                    username: username,
+                    email: email,
+                    password: password
+                });
+                history.push("/login");
+            } catch {
+                setUsernameTaken(true);
+            }
         }
-    
-        axios.post("/api/auth/register", {
-            username: username,
-            email: email,
-            password: password
-        }).then(() => {
-            history.push("/login");
-        }).catch(() => {
-            setUsernameTaken(true);
-        });
     }
 
     return (

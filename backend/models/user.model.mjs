@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
 	username: String,
 	email: String,
 	password: String,
+	type: String,
 });
 
 // The User Model
