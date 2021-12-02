@@ -1,21 +1,47 @@
-import {Container, Box, Button, TextField, Alert, Divider} from "@mui/material";
-import { useState } from "react"
+import {Container, Box, Button, TextField, Alert} from "@mui/material";
+import axios from "axios";
+import { useEffect, useState } from "react"
 import PageTitle from "../../components/Layout/PageTitle";
 
-export default function ProfilePage(props) {
-  const [passwordMismatch, setPasswordMismatch] = useState(false);
+export default function ProfilePage() {
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageSeverity, setMessageSeverity] = useState("");
 
-  const [username, setUsername] = useState(props.username);
-  const [email, setEmail] = useState(props.email);
-  const [password, setPassword] = useState(props.password);
-  const [passwordConfirm, setPasswordConfirm] = useState(props.password);
+  const [newUsername, setNewUsername] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  function handleChangeInfo(event) {
+  useEffect(() => {
+    (async function() {
+      const res = await axios.post("/api/auth/getloggedinuserdetails", {});
+      setNewUsername(res.data.username);
+      setNewEmail(res.data.email);
+    })();
+  }, []);
+
+  async function handleChangeInfo(event) {
     event.preventDefault();
-    if (password === passwordConfirm) {
-      event.currentTarget.submit();
-    } else {
-      setPasswordMismatch(true);
+    setShowMessage(true);
+    if (newPassword !== passwordConfirm) {
+      setMessageSeverity("error");
+      setMessage("Passwords do not match.");
+    } 
+    else {
+      try {
+        const res = await axios.post("/api/auth/update", {
+            newUsername: newUsername,
+            newEmail: newEmail,
+            newPassword: newPassword
+        });
+
+        setMessageSeverity("success");
+        setMessage(res.data.msg);
+      } catch(err) {
+        setMessageSeverity("error");
+        setMessage(err.response.data.msg);
+      }
     }
   }
 
@@ -26,43 +52,31 @@ export default function ProfilePage(props) {
       </PageTitle>
 
       <Container maxWidth="sm">
-        { passwordMismatch && (
-          <Alert severity="error">Passwords do not match.</Alert>
-        )}
+
+        {showMessage && (<Alert severity={messageSeverity}>{message}</Alert>)}
+
         <Box component="form" onSubmit={handleChangeInfo}>
-          <TextField
-            margin="normal"
-            fullWidth
-            label="Enter Password to Edit"
-            type="password"
-            onChange={(e) => setPasswordConfirm(e.target.value)}
-          />
-
-          <Box my={2}>
-            <Divider />
-          </Box>
-
           <TextField
             fullWidth
             margin="normal"
             label="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value)}
           />
           <TextField
             margin="normal"
             fullWidth
             label="Email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={newEmail}
+            onChange={(e) => setNewEmail(e.target.value)}
           />
           <TextField
             margin="normal"
             fullWidth
             label="Password"
             type="password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
           <TextField
             margin="normal"
