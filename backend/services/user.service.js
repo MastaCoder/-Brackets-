@@ -28,3 +28,28 @@ export async function authenticateUser(username, password) {
 		return users[0];
 	}
 }
+
+export async function changeUserInfo(id, newUsername, newEmail, newPassword) {
+	const user = await User.findById(id);
+	if (user) {
+		user.username = newUsername;
+		user.email = newEmail;
+		user.password = newPassword;
+		await user.save();
+		return true;
+	} else {
+		return false;
+	}
+}
+
+export async function getLoggedInUserDetails(id) {
+	const user = await User.findById(id);
+	if (user) {
+		return {
+			username: user.username,
+			email: user.email
+		}
+	} else {
+		return null;
+	}
+}
