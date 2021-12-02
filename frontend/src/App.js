@@ -95,11 +95,7 @@ function App() {
 								<RegisterPage />
 							</Route>
 							<PrivateRoute exact path="/settings">
-								<ProfilePage
-									username="user"
-									email="user@user.com"
-									password="user"
-								/>
+								<ProfilePage />
 							</PrivateRoute>
 							<PrivateRoute exact path="/dashboard">
 								<AdminDashboard />

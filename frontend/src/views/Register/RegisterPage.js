@@ -1,38 +1,38 @@
 import { Container, Box, Button, TextField, Alert } from "@mui/material";
 import { useState } from "react"
-import { useHistory } from "react-router";
 import PageTitle from "../../components/Layout/PageTitle";
 import axios from "axios"
 
-export default function RegisterPage(props) {
-    const [passwordMismatch, setPasswordMismatch] = useState(false);
-    const [usernameTaken, setUsernameTaken] = useState(false);
+export default function RegisterPage() {
+    const [showMessage, setShowMessage] = useState(false);
+    const [message, setMessage] = useState("");
+    const [messageSeverity, setMessageSeverity] = useState("");
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
-    const history = useHistory();
 
     const handleRegistration = async (event) => {
         event.preventDefault();
 
+        setShowMessage(true);
         if (password !== passwordConfirm) {
-            setPasswordMismatch(true);
-            return;
+            setMessageSeverity("error");
+            setMessage("Passwords do not match.")
         } else {
-            setPasswordMismatch(false);
-            
             try {
-                setUsernameTaken(false);
-                await axios.post("/api/auth/register", {
+                const res = await axios.post("/api/auth/register", {
                     username: username,
                     email: email,
                     password: password
                 });
-                history.push("/login");
-            } catch {
-                setUsernameTaken(true);
+
+                setMessageSeverity("success");
+                setMessage(res.data.msg);
+            } catch(err) {
+                setMessageSeverity("error");
+                setMessage(err.response.data.msg);
             }
         }
     }
@@ -43,12 +43,10 @@ export default function RegisterPage(props) {
             Register for an account
         </PageTitle>
 
-        {passwordMismatch && (
-            <Alert severity="error">Passwords do not match.</Alert>
+        {showMessage && (
+            <Alert severity={messageSeverity}>{message}</Alert>
         )}
-        {usernameTaken && (
-            <Alert severity="error">This username or email has already been taken.</Alert>
-        )}
+
         <Box component="form" onSubmit={handleRegistration}>
             <TextField
             margin="normal"
