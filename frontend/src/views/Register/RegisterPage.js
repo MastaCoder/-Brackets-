@@ -1,24 +1,25 @@
 import { Container, Box, Button, TextField, Alert } from "@mui/material";
 import { useState } from "react"
-import { useHistory } from "react-router";
 import PageTitle from "../../components/Layout/PageTitle";
 import axios from "axios"
 
-export default function RegisterPage(props) {
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
+export default function RegisterPage() {
+    const [showMessage, setShowMessage] = useState(false);
+    const [message, setMessage] = useState("");
+    const [messageSeverity, setMessageSeverity] = useState("");
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
-    const history = useHistory();
 
     const handleRegistration = async (event) => {
         event.preventDefault();
+
+        setShowMessage(true);
         if (password !== passwordConfirm) {
-            setError(true);
-            setErrorMessage("Passwords do not match.")
+            setMessageSeverity("error");
+            setMessage("Passwords do not match.")
         } else {
             try {
                 await axios.post("/api/auth/register", {
@@ -26,11 +27,12 @@ export default function RegisterPage(props) {
                     email: email,
                     password: password
                 });
-                history.push("/login");
-            } 
-            catch(err) {
-                setError(true);
-                setErrorMessage(err.response.data.msg);
+
+                setMessageSeverity("success");
+                setMessage("Your account has been registered! Please login to proceed.");
+            } catch(err) {
+                setMessageSeverity("error");
+                setMessage(err.response.data.msg);
             }
         }
     }
@@ -41,8 +43,8 @@ export default function RegisterPage(props) {
             Register for an account
         </PageTitle>
 
-        {error && (
-            <Alert severity="error">{errorMessage}</Alert>
+        {showMessage && (
+            <Alert severity={messageSeverity}>{message}</Alert>
         )}
 
         <Box component="form" onSubmit={handleRegistration}>

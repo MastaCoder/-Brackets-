@@ -21,14 +21,12 @@ export async function emailTaken(email) {
 }
 
 export async function authenticateUser(username, password) {
-	const users = await User.find({
-		$or: [{ username: username }, { password: password }],
-	});
+	const users = await User.find({ username: username, password: password });
 
 	if (users.length === 0) {
 		return false;
 	} else {
-		return users[0];
+		return users[0]._id;
 	}
 }
 
@@ -51,6 +49,17 @@ export async function getLoggedInUserDetails(id) {
 		return {
 			username: user.username,
 			email: user.email
+		}
+	} else {
+		return null;
+	}
+}
+
+export async function getUserType(id) {
+	const user = await User.findById(id);
+	if (user) {
+		return {
+			type: user.type
 		}
 	} else {
 		return null;

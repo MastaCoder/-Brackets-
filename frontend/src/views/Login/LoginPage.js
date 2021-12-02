@@ -5,18 +5,19 @@ import { useState } from 'react';
 import PageTitle from '../../components/Layout/PageTitle';
 import axios from 'axios';
 
-export default function LoginPage(props) {
+export default function LoginPage() {
 	const auth = useAuth();
 	const history = useHistory();
 
+	const [showMessage, setShowMessage] = useState(false);
+    const [message, setMessage] = useState("");
+
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [invalidCreds, setInvalidCreds] = useState(false);
 
 	const HandleLogin = async (event) => {
 		event.preventDefault();
 		try {
-			setInvalidCreds(false);
 			const user = (
 				await axios.post('/api/auth/login', {
 					username: username,
@@ -24,13 +25,15 @@ export default function LoginPage(props) {
 				})
 			).data;
 
-			auth.signin(user, () => {
+			auth.signin(user._id, () => {
 				user.type === 'user'
 					? history.push('/user')
 					: history.push('/dashboard');
 			});
-		} catch {
-			setInvalidCreds(true);
+
+		} catch(err) {
+			setShowMessage(true);
+			setMessage(err.response.data.msg);
 		}
 	};
 
@@ -38,7 +41,8 @@ export default function LoginPage(props) {
 		<Container maxWidth="sm">
 			<PageTitle>Log in to your account</PageTitle>
 
-			{invalidCreds && <Alert severity="error">Invalid credentials.</Alert>}
+			{showMessage && <Alert severity="error">{message}</Alert>}
+
 			<Box component="form" onSubmit={HandleLogin}>
 				<TextField
 					value={username}

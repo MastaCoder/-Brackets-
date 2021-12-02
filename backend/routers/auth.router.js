@@ -6,6 +6,7 @@ import {
 	authenticateUser,
 	changeUserInfo,
 	getLoggedInUserDetails,
+	getUserType,
 } from '../services/user.service.js';
 
 export const authRouter = Router();
@@ -28,13 +29,21 @@ authRouter.post('/login', async (req, res) => {
 	let username, password;
 	({ username, password } = req.body);
 
-	const user = await authenticateUser(username, password);
-
-	if (!user) {
-		res.status(400).send('No such user');
+	const id = await authenticateUser(username, password);
+	
+	if (id) {
+		const type = (await getUserType(id)).type;
+		if (type) {
+			req.session.currentUser = { _id: id };
+			res.status(200).send({
+				_id: id,
+				type: type,
+			});
+		} else {
+			res.status(500).send({ msg: "Internal server error. Please try again." });
+		}
 	} else {
-		req.session.currentUser = user;
-		res.status(200).send(user);
+		res.status(400).send({ msg: 'Invalid username or password. Please try again.' });
 	}
 });
 
