@@ -1,10 +1,10 @@
-import { User } from "../models/user.model";
+import { getUser } from "../services/user.service.js";
 
 
-export const authenticate = (req, res, next) => {
+export const authenticate = async (req, res, next) => {
   if (req.session.currentUser) {
     try {
-      const user = await User.findById(req.session.currentUser);
+      const user = await getUser(req.session.currentUser);
       if (!user) {
         throw Error();
       } else {
@@ -12,7 +12,7 @@ export const authenticate = (req, res, next) => {
         next();
       }
     } catch (error) {
-      res.status(401).send("Unauthorized");
+      res.status(401).send({ msg: "Unauthorized" });
     }
   }
 };
