@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/Auth.js';
 import { useHistory } from 'react-router';
 import styles from './Navbar.module.css';
+import axios from 'axios';
 
-export default function Navbar() {
+export default function Navbar({ setSessionUser }) {
 	const { user, signout } = useAuth();
 	const history = useHistory();
 
@@ -48,9 +49,17 @@ export default function Navbar() {
 							<Link
 								to="/"
 								className={styles.navLink}
-								onClick={() => signout(() => history.push('/'))}
+								onClick={() => {
+									setSessionUser(null);
+									signout(() => history.push('/'));
+								}}
 							>
-								<Button color="inherit">Logout</Button>
+								<Button
+									color="inherit"
+									onClick={() => axios.post('/api/auth/logout')}
+								>
+									Logout
+								</Button>
 							</Link>
 						</>
 					)}

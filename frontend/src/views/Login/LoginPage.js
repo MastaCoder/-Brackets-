@@ -15,16 +15,19 @@ export default function LoginPage(props) {
 
 	const HandleLogin = async (event) => {
 		event.preventDefault();
-
 		try {
 			setInvalidCreds(false);
-			const userType = (await axios.post('/api/auth/login', {
-				username: username,
-				password: password,
-			})).data;
-			console.log(userType);
-			auth.signin({ type: userType, id: 10 }, () => {
-				userType === 'user' ? history.push('/user') : history.push('/dashboard');
+			const user = (
+				await axios.post('/api/auth/login', {
+					username: username,
+					password: password,
+				})
+			).data;
+
+			auth.signin(user, () => {
+				user.type === 'user'
+					? history.push('/user')
+					: history.push('/dashboard');
 			});
 		} catch {
 			setInvalidCreds(true);
