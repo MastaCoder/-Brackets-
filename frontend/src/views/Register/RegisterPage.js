@@ -5,8 +5,8 @@ import PageTitle from "../../components/Layout/PageTitle";
 import axios from "axios"
 
 export default function RegisterPage(props) {
-    const [passwordMismatch, setPasswordMismatch] = useState(false);
-    const [usernameTaken, setUsernameTaken] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -16,23 +16,21 @@ export default function RegisterPage(props) {
 
     const handleRegistration = async (event) => {
         event.preventDefault();
-
         if (password !== passwordConfirm) {
-            setPasswordMismatch(true);
-            return;
+            setError(true);
+            setErrorMessage("Passwords do not match.")
         } else {
-            setPasswordMismatch(false);
-            
             try {
-                setUsernameTaken(false);
                 await axios.post("/api/auth/register", {
                     username: username,
                     email: email,
                     password: password
                 });
                 history.push("/login");
-            } catch {
-                setUsernameTaken(true);
+            } 
+            catch(err) {
+                setError(true);
+                setErrorMessage(err.response.data.msg);
             }
         }
     }
@@ -43,12 +41,10 @@ export default function RegisterPage(props) {
             Register for an account
         </PageTitle>
 
-        {passwordMismatch && (
-            <Alert severity="error">Passwords do not match.</Alert>
+        {error && (
+            <Alert severity="error">{errorMessage}</Alert>
         )}
-        {usernameTaken && (
-            <Alert severity="error">This username or email has already been taken.</Alert>
-        )}
+
         <Box component="form" onSubmit={handleRegistration}>
             <TextField
             margin="normal"

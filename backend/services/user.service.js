@@ -10,10 +10,13 @@ export async function registerUser(username, email, password) {
 	await user.save();
 }
 
-export async function usernameOrEmailTaken(username, email) {
-	const users = await User.find({
-		$or: [{ username: username }, { email: email }],
-	});
+export async function usernameTaken(username) {
+	const users = await User.find({ username: username });
+	return users.length !== 0;
+}
+
+export async function emailTaken(email) {
+	const users = await User.find({ email: email });
 	return users.length !== 0;
 }
 
