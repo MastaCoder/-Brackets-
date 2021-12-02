@@ -16,10 +16,10 @@ const baseAuthenticate = (req, res, next, userChecker) => {
   }
 };
 
-const authenticate = (req, res, next) => {
+export const authenticate = (req, res, next) => {
   baseAuthenticate(req, res, next, (user) => !user)
 };
 
-const authenticateAdmin = (req, res, next) => {
+export const authenticateAdmin = (req, res, next) => {
   baseAuthenticate(req, res, next, (user) => !user || user.type !== "admin")
 };
