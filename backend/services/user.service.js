@@ -31,7 +31,7 @@ export async function authenticateUser(username, password) {
 }
 
 export async function changeUserInfo(id, newUsername, newEmail, newPassword) {
-	const user = await User.findById(id);
+	const user = await getUser(id);
 	if (user) {
 		user.username = newUsername;
 		user.email = newEmail;
@@ -43,25 +43,6 @@ export async function changeUserInfo(id, newUsername, newEmail, newPassword) {
 	}
 }
 
-export async function getLoggedInUserDetails(id) {
-	const user = await User.findById(id);
-	if (user) {
-		return {
-			username: user.username,
-			email: user.email
-		}
-	} else {
-		return null;
-	}
-}
-
-export async function getUserType(id) {
-	const user = await User.findById(id);
-	if (user) {
-		return {
-			type: user.type
-		}
-	} else {
-		return null;
-	}
+export async function getUser(id) {
+	return await User.findById(id);
 }

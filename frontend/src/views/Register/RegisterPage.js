@@ -22,14 +22,14 @@ export default function RegisterPage() {
             setMessage("Passwords do not match.")
         } else {
             try {
-                await axios.post("/api/auth/register", {
+                const res = await axios.post("/api/auth/register", {
                     username: username,
                     email: email,
                     password: password
                 });
 
                 setMessageSeverity("success");
-                setMessage("Your account has been registered! Please login to proceed.");
+                setMessage(res.data.msg);
             } catch(err) {
                 setMessageSeverity("error");
                 setMessage(err.response.data.msg);

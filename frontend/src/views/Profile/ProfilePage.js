@@ -4,8 +4,9 @@ import { useEffect, useState } from "react"
 import PageTitle from "../../components/Layout/PageTitle";
 
 export default function ProfilePage() {
-  const [passwordMismatch, setPasswordMismatch] = useState(false);
-  const [usernameTaken, setUsernameTaken] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageSeverity, setMessageSeverity] = useState("");
 
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
@@ -22,22 +23,25 @@ export default function ProfilePage() {
 
   async function handleChangeInfo(event) {
     event.preventDefault();
-
-    if (newPassword === passwordConfirm) {
-      setPasswordMismatch(false);
-
+    setShowMessage(true);
+    if (newPassword !== passwordConfirm) {
+      setMessageSeverity("error");
+      setMessage("Passwords do not match.");
+    } 
+    else {
       try {
-        setUsernameTaken(false);
-        await axios.post("/api/auth/update", {
+        const res = await axios.post("/api/auth/update", {
             newUsername: newUsername,
             newEmail: newEmail,
             newPassword: newPassword
         });
-      } catch {
-        setUsernameTaken(true);
+
+        setMessageSeverity("success");
+        setMessage(res.data.msg);
+      } catch(err) {
+        setMessageSeverity("error");
+        setMessage(err.response.data.msg);
       }
-    } else {
-      setPasswordMismatch(true);
     }
   }
 
@@ -48,12 +52,9 @@ export default function ProfilePage() {
       </PageTitle>
 
       <Container maxWidth="sm">
-        { passwordMismatch && (
-          <Alert severity="error">Passwords do not match.</Alert>
-        )}
-        { usernameTaken && (
-          <Alert severity="error">This username or email has already been taken.</Alert>
-        )}
+
+        {showMessage && (<Alert severity={messageSeverity}>{message}</Alert>)}
+
         <Box component="form" onSubmit={handleChangeInfo}>
           <TextField
             fullWidth
