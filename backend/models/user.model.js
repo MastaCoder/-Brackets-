@@ -1,8 +1,6 @@
 import mongoose from "../db/mongoose.js";
 import validator from "validator"
 
-
-
 // User Schema (Add stuff to this!)
 const UserSchema = new mongoose.Schema({
   username: {

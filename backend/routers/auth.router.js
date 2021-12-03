@@ -22,8 +22,13 @@ authRouter.post('/register', async (req, res) => {
 	} else if (await emailTaken(email)) {
 		res.status(400).send({ msg: 'Email already exists!' });
 	} else {
-		await registerUser(username, email, password);
-		res.status(200).send({ msg: "Your account has been registered! Please login to proceed." });
+		const errMsg = await registerUser(username, email, password);
+		if (!errMsg) {
+			res.status(200).send({ msg: "Your account has been registered! Please login to proceed." });
+		} else {
+			console.log(errMsg);
+			res.status(400).send({ msg: errMsg });
+		}
 	}
 });
 
@@ -31,21 +36,17 @@ authRouter.post('/login', async (req, res) => {
 	let username, password;
 	({ username, password } = req.body);
 
-	const id = await authenticateUser(username, password);
+	let user, err;
+	({user, err} = await authenticateUser(username, password));
 	
-	if (id) {
-		const user = await getUser(id);
-		if (user) {
-			req.session.currentUser = { _id: id };
-			res.status(200).send({
-				_id: id,
-				type: user.type,
-			});
-		} else {
-			res.status(500).send({ msg: _500_message });
-		}
+	if (user) {
+		req.session.currentUser = { _id: user.id };
+		res.status(200).send({
+			_id: user._id,
+			type: user.type,
+		});
 	} else {
-		res.status(400).send({ msg: 'Invalid username or password. Please try again.' });
+		res.status(400).send({ msg: err });
 	}
 });
 
