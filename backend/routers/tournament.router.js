@@ -16,5 +16,5 @@ tournamentRouter.post("/tournaments", async (req, res) => {
 })
 
 tournamentRouter.patch("/tournaments/:tid", async (req, res) => {
-
+    
 })
