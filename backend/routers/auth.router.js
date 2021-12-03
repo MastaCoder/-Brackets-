@@ -72,7 +72,7 @@ authRouter.post('/logout', authenticate, async (req, res) => {
 		if (error) {
 			res.status(500).send({ msg: _500_message });
 		} else {
-			res.send('Session deleted!');
+			res.status(200).send();
 		}
 	});
 });
