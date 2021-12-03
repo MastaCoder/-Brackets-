@@ -6,7 +6,6 @@ import {
 	emailTaken,
 	authenticateUser,
 	changeUserInfo,
-	getUser,
 } from '../services/user.service.js';
 
 export const authRouter = Router();
@@ -17,55 +16,65 @@ authRouter.post('/register', async (req, res) => {
 	let username, email, password;
 	({ username, email, password } = req.body);
 
-	if (await usernameTaken(username)) {
-		res.status(400).send({ msg: 'Username already exists!' });
-	} else if (await emailTaken(email)) {
-		res.status(400).send({ msg: 'Email already exists!' });
-	} else {
-		const errMsg = await registerUser(username, email, password);
-		if (!errMsg) {
-			res.status(200).send({ msg: "Your account has been registered! Please login to proceed." });
+	try {
+		if (await usernameTaken(username)) {
+			res.status(400).send({ msg: 'Username already exists!' });
+		} else if (await emailTaken(email)) {
+			res.status(400).send({ msg: 'Email already exists!' });
 		} else {
-			console.log(errMsg);
-			res.status(400).send({ msg: errMsg });
+			const errMsg = await registerUser(username, email, password);
+			if (!errMsg) {
+				res.status(200).send({ msg: "Your account has been registered! Please login to proceed." });
+			} else {
+				console.log(errMsg);
+				res.status(400).send({ msg: errMsg });
+			}
 		}
+	} catch(err) {
+		res.status(500).send({ msg: _500_message });
 	}
+	
 });
 
 authRouter.post('/login', async (req, res) => {
 	let username, password;
 	({ username, password } = req.body);
 
-	let user, err;
-	({user, err} = await authenticateUser(username, password));
-	
-	if (user) {
-		req.session.currentUser = { _id: user.id };
-		res.status(200).send({
-			_id: user._id,
-			type: user.type,
-		});
-	} else {
-		res.status(400).send({ msg: err });
-	}
+	try {
+		let user, err;
+		({user, err} = await authenticateUser(username, password));
+		
+		if (user) {
+			req.session.currentUser = { _id: user.id };
+			res.status(200).send({
+				_id: user._id,
+				type: user.type,
+			});
+		} else {
+			res.status(400).send({ msg: err });
+		}
+	} catch(err) {
+		res.status(500).send({ msg: _500_message });
+	}	
 });
 
 authRouter.post('/update', authenticate, async (req, res) => {
 	let newUsername, newEmail, newPassword;
 	({ newUsername: newUsername, newEmail: newEmail, newPassword: newPassword } = req.body);
 
-	if (newUsername !== req.user.username && await usernameTaken(newUsername)) {
-		res.status(400).send({ msg: 'Username already exists!' });
-	} else if (newEmail !== req.user.email && await emailTaken(newEmail)) {
-		res.status(400).send({ msg: 'Email already exists!' });
-	} else {
-		const result = await changeUserInfo(req.session.currentUser._id, newUsername, newEmail, newPassword);
-		if (result) {
-			res.status(200).send({ msg: "Your details have been updated!" });
+	try {
+		if (newUsername !== req.user.username && await usernameTaken(newUsername)) {
+			res.status(400).send({ msg: 'Username already exists!' });
+		} else if (newEmail !== req.user.email && await emailTaken(newEmail)) {
+			res.status(400).send({ msg: 'Email already exists!' });
 		} else {
-			res.status(500).send({ msg: _500_message });
+			await changeUserInfo(req.session.currentUser._id, newUsername, newEmail, newPassword);
+			res.status(200).send({ msg: "Your details have been updated!" });
 		}
+	} catch(err) {
+		res.status(500).send({ msg: _500_message });
 	}
+	
 });
 
 authRouter.post('/logout', authenticate, async (req, res) => {

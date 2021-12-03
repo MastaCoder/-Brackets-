@@ -2,12 +2,11 @@ import { User } from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 
 export async function registerUser(username, email, password) {
-	const hash = bcrypt.hashSync(password, 10);
 	try {
 		const user = new User({
 			username: username,
 			email: email,
-			password: hash,
+			password: bcrypt.hashSync(password, 10),
 			type: 'user',
 		});
 		await user.save();
@@ -52,15 +51,10 @@ export async function authenticateUser(username, password) {
 
 export async function changeUserInfo(id, newUsername, newEmail, newPassword) {
 	const user = await getUser(id);
-	if (user) {
-		user.username = newUsername;
-		user.email = newEmail;
-		user.password = newPassword;
-		await user.save();
-		return true;
-	} else {
-		return false;
-	}
+	user.username = newUsername;
+	user.email = newEmail;
+	user.password = bcrypt.hashSync(newPassword, 10);
+	await user.save();
 }
 
 export async function getUser(id) {
