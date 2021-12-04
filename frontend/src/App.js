@@ -70,6 +70,8 @@ function App() {
 	}, [sessionUser]);
 
 	const handleSessionUser = () => {
+		// Need to do this check seperately to avoid redirection on page refresh
+		if (!sessionUser) return;
 		return sessionUser?.type === 'user' ? (
 			<Redirect to="/user" />
 		) : (
