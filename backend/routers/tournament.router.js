@@ -9,9 +9,9 @@ import { isMongoError, isValidId } from "../util";
 
 export const tournamentRouter = Router();
 
-tournamentRouter.get("/", authenticate, async (req, res) => {
+tournamentRouter.get("/:filter", authenticate, async (req, res) => {
   try {
-    const tournaments = await getTournaments(req.user);
+    const tournaments = await getTournaments(req.user, parseInt(req.params.filter));
     res.send({ tournaments });
   } catch (error) {
     if (isMongoError(error)) {
@@ -54,12 +54,6 @@ tournamentRouter.post("/", authenticate, async (req, res) => {
   }
 });
 
-tournamentRouter.patch("/:tid", authenticate, async (req, res) => {
-    
-});
+tournamentRouter.patch("/:tid", authenticate, async (req, res) => {});
 
-tournamentRouter.post("/:tid/addBracket", authenticate, async (req, res) => {
-    
-});
-
-
+tournamentRouter.post("/:tid/addBracket", authenticate, async (req, res) => {});

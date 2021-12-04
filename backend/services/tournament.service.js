@@ -17,8 +17,16 @@ function setUserInTournmanets(user, tournaments) {
   return tournaments;
 }
 
-export async function getTournaments(user) {
-  const tournaments = await Tournament.find();
+export async function getTournaments(user, filter) {
+  const filters = [-1, 0, 1];
+
+  if (!filters.includes(filter)) {
+    throw Error("Bad Request");
+  }
+
+  const tournaments = await Tournament.find(
+    filter !== -1 ? { status: filter } : {}
+  );
   return setUserInTournmanets(user, tournaments);
 }
 
@@ -28,18 +36,19 @@ export async function getTournamentById(user, id) {
 }
 
 export async function createTournament(req) {
-    const host = req.user.username;
-    const {name, description, public, maxMembers, maxTeamMembers, status} = req.body;
+  const host = req.user.username;
+  const { name, description, public, maxMembers, maxTeamMembers, status } =
+    req.body;
 
-    const tournament = new Tournament({
-        name,
-        description,
-        public,
-        maxMembers,
-        maxTeamMembers,
-        status,
-        host,
-    })
+  const tournament = new Tournament({
+    name,
+    description,
+    public,
+    maxMembers,
+    maxTeamMembers,
+    status,
+    host,
+  });
 
-    return await tournament.save();
+  return await tournament.save();
 }
