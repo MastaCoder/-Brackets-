@@ -14,8 +14,11 @@ export default function AdminDashboard() {
 
   const [numActiveUsers, setNumActiveUsers] = useState(0);
   const [numBannedUsers, setNumBannedUsers] = useState(0);
+  const [numTournaments, setNumTournaments] = useState(0);
+  const [numOngoingTournaments, setNumOngoingTournaments] = useState(0);
 
   useEffect(() => {
+    // Get num active and banned users
     (async function() {
       const res = await axios.get("/api/admin/platformusers", {});
       let active = 0;
@@ -25,6 +28,12 @@ export default function AdminDashboard() {
       });
       setNumActiveUsers(active);
       setNumBannedUsers(banned);
+    })();
+    // Get num active and all tournaments
+    (async function() {
+      const res = await axios.get("/api/admin/numtournaments", {});
+      setNumTournaments(res.data.open + res.data.ongoing + res.data.closed);
+      setNumOngoingTournaments(res.data.open);
     })();
   }, []);
 
@@ -36,8 +45,8 @@ export default function AdminDashboard() {
 			<Grid container spacing={2} justifyContent="center">
 				<AdminCounter title="Registered users" number={numActiveUsers} />
 				<AdminCounter title="Banned users" number={numBannedUsers} />
-				<AdminCounter title="All Events" number={data.tournaments.length} />
-				<AdminCounter title="Active Events" number={data.tournaments.filter((tournament) => tournament.status !== 2).length} />
+				<AdminCounter title="# Tournaments" number={numTournaments} />
+				<AdminCounter title="# Ongoing" number={numOngoingTournaments} />
 			</Grid>
 			<Box mt={0.75} mb={3}>
 				<Typography variant="caption" color="grey">

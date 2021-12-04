@@ -1,7 +1,7 @@
-import { Tournament } from "../models/tournament.model";
+import { Tournament } from "../models/tournament.model.js";
 
 function setUserInTournmanets(user, tournaments) {
-  const tournaments = tournaments.map((tournament) => {
+  return tournaments.map((tournament) => {
     for (team in tournament.teams) {
       if (tournament.teams[team].includes(user.username)) {
         tournament.userTeam = team;
@@ -13,8 +13,6 @@ function setUserInTournmanets(user, tournaments) {
       return tournament;
     }
   });
-
-  return tournaments;
 }
 
 export async function getTournaments(user, status) {
@@ -35,20 +33,23 @@ export async function getTournamentById(user, id) {
   return setUserInTournmanets(user, [tournament]);
 }
 
+export async function getNumTournaments() {
+  return {
+    open: (await Tournament.find({ status: 0 })).length,
+    ongoing: (await Tournament.find({ status: 1 })).length,
+    closed: (await Tournament.find({ status: 2 })).length,
+  };
+}
+
 export async function createTournament(req) {
-  const host = req.user.username;
-  const { name, description, public, maxMembers, maxTeamMembers, status } =
-    req.body;
-
   const tournament = new Tournament({
-    name,
-    description,
-    public,
-    maxMembers,
-    maxTeamMembers,
-    status,
-    host,
+    name: req.body.name,
+    description: req.body.description,
+    public: req.body.public,
+    maxMembers: req.body.maxMembers,
+    maxTeamMembers: req.body.maxTeamMembers,
+    status: req.body.status,
+    host: req.user.username,
   });
-
   return await tournament.save();
 }

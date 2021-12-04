@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { getAllUserAccess, setUserAccess } from '../services/user.service.js';
 import { authenticate } from '../middlewares/auth.middleware.js';
+import { getNumTournaments } from '../services/tournament.service.js';
+import { getAllUserAccess, setUserAccess } from '../services/user.service.js';
 
 export const adminRouter = Router();
 
@@ -20,5 +21,14 @@ adminRouter.post('/modifyuseraccess', authenticate, async (req, res) => {
 		res.send('User Access Modified!');
 	} catch (err) {
 		res.sendStatus(404);
+	}
+});
+
+adminRouter.get('/numtournaments', authenticate, async (req, res) => {
+  try {
+		const data = await getNumTournaments();
+		res.status(200).send(data);
+	} catch (err) {
+		res.status(500).send({ msg: "An unexpected error occured, please try again." });
 	}
 });
