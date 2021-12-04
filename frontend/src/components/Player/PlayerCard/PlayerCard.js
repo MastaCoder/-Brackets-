@@ -1,4 +1,4 @@
-import {Typography, Box, Avatar, Chip, Button, Paper} from '@mui/material';
+import { Typography, Box, Avatar, Chip, Button, Paper } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { makeStyles } from '@mui/styles';
 
@@ -47,11 +47,11 @@ const PlayerCard = ({ player, handlePlayerUpdate }) => {
 			<Box>
 				<Box>
 					<Typography variant="p" className={classes.playerName}>
-						{player.name}
+						{player.username}
 					</Typography>
 					<Chip
 						className={
-							player.isBanned
+							!player.platformAccess
 								? `${classes.status} ${classes.redStatus}`
 								: `${classes.status} ${classes.greenStatus}`
 						}
@@ -61,10 +61,10 @@ const PlayerCard = ({ player, handlePlayerUpdate }) => {
 				<Button
 					variant="contained"
 					className={classes.button}
-					onClick={() => handlePlayerUpdate(player.id)}
+					onClick={() => handlePlayerUpdate(player.email)}
 					disableElevation
 				>
-					{player.isBanned ? 'Revert Ban' : 'Ban Player'}
+					{!player.platformAccess ? 'Revert Ban' : 'Ban Player'}
 				</Button>
 			</Box>
 		</Paper>
