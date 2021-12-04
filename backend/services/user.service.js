@@ -44,7 +44,7 @@ export async function authenticateUser(username, password) {
 				  }
 				: {
 						user: null,
-						err: 'Account Banned! Contact an admin to review your ban.',
+						err: 'Your account has been banned. Please contact support for a review.',
 				  };
 		} else {
 			return {

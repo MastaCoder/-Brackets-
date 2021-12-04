@@ -5,10 +5,28 @@ import { useContext } from 'react';
 import PageTitle from '../../../components/Layout/PageTitle';
 import AdminCounter from '../../../components/AdminCounter/AdminCounter';
 import PageSubTitle from '../../../components/Layout/PageSubTitle';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function AdminDashboard() {
 	const [data] = useContext(DataContext);
 	const history = useHistory();
+
+  const [numActiveUsers, setNumActiveUsers] = useState(0);
+  const [numBannedUsers, setNumBannedUsers] = useState(0);
+
+  useEffect(() => {
+    (async function() {
+      const res = await axios.get("/api/admin/platformusers", {});
+      let active = 0;
+      let banned = 0;
+      res.data.forEach(user => {
+        user.platformAccess ? active += 1 : banned += 1;
+      });
+      setNumActiveUsers(active);
+      setNumBannedUsers(banned);
+    })();
+  }, []);
 
 	return (
 		<Container maxWidth="md">
@@ -16,19 +34,10 @@ export default function AdminDashboard() {
 
 			<PageSubTitle>General Stats</PageSubTitle>
 			<Grid container spacing={2} justifyContent="center">
-				<AdminCounter title="Registered users" number={data.players.length} />
-				<AdminCounter
-					title="Banned users"
-					number={data.players.filter((player) => player.isBanned).length}
-				/>
+				<AdminCounter title="Registered users" number={numActiveUsers} />
+				<AdminCounter title="Banned users" number={numBannedUsers} />
 				<AdminCounter title="All Events" number={data.tournaments.length} />
-				<AdminCounter
-					title="Active Events"
-					number={
-						data.tournaments.filter((tournament) => tournament.status !== 2)
-							.length
-					}
-				/>
+				<AdminCounter title="Active Events" number={data.tournaments.filter((tournament) => tournament.status !== 2).length} />
 			</Grid>
 			<Box mt={0.75} mb={3}>
 				<Typography variant="caption" color="grey">
