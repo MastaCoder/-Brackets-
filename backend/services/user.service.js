@@ -1,13 +1,18 @@
 import { User } from '../models/user.model.js';
+import bcrypt from 'bcrypt';
 
 export async function registerUser(username, email, password) {
-	const user = new User({
-		username: username,
-		email: email,
-		password: password,
-		type: 'user',
-	});
-	await user.save();
+	try {
+		const user = new User({
+			username: username,
+			email: email,
+			password: bcrypt.hashSync(password, 10),
+			type: 'user',
+		});
+		await user.save();
+	} catch(err) {
+		return err._message;
+	}
 }
 
 export async function usernameTaken(username) {
@@ -21,26 +26,35 @@ export async function emailTaken(email) {
 }
 
 export async function authenticateUser(username, password) {
-	const users = await User.find({ username: username, password: password });
-
+	const users = await User.find({ username: username });
+	
 	if (users.length === 0) {
-		return false;
+		return {
+			user: null,
+			err: "This username does not exist.",
+		};
 	} else {
-		return users[0]._id;
+		const user = users[0];
+		if (bcrypt.compareSync(password, user.password)) {
+			return {
+				user: user,
+				err: null
+			};
+		} else {
+			return {
+				user: null,
+				err: "Invalid password.",
+			};
+		}
 	}
 }
 
 export async function changeUserInfo(id, newUsername, newEmail, newPassword) {
 	const user = await getUser(id);
-	if (user) {
-		user.username = newUsername;
-		user.email = newEmail;
-		user.password = newPassword;
-		await user.save();
-		return true;
-	} else {
-		return false;
-	}
+	user.username = newUsername;
+	user.email = newEmail;
+	user.password = bcrypt.hashSync(newPassword, 10);
+	await user.save();
 }
 
 export async function getUser(id) {

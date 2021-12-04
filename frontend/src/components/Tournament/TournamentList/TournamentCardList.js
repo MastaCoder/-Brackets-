@@ -23,6 +23,7 @@ export default function TournamentCardList(props) {
               maxMembers={e.maxMembers}
               teamsCount={Object.keys(e.teams).length}
               status={e.status}
+              host={e.host}
             />
           </Grid>
         ))
