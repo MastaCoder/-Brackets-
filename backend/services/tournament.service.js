@@ -17,15 +17,15 @@ function setUserInTournmanets(user, tournaments) {
   return tournaments;
 }
 
-export async function getTournaments(user, filter) {
-  const filters = [-1, 0, 1];
+export async function getTournaments(user, status) {
+  const statuses = [-1, 0, 1, 2];
 
-  if (!filters.includes(filter)) {
+  if (!statuses.includes(status)) {
     throw Error("Bad Request");
   }
 
   const tournaments = await Tournament.find(
-    filter !== -1 ? { status: filter } : {}
+    status !== -1 ? { status } : {}
   );
   return setUserInTournmanets(user, tournaments);
 }

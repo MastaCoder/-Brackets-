@@ -9,9 +9,9 @@ import { isMongoError, isValidId } from "../util";
 
 export const tournamentRouter = Router();
 
-tournamentRouter.get("/:filter", authenticate, async (req, res) => {
+tournamentRouter.get("/:status", authenticate, async (req, res) => {
   try {
-    const tournaments = await getTournaments(req.user, parseInt(req.params.filter));
+    const tournaments = await getTournaments(req.user, parseInt(req.params.status));
     res.send({ tournaments });
   } catch (error) {
     if (isMongoError(error)) {
