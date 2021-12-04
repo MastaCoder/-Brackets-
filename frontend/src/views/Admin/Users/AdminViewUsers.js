@@ -1,36 +1,49 @@
 import { Container } from '@mui/material';
-import { useEffect, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import PageTitle from '../../../components/Layout/PageTitle';
 import PlayerList from '../../../components/Player/PlayerList/PlayerList';
-import DataContext from '../../../contexts/dataContext';
+import axios from 'axios';
 
-const AdminViewUsers = ({ displayUserType }) => {
-	const [data, setData] = useContext(DataContext);
+const AdminViewUsers = () => {
+	const [platformUsers, setPlatformUsers] = useState([]);
+
 	// We will make an API call to get the users
-	// Currently doing it manually
-	useEffect(() => {
-		if (displayUserType === 'banned') {
-			const bannedPlayers = data.players.filter((player) => player.isBanned);
-			setData({ ...data, players: bannedPlayers });
-		}
-	}, [displayUserType, data, setData]); // might wanna get rid of this later
+	const handlePlayerUpdate = async (email) => {
+		const userToModify = platformUsers.filter(
+			(user) => user.email === email
+		)[0];
 
-	const handlePlayerUpdate = (id) => {
-		const updatedPlayers = data.players.map((player) => {
-			if (player.id === id) {
-				return { ...player, isBanned: !player.isBanned };
-			}
-			return player;
-		});
-		setData({ ...data, players: updatedPlayers });
+		try {
+			// First modify the user's platform access
+			await axios.post('/api/admin/modifyuseraccess', {
+				email: userToModify.email,
+				platformAccess: !userToModify.platformAccess,
+			});
+			// Then update the current state
+			await axios
+				.get('/api/admin/platformusers')
+				.then((res) => setPlatformUsers(res.data));
+		} catch (err) {
+			console.log(err);
+		}
 	};
+
+	// Issue the API call to get all platform users
+	useEffect(() => {
+		axios
+			.get('/api/admin/platformusers')
+			.then((res) => setPlatformUsers(res.data));
+	}, []);
 
 	return (
 		<Container component="main">
 			<PageTitle variant="h4" sx={{ mb: 5, fontWeight: 'bold' }}>
 				Manage Users
 			</PageTitle>
-			<PlayerList players={data.players} handlePlayerUpdate={handlePlayerUpdate} />
+			<PlayerList
+				players={platformUsers}
+				handlePlayerUpdate={handlePlayerUpdate}
+			/>
 		</Container>
 	);
 };

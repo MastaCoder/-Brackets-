@@ -10,7 +10,7 @@ export default function LoginPage() {
 	const history = useHistory();
 
 	const [showMessage, setShowMessage] = useState(false);
-    const [message, setMessage] = useState("");
+	const [message, setMessage] = useState('');
 
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -24,14 +24,13 @@ export default function LoginPage() {
 					password: password,
 				})
 			).data;
-
-			auth.signin(user._id, () => {
+			// Need both id and type for the user for rendering purposes
+			auth.signin(user, () => {
 				user.type === 'user'
 					? history.push('/user')
 					: history.push('/dashboard');
 			});
-
-		} catch(err) {
+		} catch (err) {
 			setShowMessage(true);
 			setMessage(err.response.data.msg);
 		}
