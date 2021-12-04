@@ -13,8 +13,7 @@ export const authRouter = Router();
 const _500_message = "An unexpected error occured, please try again.";
 
 authRouter.post('/register', async (req, res) => {
-	let username, email, password;
-	({ username, email, password } = req.body);
+	const { username, email, password } = req.body;
 
 	try {
 		if (await usernameTaken(username)) {
@@ -37,8 +36,7 @@ authRouter.post('/register', async (req, res) => {
 });
 
 authRouter.post('/login', async (req, res) => {
-	let username, password;
-	({ username, password } = req.body);
+	const { username, password } = req.body;
 
 	try {
 		let user, err;
@@ -59,8 +57,7 @@ authRouter.post('/login', async (req, res) => {
 });
 
 authRouter.post('/update', authenticate, async (req, res) => {
-	let newUsername, newEmail, newPassword;
-	({ newUsername: newUsername, newEmail: newEmail, newPassword: newPassword } = req.body);
+	const { newUsername: newUsername, newEmail: newEmail, newPassword: newPassword } = req.body;
 
 	try {
 		if (newUsername !== req.user.username && await usernameTaken(newUsername)) {
