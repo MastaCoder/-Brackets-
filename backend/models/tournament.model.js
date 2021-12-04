@@ -57,6 +57,7 @@ const TournamentSchema = new mongoose.Schema({
   brackets: {
     type: [[[String]]],
     required: false,
+    default: []
   },
 });
 
