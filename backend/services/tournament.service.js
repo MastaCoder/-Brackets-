@@ -1,36 +1,48 @@
 import { Tournament } from "../models/tournament.model.js";
 
-function setUserInTournmanets(user, tournaments) {
+function setUserInTournaments(user, tournaments) {
   return tournaments.map((tournament) => {
-    for (team in tournament.teams) {
-      if (tournament.teams[team].includes(user.username)) {
-        tournament.userTeam = team;
+    for (const [teamName, team] of tournament.teams.entries()) {
+      if (team.includes(user.username))
+        tournament.userTeam = teamName;
         return tournament;
-      }
-    }
-
-    if ((!tournament.public && user.type === "admin") || tournament.public) {
-      return tournament;
     }
   });
 }
 
-export async function getTournaments(user, status) {
+async function getTournamentList(status) {
   const statuses = [-1, 0, 1, 2];
 
   if (!statuses.includes(status)) {
-    throw Error("Bad Request");
+    throw Error("Invalid status type");
   }
 
-  const tournaments = await Tournament.find(
+  return await Tournament.find(
     status !== -1 ? { status } : {}
   );
-  return setUserInTournmanets(user, tournaments);
+}
+
+export async function getAttendingTournaments(user, status) {
+  return setUserInTournaments(user, await getTournamentList(status));
+}
+
+export async function getHostingTournaments(user, status) {
+  const tournaments = await getTournamentList(status);
+  return tournaments.filter((e) => e.host === user.username);
+}
+
+export async function getTournaments(status) {
+  return await getTournamentList(status);
+}
+
+export async function getPublicTournaments(status) {
+  const tournaments = getTournamentList(status);
+  return tournaments.filter((e) => !e.members.includes(e.username));
 }
 
 export async function getTournamentById(user, id) {
   const tournament = Tournament.findById(id);
-  return setUserInTournmanets(user, [tournament]);
+  return setUserInTournaments(user, [tournament]);
 }
 
 export async function getNumTournaments() {

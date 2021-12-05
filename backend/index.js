@@ -6,6 +6,7 @@ import { authRouter } from './routers/auth.router.js';
 import { sessionRouter } from './routers/session.router.js';
 import { adminRouter } from './routers/admin.router.js';
 import { checkMongooseConnection } from './middlewares/connection.middleware.js';
+import { tournamentRouter } from './routers/tournament.router.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -30,6 +31,7 @@ app.use(checkMongooseConnection);
 app.use('/api/session', sessionRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/tournaments', tournamentRouter);
 
 app.listen(PORT, () => {
 	console.log(`App Listening on PORT: ${PORT}`);

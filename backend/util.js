@@ -1,4 +1,5 @@
-import { ObjectId } from "mongoose";
+import pkg from "mongoose";
+const { ObjectID } = pkg;
 
 export function isMongoError(error) {
     return typeof error === 'object' && error !== null && error.name === "MongoNetworkError"

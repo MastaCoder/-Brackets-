@@ -5,6 +5,7 @@ import PageSubTitle from "../../../components/Layout/PageSubTitle";
 import TournamentCardList from "../../../components/Tournament/TournamentList/TournamentCardList";
 import {useContext, useEffect, useState} from "react";
 import DataContext from "../../../contexts/dataContext";
+import axios from "axios";
 
 export default function UserDashboardPage() {
   const [attendingEvents, setAttendingEvents] = useState([]);
@@ -12,6 +13,12 @@ export default function UserDashboardPage() {
 
   const history = useHistory();
   const [data] = useContext(DataContext);
+
+  useEffect(() => {
+    axios
+      .get('/api/tournaments/list/attending/0')
+      .then((res) => console.log("fu", res.data));
+  }, []);
 
   // This will be an API call later
   useEffect(() => {

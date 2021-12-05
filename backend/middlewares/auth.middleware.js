@@ -14,5 +14,7 @@ export const authenticate = async (req, res, next) => {
     } catch (error) {
       res.status(401).send({ msg: "Unauthorized" });
     }
+  } else {
+    res.status(401).send({ msg: "Unauthorized" });
   }
 };

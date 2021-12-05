@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticate } from '../middlewares/auth.middleware.js';
-import { getNumTournaments } from '../services/tournament.service.js';
+import { getNumTournaments, getTournaments } from '../services/tournament.service.js';
 import { getAllUserAccess, setUserAccess } from '../services/user.service.js';
 import { getUser } from '../services/user.service.js';
 import { addLog, getAllLogs } from '../services/logger.service.js';
@@ -50,5 +50,13 @@ adminRouter.get('/logs', authenticate, async (req, res) => {
 		res.send(logs);
 	} catch (err) {
 		res.sendStatus(500);
+	}
+});
+
+adminRouter.get("/listtournaments/:status", authenticate, async (req, res) => {
+	try {
+		res.send(await getTournaments(status));
+	} catch (error) {
+		res.sendStatus(500); 
 	}
 });

@@ -1,4 +1,5 @@
 import {
+	Alert,
 	Box,
 	Button,
 	Checkbox,
@@ -7,13 +8,13 @@ import {
 	TextField,
 } from '@mui/material';
 import PageTitle from '../../../components/Layout/PageTitle';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router';
-import DataContext from '../../../contexts/dataContext';
+import axios from "axios";
 
 export default function OrganizerCreatePage() {
 	const history = useHistory();
-	const [data, setData] = useContext(DataContext);
+	const [message, setMessage] = useState(null);
 
 	const [formData, setFormData] = useState({
 		name: '',
@@ -21,7 +22,6 @@ export default function OrganizerCreatePage() {
 		maxMembers: 0,
 		maxTeamSize: 0,
 		public: true,
-		host: '',
 	});
 
 	const onPublicChange = (v) => {
@@ -33,33 +33,30 @@ export default function OrganizerCreatePage() {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setMessage(null);
 
-		const tournaments = [...data.tournaments];
+		try {
+			await axios.post('/api/tournaments', {
+				name: formData.name,
+				description: formData.description,
+				public: formData.public,
+				maxMembers: formData.maxMembers,
+				maxTeamMembers: formData.maxTeamSize
+			});
 
-		tournaments.push({
-			id: tournaments.length + 1,
-			status: 0,
-			name: formData.name,
-			description: formData.description,
-			maxMembers: parseInt(formData.maxMembers),
-			maxTeams: parseInt(formData.maxTeamSize),
-			public: formData.public,
-			members: [],
-			teams: {},
-			host: 'user',
-			userTeam: null
-		});
-		console.log(tournaments);
-		setData({ ...data, tournaments: tournaments });
-		console.log(data);
-		history.push('/user');
+			history.push('/user');
+		} catch (err) {
+			setMessage(err.response.data.msg);
+		}
 	};
 
 	return (
 		<Container maxWidth="md">
 			<PageTitle>Create an event</PageTitle>
+
+			{message !== null && <Alert severity="error">{message}</Alert>}
 
 			<Box component="form" onSubmit={handleSubmit}>
 				<TextField
