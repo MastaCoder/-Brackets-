@@ -55,7 +55,7 @@ adminRouter.get('/logs', authenticate, async (req, res) => {
 
 adminRouter.get("/listtournaments/:status", authenticate, async (req, res) => {
 	try {
-		res.send(await getTournaments(status));
+		res.send(await getTournaments(req.params.status));
 	} catch (error) {
 		res.sendStatus(500); 
 	}
