@@ -8,6 +8,7 @@ import axios from 'axios';
 export default function Navbar({ setSessionUser }) {
 	const { user, signout } = useAuth();
 	const history = useHistory();
+	console.log(user);
 
 	return (
 		<Box flexGrow={1}>

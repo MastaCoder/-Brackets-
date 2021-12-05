@@ -1,7 +1,5 @@
 import { Container, Box, Button, Typography, Grid } from '@mui/material';
 import { useHistory } from 'react-router';
-import DataContext from '../../../contexts/dataContext';
-import { useContext } from 'react';
 import PageTitle from '../../../components/Layout/PageTitle';
 import AdminCounter from '../../../components/AdminCounter/AdminCounter';
 import PageSubTitle from '../../../components/Layout/PageSubTitle';
@@ -9,33 +7,32 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function AdminDashboard() {
-	const [data] = useContext(DataContext);
 	const history = useHistory();
 
-  const [numActiveUsers, setNumActiveUsers] = useState(0);
-  const [numBannedUsers, setNumBannedUsers] = useState(0);
-  const [numTournaments, setNumTournaments] = useState(0);
-  const [numOngoingTournaments, setNumOngoingTournaments] = useState(0);
+	const [numActiveUsers, setNumActiveUsers] = useState(0);
+	const [numBannedUsers, setNumBannedUsers] = useState(0);
+	const [numTournaments, setNumTournaments] = useState(0);
+	const [numOngoingTournaments, setNumOngoingTournaments] = useState(0);
 
-  useEffect(() => {
-    // Get num active and banned users
-    (async function() {
-      const res = await axios.get("/api/admin/platformusers", {});
-      let active = 0;
-      let banned = 0;
-      res.data.forEach(user => {
-        user.platformAccess ? active += 1 : banned += 1;
-      });
-      setNumActiveUsers(active);
-      setNumBannedUsers(banned);
-    })();
-    // Get num active and all tournaments
-    (async function() {
-      const res = await axios.get("/api/admin/numtournaments", {});
-      setNumTournaments(res.data.open + res.data.ongoing + res.data.closed);
-      setNumOngoingTournaments(res.data.open);
-    })();
-  }, []);
+	useEffect(() => {
+		// Get num active and banned users
+		(async function () {
+			const res = await axios.get('/api/admin/platformusers', {});
+			let active = 0;
+			let banned = 0;
+			res.data.forEach((user) => {
+				user.platformAccess ? (active += 1) : (banned += 1);
+			});
+			setNumActiveUsers(active);
+			setNumBannedUsers(banned);
+		})();
+		// Get num active and all tournaments
+		(async function () {
+			const res = await axios.get('/api/admin/numtournaments', {});
+			setNumTournaments(res.data.open + res.data.ongoing + res.data.closed);
+			setNumOngoingTournaments(res.data.open);
+		})();
+	}, []);
 
 	return (
 		<Container maxWidth="md">

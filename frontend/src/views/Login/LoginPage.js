@@ -24,6 +24,7 @@ export default function LoginPage() {
 					password: password,
 				})
 			).data;
+			console.log(user);
 			// Need both id and type for the user for rendering purposes
 			auth.signin(user, () => {
 				user.type === 'user'

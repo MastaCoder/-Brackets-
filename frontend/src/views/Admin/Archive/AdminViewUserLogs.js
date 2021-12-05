@@ -1,31 +1,29 @@
-import { Container } from "@mui/material";
-import { useState } from "react";
-import PaginatedTable from "../../../components/Table/PaginatedTable";
-
-const userLogs = [
-  {
-    user: "dannyboy18",
-    action: "Tournament Creation",
-    date: Date().toLocaleString(),
-  },
-  {
-    user: "dannyboy18",
-    action: "Tournament Join",
-    date: Date().toLocaleString(),
-  },
-  {
-    user: "dannyboy18",
-    action: "Profile Update",
-    date: Date().toLocaleString(),
-  },
-];
+import { Container } from '@mui/material';
+import { useEffect, useState } from 'react';
+import PaginatedTable from '../../../components/Table/PaginatedTable';
+import axios from 'axios';
 
 export default function AdminViewUserLogs() {
-  const [logs] = useState(userLogs);
+	const [logs, setLogs] = useState([]);
 
-  return (
-    <Container component="main">
-      <PaginatedTable columns={["User", "Action", "TimeStamp"]} rows={logs} />
-    </Container>
-  );
+	useEffect(() => {
+		axios.get('/api/admin/logs').then((res) => {
+			const mappedData = res.data.map((log) => {
+				return {
+					username: log.username,
+					action: log.action,
+					timestamp: log.timestamp,
+				};
+			});
+
+			mappedData.sort((a, b) => new Date(a) < new Date(b));
+			setLogs(mappedData);
+		});
+	}, []);
+
+	return (
+		<Container component="main">
+			<PaginatedTable columns={['User', 'Action', 'TimeStamp']} rows={logs} />
+		</Container>
+	);
 }

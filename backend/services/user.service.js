@@ -69,14 +69,15 @@ export async function getUser(id) {
 
 export async function getAllUserAccess() {
 	const users = await User.find({});
-	const filteredUsers = users.map((user) => {
+	const mappedUsers = users.map((user) => {
 		return {
+			_id: user._id,
 			username: user.username,
 			email: user.email,
 			platformAccess: user.platformAccess,
 		};
 	});
-	return filteredUsers;
+	return mappedUsers;
 }
 
 export async function setUserAccess(email, platformAccess) {
