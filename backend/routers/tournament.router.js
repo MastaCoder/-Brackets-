@@ -94,7 +94,7 @@ tournamentRouter.post("/update/kick/:tid", checkUserLoggedIn, async (req, res) =
   }
 });
 
-tournamentRouter.post("/update/remove/:tid", authenticate, async (req, res) => {
+tournamentRouter.post("/update/remove/:tid", checkUserLoggedIn, async (req, res) => {
   try {
     res.send({tournament: await removeUserFromTournament(req, req.body.userToRemove)})
   } catch (error) {
