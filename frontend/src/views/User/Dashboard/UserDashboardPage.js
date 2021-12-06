@@ -8,8 +8,8 @@ import DataContext from "../../../contexts/dataContext";
 import axios from "axios";
 
 export default function UserDashboardPage() {
-  const [attendingEvents, setAttendingEvents] = useState([]);
-  const [hostingEvents, setHostingEvents] = useState([]);
+  const [attendingEvents, setAttendingEvents] = useState(null);
+  const [hostingEvents, setHostingEvents] = useState(null);
 
   const history = useHistory();
   const [data] = useContext(DataContext);
@@ -22,17 +22,11 @@ export default function UserDashboardPage() {
   useEffect(() => {
     axios
       .get('/api/tournaments/list/attending/0,1')
-      .then((res) => {
-        console.log(res.data);
-        setAttendingEvents(res.data.tournaments);
-      });
+      .then((res) => setAttendingEvents(res.data.tournaments));
 
     axios
       .get('/api/tournaments/list/hosting/0,1')
-      .then((res) => {
-        console.log(res.data);
-        setHostingEvents(res.data.tournaments);
-      });
+      .then((res) => setHostingEvents(res.data.tournaments));
   }, [data]);
 
   return (
