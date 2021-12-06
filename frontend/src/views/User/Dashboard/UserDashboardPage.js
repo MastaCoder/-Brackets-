@@ -3,8 +3,7 @@ import { useHistory } from "react-router";
 import PageTitle from "../../../components/Layout/PageTitle";
 import PageSubTitle from "../../../components/Layout/PageSubTitle";
 import TournamentCardList from "../../../components/Tournament/TournamentList/TournamentCardList";
-import {useContext, useEffect, useState} from "react";
-import DataContext from "../../../contexts/dataContext";
+import {useEffect, useState} from "react";
 import axios from "axios";
 
 export default function UserDashboardPage() {

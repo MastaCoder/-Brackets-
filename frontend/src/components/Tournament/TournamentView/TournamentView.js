@@ -18,6 +18,19 @@ export default function TournamentView(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  if (props.tournament === null) {
+    return (
+      <>
+        <PageTitle>
+          Event not found!
+        </PageTitle>
+        <Typography variant="body1" textAlign="center">
+          Make sure you're visiting the correct link.
+        </Typography>
+      </>
+    );
+  }
+
   // const handleStartTournamentClk = () => {
   //   const tournaments = [...data.tournaments];
   //   tournaments[props.tournament.id - 1].status = 1;

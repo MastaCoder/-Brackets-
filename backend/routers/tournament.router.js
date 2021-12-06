@@ -7,7 +7,7 @@ import {
   getTournamentById,
   joinTournament
 } from "../services/tournament.service.js";
-import { isMongoError, isValidId } from "../util.js";
+import { isMongoError } from "../util.js";
 
 export const tournamentRouter = Router();
 
@@ -16,6 +16,7 @@ tournamentRouter.post("/", authenticate, async (req, res) => {
     await createTournament(req);
     res.send(req.body);
   } catch (error) {
+    console.log(error);
     if (isMongoError(error)) {
       res.status(500).send({ msg: "Internal Server Error" });
     } else {
@@ -28,6 +29,7 @@ tournamentRouter.get("/list/:which/:status", authenticate, async (req, res) => {
   try {
     let tournaments;
     let split_status = req.params.status.split(",");
+
     switch (req.params.which) {
       case "attending":
         tournaments = await getAttendingTournaments(req.user, split_status);
@@ -76,9 +78,7 @@ tournamentRouter.get("/details/:tid", authenticate, async (req, res) => {
   const id = req.params.tid;
 
   try {
-    console.log(id);
     const tournament = await getTournamentById(req.user, id);
-    console.log(tournament);
     if (!tournament)
       res.status(404).send({ msg: "Requested Tournament Not Found" });
     else

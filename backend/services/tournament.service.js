@@ -60,12 +60,14 @@ export async function getPublicTournaments(status) {
 
 export async function getTournamentById(user, id) {
   const tournament = await Tournament.findById(id);
+  tournament.userTeam = null;
+
   for (const [teamName, team] of tournament.teams.entries()) {
     if (team.includes(user.username))
       tournament.userTeam = teamName;
     break;
   }
-
+    
   return tournament;
 }
 
@@ -84,9 +86,10 @@ export async function createTournament(req) {
     public: req.body.public,
     maxMembers: req.body.maxMembers,
     maxTeamMembers: req.body.maxTeamMembers,
-    status: req.body.status,
+    status: 0,
     host: req.user.username,
   });
+  
   return await tournament.save();
 }
 
