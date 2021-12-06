@@ -1,17 +1,14 @@
 import { Tournament } from "../models/tournament.model.js";
 
-function setUserInTournaments(user, tournaments) {
-  return tournaments.filter((tournament) => {
-    for (const [teamName, team] of tournament.teams.entries()) {
-      if (team.includes(user.username)) {
-        tournament.userTeam = teamName;
-        console.log(tournament);
-        return true;
-      }
-
-      return false;
+function setUserInTournament(user, tournament) {
+  for (const [teamName, team] of tournament.teams.entries()) {
+    if (team.includes(user.username)) {
+      tournament.userTeam = teamName;
+      return true;
     }
-  });
+
+    return false;
+  }
 }
 
 async function getTournamentList(status) {
@@ -35,10 +32,16 @@ async function getTournamentList(status) {
 }
 
 export async function getAttendingTournaments(user, status) {
-  return setUserInTournaments(
-    user,
-    (await getTournamentList(status)).filter(e => e.members.includes(user.username))
-  );
+  const tournaments = (await getTournamentList(status)).filter(e => e.members.includes(user.username));
+
+  return tournaments.map((tournament) => {
+    for (const [teamName, team] of tournament.teams.entries()) {
+      if (team.includes(user.username))
+        tournament.userTeam = teamName;
+
+      return tournament;
+    }
+  });
 }
 
 export async function getHostingTournaments(user, status) {
@@ -56,8 +59,14 @@ export async function getPublicTournaments(status) {
 }
 
 export async function getTournamentById(user, id) {
-  const tournament = Tournament.findById(id);
-  return setUserInTournaments(user, [tournament]);
+  const tournament = await Tournament.findById(id);
+  for (const [teamName, team] of tournament.teams.entries()) {
+    if (team.includes(user.username))
+      tournament.userTeam = teamName;
+    break;
+  }
+
+  return tournament;
 }
 
 export async function getNumTournaments() {

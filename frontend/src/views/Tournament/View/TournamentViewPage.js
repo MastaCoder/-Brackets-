@@ -1,27 +1,35 @@
 import TournamentView from "../../../components/Tournament/TournamentView/TournamentView";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import DataContext from "../../../contexts/dataContext";
-import PageTitle from "../../../components/Layout/PageTitle";
-import {Typography} from "@mui/material";
+import {Box, CircularProgress} from "@mui/material";
+import axios from "axios";
 
 export default function TournamentViewPage(props) {
+  const [tournament, setTournament] = useState(false);
+
   const [data, setData] = useContext(DataContext);
   const index = parseInt(props.match.params.id) - 1;
 
-  // Here would be some sort of API middleman, but for phase 1
-  // we're just hardcoding in events
-  if (index > data.tournaments.length) {
-    return (
-      <>
-        <PageTitle>
-          Event not found!
-        </PageTitle>
-        <Typography variant="body1" textAlign="center">
-          Make sure you're visiting the correct link.
-        </Typography>
-      </>
-    );
-  }
+  useEffect(() => {
+    axios
+      .get(`/api/tournaments/details/${props.match.params.id}`)
+      .then((res) => console.log(res.data));
+
+    // Here would be some sort of API middleman, but for phase 1
+    // we're just hardcoding in events
+    // if (tournament === null) {
+    //   return (
+    //     <>
+    //       <PageTitle>
+    //         Event not found!
+    //       </PageTitle>
+    //       <Typography variant="body1" textAlign="center">
+    //         Make sure you're visiting the correct link.
+    //       </Typography>
+    //     </>
+    //   );
+    // }
+  }, []);
 
   // kick a user, to be replaced with an API call in the future
   const kickUser = (userName) => {
@@ -73,11 +81,19 @@ export default function TournamentViewPage(props) {
   }
 
   return (
-    <TournamentView
-      tournament={data.tournaments[index]}
-      onKickUser={kickUser}
-      onKickFromTeam={onKickFromTeam}
-      onTeamNameUpdate={onNameUpdate}
-    />
+    <>
+      {tournament !== false ? (
+        <TournamentView
+          tournament={data.tournaments[index]}
+          onKickUser={kickUser}
+          onKickFromTeam={onKickFromTeam}
+          onTeamNameUpdate={onNameUpdate}
+        />
+      ) : (
+        <Box textAlign="center" mt={3}>
+          <CircularProgress size={50} />
+        </Box>
+      )}
+    </>
   );
 }
