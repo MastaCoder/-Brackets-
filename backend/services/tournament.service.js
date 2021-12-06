@@ -1,4 +1,7 @@
+import mongoose from "mongoose";
+
 import { Tournament } from "../models/tournament.model.js";
+import { generateRandomGroupName, throwCustomError } from "../util.js";
 
 function setUserInTournaments(user, tournaments) {
   return tournaments.filter((tournament) => {
@@ -17,8 +20,7 @@ function setUserInTournaments(user, tournaments) {
 async function getTournamentList(status) {
   const statuses = [0, 1, 2];
 
-  if (status.includes(-1))
-    return await Tournament.find();
+  if (status.includes(-1)) return await Tournament.find();
 
   let parsedStatus = status.map((e) => {
     e = parseInt(e);
@@ -29,15 +31,15 @@ async function getTournamentList(status) {
     return { status: e };
   });
 
-  return await Tournament.find(
-    { $or: parsedStatus }
-  );
+  return await Tournament.find({ $or: parsedStatus });
 }
 
 export async function getAttendingTournaments(user, status) {
   return setUserInTournaments(
     user,
-    (await getTournamentList(status)).filter(e => e.members.includes(user.username))
+    (await getTournamentList(status)).filter((e) =>
+      e.members.includes(user.username)
+    )
   );
 }
 
@@ -78,5 +80,22 @@ export async function createTournament(req) {
     status: req.body.status,
     host: req.user.username,
   });
+  return await tournament.save();
+}
+
+export async function joinTournament(user, tid) {
+  const groupName = `${generateRandomGroupName()}-${user._id}`;
+
+  if (!mongoose.ObjectId.isValid(tid)) {
+    throwCustomError("badId", "Invalid Tournament Id");
+  }
+
+  const tournament = await Tournament.findById(tid);
+
+  if (!tournament) {
+    throwCustomError("notFound", "Tournament cannot be found with id");
+  }
+
+  tournament.teams[groupName] = [user.username];
   return await tournament.save();
 }

@@ -4,6 +4,7 @@ import {
   createTournament,
   getAttendingTournaments,
   getHostingTournaments,
+  joinTournament,
 } from "../services/tournament.service.js";
 import { isMongoError, isValidId } from "../util.js";
 
@@ -48,6 +49,21 @@ tournamentRouter.get("/list/:which/:status", authenticate, async (req, res) => {
     }
   }
 });
+
+tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
+  try {
+    res.send({tournament : await joinTournament(req.user, req.params.tid)})
+  } catch (error) {
+    console.log(error);
+    if (isMongoError(error)) {
+      res.status(500).send({ msg: "Internal Server Error" });
+    } else if (error.name == "badId") {
+      res.status(400).send({ msg: error.msg})
+    } else {
+      res.status(404).send({ msg: error.msg})
+    }
+  }
+})
 
 // tournamentRouter.get("/:tid", authenticate, async (req, res) => {
 //   const id = req.params.tid;
