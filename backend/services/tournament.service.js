@@ -14,7 +14,7 @@ function setUserInTournament(user, tournament) {
   }
 }
 
-function getTournamentById(id) {
+async function validateTournamentId(id) {
   if (!mongoose.types.ObjectId.isValid(id)) {
     throwCustomError("badId", "Invalid Tournament Id");
   }
@@ -118,7 +118,7 @@ export async function createTournament(req) {
 }
 
 export async function joinTournament(user, tid) {
-  const tournament = getTournamentById(tid);
+  const tournament = validateTournamentId(tid);
 
   const userTeam = tournament.teams.keys().map((key) => {
     return tournament.teams[key].includes(user.username);
@@ -141,7 +141,7 @@ export async function joinTournament(user, tid) {
 }
 
 export async function changeGroupName(req) {
-  const tournament = getTournamentById(req.params.tid);
+  const tournament = validateTournamentId(req.params.tid);
 
   if (!tournament.teams[req.body.groupName]) {
     throwCustomError("notFound", "Group cannot be found");
@@ -160,7 +160,7 @@ export async function changeGroupName(req) {
 }
 
 export async function kickUserFromGroup(req) {
-  const tournament = getTournamentById(req.params.tid);
+  const tournament = validateTournamentId(req.params.tid);
 
   const group = tournament.teams[req.body.groupName];
 
@@ -186,7 +186,7 @@ export async function kickUserFromGroup(req) {
 }
 
 export async function removeUserFromTournament(req, userToRemove) {
-  const tournament = getTournamentById(req.params.tid);
+  const tournament = validateTournamentId(req.params.tid);
 
   if (
     req.user.username !== userToRemove ||
