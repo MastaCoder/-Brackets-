@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { authenticate } from "../middlewares/auth.middleware.js";
+import { checkUserLoggedIn } from '../middlewares/auth.middleware.js';
 import {
   createTournament,
   getAttendingTournaments,
   getHostingTournaments,
+  getPublicTournaments,
   getTournamentById,
   joinTournament,
   changeGroupName,
@@ -14,7 +15,7 @@ import { isMongoError } from "../util.js";
 
 export const tournamentRouter = Router();
 
-tournamentRouter.post("/", authenticate, async (req, res) => {
+tournamentRouter.post("/", checkUserLoggedIn, async (req, res) => {
   try {
     await createTournament(req);
     res.send(req.body);
@@ -28,7 +29,7 @@ tournamentRouter.post("/", authenticate, async (req, res) => {
   }
 });
 
-tournamentRouter.get("/list/:which/:status", authenticate, async (req, res) => {
+tournamentRouter.get("/list/:which/:status", checkUserLoggedIn, async (req, res) => {
   try {
     let tournaments;
     let split_status = req.params.status.split(",");
@@ -39,6 +40,9 @@ tournamentRouter.get("/list/:which/:status", authenticate, async (req, res) => {
         break;
       case "hosting":
         tournaments = await getHostingTournaments(req.user, split_status);
+        break;
+      case "public":
+        tournaments = await getPublicTournaments(req.user, split_status);
         break;
       default:
         res.status(400).send({ msg: "Invalid request type" });
@@ -56,7 +60,7 @@ tournamentRouter.get("/list/:which/:status", authenticate, async (req, res) => {
   }
 });
 
-tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
+tournamentRouter.post("/join/:tid", checkUserLoggedIn, async (req, res) => {
   try {
     res.send({ tournament: await joinTournament(req.user, req.params.tid) });
   } catch (error) {
@@ -73,7 +77,7 @@ tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
   }
 });
 
-tournamentRouter.post("/update/kick/:tid", authenticate, async (req, res) => {
+tournamentRouter.post("/update/kick/:tid", checkUserLoggedIn, async (req, res) => {
   try {
     res.send({ tournament: await kickUserFromGroup(req) });
   } catch (error) {
@@ -98,7 +102,7 @@ tournamentRouter.post("/update/remove/:tid", authenticate, async (req, res) => {
   }
 })
 
-tournamentRouter.patch("/update/groupName/:tid", authenticate, async (req, res) => {
+tournamentRouter.patch("/update/groupName/:tid", checkUserLoggedIn, async (req, res) => {
     try {
       res.send({ tournament: await changeGroupName(req) });
     } catch (error) {
@@ -116,7 +120,7 @@ tournamentRouter.patch("/update/groupName/:tid", authenticate, async (req, res) 
   }
 );
 
-tournamentRouter.get("/details/:tid", authenticate, async (req, res) => {
+tournamentRouter.get("/details/:tid", checkUserLoggedIn, async (req, res) => {
   const id = req.params.tid;
 
   try {
@@ -133,6 +137,6 @@ tournamentRouter.get("/details/:tid", authenticate, async (req, res) => {
   }
 });
 
-tournamentRouter.patch("/:tid", authenticate, async (req, res) => {});
+tournamentRouter.patch("/:tid", checkUserLoggedIn, async (req, res) => {});
 
-tournamentRouter.post("/:tid/addBracket", authenticate, async (req, res) => {});
+tournamentRouter.post("/:tid/addBracket", checkUserLoggedIn, async (req, res) => {});

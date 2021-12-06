@@ -23,6 +23,16 @@ export default function TournamentViewPage(props) {
 
   // Update the name of a team
   const onNameUpdate = (oldName, newName) => {
+
+  }
+
+  const onJoinTournament = async () => {
+    try {
+      const res = await axios.post(`/api/tournaments/join/${props.match.params.id}`);
+      setTournament(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -30,6 +40,8 @@ export default function TournamentViewPage(props) {
       {tournament !== false ? (
         <TournamentView
           tournament={tournament}
+          joinTournament={onJoinTournament}
+
           onKickUser={kickUser}
           onKickFromTeam={onKickFromTeam}
           onTeamNameUpdate={onNameUpdate}

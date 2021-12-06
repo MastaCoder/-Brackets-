@@ -78,9 +78,9 @@ export async function getTournaments(status) {
   return await getTournamentList(status);
 }
 
-export async function getPublicTournaments(status) {
-  const tournaments = getTournamentList(status);
-  return tournaments.filter((e) => !e.members.includes(e.username));
+export async function getPublicTournaments(user, status) {
+  const tournaments = await getTournamentList(status);
+  return tournaments.filter((e) => !e.members.includes(user.username));
 }
 
 export async function getTournamentById(user, id) {
