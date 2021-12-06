@@ -68,6 +68,10 @@ tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
   }
 })
 
+tournamentRouter.patch("/update/group/:tid", authenticate, async (req, res) => {
+  
+})
+
 tournamentRouter.get("/details/:tid", authenticate, async (req, res) => {
   const id = req.params.tid;
 
@@ -87,6 +91,7 @@ tournamentRouter.get("/details/:tid", authenticate, async (req, res) => {
     }
   }
 });
+
 
 tournamentRouter.patch("/:tid", authenticate, async (req, res) => {});
 

@@ -91,13 +91,17 @@ export async function createTournament(req) {
 }
 
 export async function joinTournament(user, tid) {
-  const groupName = `${generateRandomGroupName()}-${user._id}`;
+  let groupName = generateRandomGroupName();
 
   if (!mongoose.ObjectId.isValid(tid)) {
     throwCustomError("badId", "Invalid Tournament Id");
   }
 
   const tournament = await Tournament.findById(tid);
+
+  while (!tournament.teams[groupName]) {
+    groupName = generateRandomGroupName();
+  }
 
   if (tournament.members.length + 1 > tournament.maxMembers) {
     throwCustomError("limit", "Not enough capacity");
