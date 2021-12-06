@@ -92,6 +92,10 @@ export async function joinTournament(user, tid) {
 
   const tournament = await Tournament.findById(tid);
 
+  if (tournament.members.length + 1 > tournament.maxMembers) {
+    throwCustomError("limit", "Not enough capacity");
+  }
+
   if (!tournament) {
     throwCustomError("notFound", "Tournament cannot be found with id");
   }
