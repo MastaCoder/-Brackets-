@@ -39,17 +39,10 @@ app.use('/api/auth', authRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/tournaments', tournamentRouter);
 app.get('*', (req, res) => {
-	// console.log(path.join(path.resolve(__dirname, '..'), '/frontend/build'));
 	res.sendFile(
 		path.join(path.resolve(__dirname, '..'), '/frontend/build/index.html')
 	);
 });
-
-// app.use(
-// 	express.static(
-// 		path.join(path.resolve(__dirname, '..'), '/frontend/build/index.html')
-// 	)
-// );
 
 app.listen(PORT, () => {
 	console.log(`App Listening on PORT: ${PORT}`);

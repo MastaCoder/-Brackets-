@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "CSC309 Project",
   "scripts": {
-    "heroku-prebuild": "cd frontend && npm install && npm run build && cd ../backend && npm install",
-    "heroku-postbuild": "cd backend && node index.js"
+    "heroku-prebuild": "cd frontend && npm install && npm run build && cd ../backend && npm install"
   },
   "repository": {
     "type": "git",
