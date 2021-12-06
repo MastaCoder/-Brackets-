@@ -6,12 +6,22 @@
     text-overflow: ellipsis;
 }
 
-/* https://www.gradient-animator.com/ */
-.onGoingBar {
-    height: 6px;
+.bar {
+    height: 4px;
     width: 100%;
-    margin-bottom: -6px;
     border-radius: 2px;
+}
+
+.notStarted {
+    background-color: #0288d1;
+}
+
+.ended {
+    background-color: #d32f2f;
+}
+
+/* https://www.gradient-animator.com/ */
+.onGoing {
     background: linear-gradient(270deg, #ed6c02, #edde02, #ed6c02);
     background-size: 600% 600%;
 
