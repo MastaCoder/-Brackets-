@@ -15,26 +15,24 @@ export default function UserDashboardPage() {
   const [data] = useContext(DataContext);
 
   useEffect(() => {
-    axios
-      .get('/api/tournaments/list/attending/0')
-      .then((res) => console.log("fu", res.data));
+
   }, []);
 
   // This will be an API call later
   useEffect(() => {
-    let attending = [];
-    data.tournaments.forEach((tournament) => {
-      if (tournament.members.includes('user') && tournament.status !== 2)
-        attending.push(tournament);
-    });
-    setAttendingEvents(attending);
+    axios
+      .get('/api/tournaments/list/attending/0,1')
+      .then((res) => {
+        console.log(res.data);
+        setAttendingEvents(res.data.tournaments);
+      });
 
-    let hosting = [];
-    data.tournaments.forEach((tournament) => {
-      if (tournament.host === 'user' && tournament.status !== 2)
-        hosting.push(tournament);
-    });
-    setHostingEvents(hosting);
+    axios
+      .get('/api/tournaments/list/hosting/0,1')
+      .then((res) => {
+        console.log(res.data);
+        setHostingEvents(res.data.tournaments);
+      });
   }, [data]);
 
   return (
