@@ -8,10 +8,23 @@ export default function TournamentCard(props) {
   const history = useHistory();
   const { user } = useAuth();
 
+  const barColor = (status) => {
+    switch (status) {
+      case 0:
+        return styles.notStarted;
+      case 1:
+        return styles.onGoing;
+      case 2:
+        return styles.ended;
+      default:
+        return "";
+    }
+  }
+
   return (
     <Box>
       <Paper elevation={3}>
-        <Box className={styles.onGoingBar} />
+        <Box className={`${styles.bar} ${barColor(props.status)}`} />
         <Box p={2} pt={1.25}>
           <Box>
             <Typography variant="h6" component="h3">
@@ -39,7 +52,7 @@ export default function TournamentCard(props) {
               color={props.host === user.username ? 'secondary' : 'primary'}
               onClick={() => { history.push(`/tournament/${props.id}`) }}
             >
-              {props.host === 'user' ? 'Manage event' : 'View Event'}
+              {props.host === user.username ? 'Manage event' : 'View Event'}
             </Button>
           </Box>
         </Box>

@@ -12,7 +12,7 @@ const TournamentSchema = new mongoose.Schema({
     type: String,
     required: true,
     minLength: 0,
-    maxLength: 100,
+    maxLength: 500,
   },
   public: {
     type: Boolean,

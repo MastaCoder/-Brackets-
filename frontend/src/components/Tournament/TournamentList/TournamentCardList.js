@@ -24,7 +24,7 @@ export default function TournamentCardList(props) {
         props.cards.map((e) => (
           <Grid key={uid(e)} xs={12} md={6} lg={4} item>
             <TournamentCard
-              id={e.id}
+              id={e._id}
               title={e.name}
               description={e.description}
               public={e.public}

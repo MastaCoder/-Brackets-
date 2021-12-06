@@ -4,8 +4,12 @@ import {
   createTournament,
   getAttendingTournaments,
   getHostingTournaments,
+  getTournamentById,
+  joinTournament,
+  kickUserFromTournament,
+  changeGroupName,
 } from "../services/tournament.service.js";
-import { isMongoError, isValidId } from "../util.js";
+import { isMongoError } from "../util.js";
 
 export const tournamentRouter = Router();
 
@@ -14,6 +18,7 @@ tournamentRouter.post("/", checkUserLoggedIn, async (req, res) => {
     await createTournament(req);
     res.send(req.body);
   } catch (error) {
+    console.log(error);
     if (isMongoError(error)) {
       res.status(500).send({ msg: "Internal Server Error" });
     } else {
@@ -26,6 +31,7 @@ tournamentRouter.get("/list/:which/:status", checkUserLoggedIn, async (req, res)
   try {
     let tournaments;
     let split_status = req.params.status.split(",");
+
     switch (req.params.which) {
       case "attending":
         tournaments = await getAttendingTournaments(req.user, split_status);
@@ -37,7 +43,7 @@ tournamentRouter.get("/list/:which/:status", checkUserLoggedIn, async (req, res)
         res.status(400).send({ msg: "Invalid request type" });
         return;
     }
-    
+
     res.send({ tournaments });
   } catch (error) {
     console.log(error);
@@ -49,25 +55,74 @@ tournamentRouter.get("/list/:which/:status", checkUserLoggedIn, async (req, res)
   }
 });
 
-// tournamentRouter.get("/:tid", authenticate, async (req, res) => {
-//   const id = req.params.tid;
+tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
+  try {
+    res.send({ tournament: await joinTournament(req.user, req.params.tid) });
+  } catch (error) {
+    console.log(error);
+    if (isMongoError(error)) {
+      res.status(500).send({ msg: "Internal Server Error" });
+    } else if (error.name == "badId") {
+      res.status(400).send({ msg: error.msg });
+    } else if (error.name == "notFound") {
+      res.status(404).send({ msg: error.msg });
+    } else {
+      res.status(409).send({ msg: error.msg });
+    }
+  }
+});
 
-//   if (!isValidId(res, id)) return;
+tournamentRouter.post("/update/kick/:tid", authenticate, async (req, res) => {
+  try {
+    res.send({ tournament: await kickUserFromTournament(req) });
+  } catch (error) {
+    console.log(error);
+    if (isMongoError(error)) {
+      res.status(500).send({ msg: "Internal Server Error" });
+    } else if (error.name === "badId") {
+      res.status(400).send({ msg: error.msg });
+    } else if (error.name === "notFound") {
+      res.status(404).send({ msg: error.msg });
+    } else if (error.name === "badKick") {
+      res.status(403).send({ msg: error.msg });
+    }
+  }
+});
 
-//   try {
-//     const tournament = await getTournamentById(req.user, id);
-//     if (!tournament) {
-//       res.status(404).send({ msg: "Requested Tournament Not Found" });
-//     }
-//     res.send(tournament);
-//   } catch (error) {
-//     if (isMongoError(error)) {
-//       res.status(500).send({ msg: "Internal Server Error" });
-//     } else {
-//       res.status(400).send({ msg: "Bad Request" });
-//     }
-//   }
-// });
+tournamentRouter.patch("/update/groupName/:tid", authenticate, async (req, res) => {
+    try {
+      res.send({ tournament: await changeGroupName(req) });
+    } catch (error) {
+      console.log(error);
+      if (isMongoError(error)) {
+        res.status(500).send({ msg: "Internal Server Error" });
+      } else if (error.name === "badId") {
+        res.status(400).send({ msg: error.msg });
+      } else if (error.name === "notFound") {
+        res.status(404).send({ msg: error.msg });
+      } else if (error.name === "unauth") {
+        res.status(403).send({ msg: error.msg});
+      }
+    }
+  }
+);
+
+tournamentRouter.get("/details/:tid", authenticate, async (req, res) => {
+  const id = req.params.tid;
+
+  try {
+    const tournament = await getTournamentById(req.user, id);
+    if (!tournament)
+      res.status(404).send({ msg: "Requested Tournament Not Found" });
+    else res.send(tournament);
+  } catch (error) {
+    if (isMongoError(error)) {
+      res.status(500).send({ msg: "Internal Server Error" });
+    } else {
+      res.status(400).send({ msg: "Bad Request" });
+    }
+  }
+});
 
 tournamentRouter.patch("/:tid", checkUserLoggedIn, async (req, res) => {});
 
