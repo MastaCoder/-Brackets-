@@ -12,7 +12,6 @@ export default function TournamentViewBrackets(props) {
     let pairSelectorCopy = [...pairSelector];
     pairSelectorCopy[index] = value;
     setPairSelector(pairSelectorCopy);
-    console.log(pairSelectorCopy);
   }
 
   const nextRound = (event) => {

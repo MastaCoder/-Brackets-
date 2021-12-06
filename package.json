@@ -1,0 +1,18 @@
+{
+  "name": "brackets",
+  "version": "1.0.0",
+  "description": "CSC309 Project",
+  "scripts": {
+    "heroku-prebuild": "cd frontend && npm install && npm run build && cd ../backend && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csc309-fall-2021/team05.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/csc309-fall-2021/team05/issues"
+  },
+  "homepage": "https://github.com/csc309-fall-2021/team05#readme"
+}
