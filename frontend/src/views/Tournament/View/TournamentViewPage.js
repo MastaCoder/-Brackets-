@@ -1,14 +1,10 @@
 import TournamentView from "../../../components/Tournament/TournamentView/TournamentView";
-import {useContext, useEffect, useState} from "react";
-import DataContext from "../../../contexts/dataContext";
+import {useEffect, useState} from "react";
 import {Box, CircularProgress} from "@mui/material";
 import axios from "axios";
 
 export default function TournamentViewPage(props) {
   const [tournament, setTournament] = useState(false);
-
-  const [data, setData] = useContext(DataContext);
-  const index = parseInt(props.match.params.id) - 1;
 
   useEffect(() => {
     axios
