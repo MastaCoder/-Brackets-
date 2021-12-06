@@ -25,12 +25,13 @@ tournamentRouter.post("/", authenticate, async (req, res) => {
 tournamentRouter.get("/list/:which/:status", authenticate, async (req, res) => {
   try {
     let tournaments;
+    let split_status = req.params.status.split(",");
     switch (req.params.which) {
       case "attending":
-        tournaments = await getAttendingTournaments(req.user, parseInt(req.params.status));
+        tournaments = await getAttendingTournaments(req.user, split_status);
         break;
       case "hosting":
-        tournaments = await getHostingTournaments(req.user, parseInt(req.params.status));
+        tournaments = await getHostingTournaments(req.user, split_status);
         break;
       default:
         res.status(400).send({ msg: "Invalid request type" });
