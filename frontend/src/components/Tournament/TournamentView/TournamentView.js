@@ -9,8 +9,11 @@ import TournamentUpdateModal from "./TournamentUpdateModal/TournamentUpdateModal
 import TournamentViewBrackets from "./TournamentViewBrackets/TournamentViewBrackets";
 import { useState, useContext } from "react";
 import DataContext from "../../../contexts/dataContext";
+import {useAuth} from "../../../hooks/Auth";
 
 export default function TournamentView(props) {
+  const { user } = useAuth();
+
   const [tournamentView, setTournamentView] = useState(false);
   const [data, setData] = useContext(DataContext);
 
@@ -44,7 +47,7 @@ export default function TournamentView(props) {
   }
 
   const eventJoinable = props.tournament.userTeam === null && !props.tournament.status && props.tournament.public &&
-    props.tournament.host !== 'user';
+    props.tournament.host !== user.username;
 
   return (
     <Container maxWidth="xl">
@@ -113,15 +116,15 @@ export default function TournamentView(props) {
                   />
                 </Grid>
               </Grid>
-              <Box maxWidth={500} mb={3}>
-                <TextField
-                  label="Team invite link (not functional - phase 2)"
-                  variant="outlined"
-                  defaultValue="http://localhost:3000/tournament/1/team/jsk18Z01kM23"
-                  fullWidth
-                  InputProps={{ readOnly: true }}
-                />
-              </Box>
+              {/*<Box maxWidth={500} mb={3}>*/}
+              {/*  <TextField*/}
+              {/*    label="Team invite link (not functional - phase 2)"*/}
+              {/*    variant="outlined"*/}
+              {/*    defaultValue="http://localhost:3000/tournament/1/team/jsk18Z01kM23"*/}
+              {/*    fullWidth*/}
+              {/*    InputProps={{ readOnly: true }}*/}
+              {/*  />*/}
+              {/*</Box>*/}
             </>
           )}
 
@@ -132,7 +135,7 @@ export default function TournamentView(props) {
             {props.tournament.members.length > 0 ? (
               <TournamentViewUserChip
                 members={props.tournament.members}
-                onKick={props.tournament.host === 'user' ? props.onKickUser : null}
+                onKick={props.tournament.host === user.username ? props.onKickUser : null}
                 size="medium"
               />
             ) : (
@@ -152,7 +155,7 @@ export default function TournamentView(props) {
                 teams={props.tournament.teams}
                 canUserJoin={props.tournament.userTeam !== null}
                 maxTeamMembers={props.tournament.maxTeamMembers}
-                onNameUpdate={props.tournament.host === 'user' ? props.onTeamNameUpdate : null}
+                onNameUpdate={props.tournament.host === user.username ? props.onTeamNameUpdate : null}
               />
             ) : (
               <Typography variant="body1">
@@ -162,7 +165,7 @@ export default function TournamentView(props) {
           </Box>
 
           {/* Settings */}
-          {props.tournament.host === 'user' && (
+          {props.tournament.host === user.username && (
             <>
               <PageSubTitle>Event Settings</PageSubTitle>
     
@@ -203,7 +206,7 @@ export default function TournamentView(props) {
         </>
       )}
 
-      {props.tournament.host === "user" && (
+      {props.tournament.host === user.username && (
         <TournamentUpdateModal
           open={open}
           handleClose={handleClose}

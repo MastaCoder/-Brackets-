@@ -42,8 +42,8 @@ export default function AdminDashboard() {
       <Grid container spacing={2} justifyContent="center">
         <AdminCounter title="Registered users" number={numActiveUsers} />
         <AdminCounter title="Banned users" number={numBannedUsers} />
-        <AdminCounter title="# Tournaments" number={numTournaments} />
-        <AdminCounter title="# Ongoing" number={numOngoingTournaments} />
+        <AdminCounter title="Tournaments" number={numTournaments} />
+        <AdminCounter title="Ongoing" number={numOngoingTournaments} />
       </Grid>
       <Box mt={0.75} mb={3}>
         <Typography variant="caption" color="grey">

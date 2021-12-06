@@ -52,7 +52,7 @@ export default function TournamentCard(props) {
               color={props.host === user.username ? 'secondary' : 'primary'}
               onClick={() => { history.push(`/tournament/${props.id}`) }}
             >
-              {props.host === 'user' ? 'Manage event' : 'View Event'}
+              {props.host === user.username ? 'Manage event' : 'View Event'}
             </Button>
           </Box>
         </Box>
