@@ -59,7 +59,7 @@ export async function changeUserInfo(id, newUsername, newEmail, newPassword) {
 	const user = await getUser(id);
 	user.username = newUsername;
 	user.email = newEmail;
-	user.password = bcrypt.hashSync(newPassword, 10);
+  if (newPassword !== "") user.password = bcrypt.hashSync(newPassword, 10);
 	await user.save();
 }
 

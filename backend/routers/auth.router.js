@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authenticate } from '../middlewares/auth.middleware.js';
+import { checkUserLoggedIn } from '../middlewares/auth.middleware.js';
 import { addLog } from '../services/logger.service.js';
 import {
 	registerUser,
@@ -28,7 +28,6 @@ authRouter.post('/register', async (req, res) => {
 					msg: 'Your account has been registered! Please login to proceed.',
 				});
 			} else {
-				console.log(errMsg);
 				res.status(400).send({ msg: errMsg });
 			}
 		}
@@ -58,7 +57,7 @@ authRouter.post('/login', async (req, res) => {
 	}
 });
 
-authRouter.post('/update', authenticate, async (req, res) => {
+authRouter.post('/update', checkUserLoggedIn, async (req, res) => {
 	const {
 		newUsername: newUsername,
 		newEmail: newEmail,
@@ -88,7 +87,7 @@ authRouter.post('/update', authenticate, async (req, res) => {
 	}
 });
 
-authRouter.post('/logout', authenticate, async (req, res) => {
+authRouter.post('/logout', checkUserLoggedIn, async (req, res) => {
 	req.session.destroy((error) => {
 		if (error) {
 			res.status(500).send({ msg: _500_message });
@@ -98,7 +97,7 @@ authRouter.post('/logout', authenticate, async (req, res) => {
 	});
 });
 
-authRouter.post('/getloggedinuserdetails', authenticate, async (req, res) => {
+authRouter.post('/getloggedinuserdetails', checkUserLoggedIn, async (req, res) => {
 	res.status(200).send({
 		username: req.user.username,
 		email: req.user.email,
