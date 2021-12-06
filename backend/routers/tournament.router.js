@@ -55,7 +55,7 @@ tournamentRouter.get("/list/:which/:status", checkUserLoggedIn, async (req, res)
   }
 });
 
-tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
+tournamentRouter.post("/join/:tid", checkUserLoggedIn, async (req, res) => {
   try {
     res.send({ tournament: await joinTournament(req.user, req.params.tid) });
   } catch (error) {
@@ -72,7 +72,7 @@ tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
   }
 });
 
-tournamentRouter.post("/update/kick/:tid", authenticate, async (req, res) => {
+tournamentRouter.post("/update/kick/:tid", checkUserLoggedIn, async (req, res) => {
   try {
     res.send({ tournament: await kickUserFromTournament(req) });
   } catch (error) {
@@ -89,7 +89,7 @@ tournamentRouter.post("/update/kick/:tid", authenticate, async (req, res) => {
   }
 });
 
-tournamentRouter.patch("/update/groupName/:tid", authenticate, async (req, res) => {
+tournamentRouter.patch("/update/groupName/:tid", checkUserLoggedIn, async (req, res) => {
     try {
       res.send({ tournament: await changeGroupName(req) });
     } catch (error) {
@@ -107,7 +107,7 @@ tournamentRouter.patch("/update/groupName/:tid", authenticate, async (req, res) 
   }
 );
 
-tournamentRouter.get("/details/:tid", authenticate, async (req, res) => {
+tournamentRouter.get("/details/:tid", checkUserLoggedIn, async (req, res) => {
   const id = req.params.tid;
 
   try {

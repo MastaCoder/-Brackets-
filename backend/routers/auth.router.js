@@ -28,7 +28,6 @@ authRouter.post('/register', async (req, res) => {
 					msg: 'Your account has been registered! Please login to proceed.',
 				});
 			} else {
-				console.log(errMsg);
 				res.status(400).send({ msg: errMsg });
 			}
 		}

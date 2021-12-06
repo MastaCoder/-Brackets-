@@ -35,7 +35,6 @@ export async function authenticateUser(username, password) {
 		};
 	} else {
 		const user = users[0];
-    console.log(user);
 		if (bcrypt.compareSync(password, user.password)) {
 			// Check if the user is banned!
 			return user.platformAccess
