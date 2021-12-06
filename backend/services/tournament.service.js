@@ -15,7 +15,8 @@ function setUserInTournament(user, tournament) {
 }
 
 async function validateTournamentId(id) {
-  if (!mongoose.types.ObjectId.isValid(id)) {
+  
+  if (!mongoose.isValidObjectId(id)) {
     throwCustomError("badId", "Invalid Tournament Id");
   }
 
