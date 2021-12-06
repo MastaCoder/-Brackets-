@@ -14,6 +14,16 @@ function setUserInTournament(user, tournament) {
   }
 }
 
+function getUniqueGroupName(tournament) {
+  let groupName = generateRandomGroupName();
+
+  while (!tournament.teams[groupName]) {
+    groupName = generateRandomGroupName();
+  }
+
+  return groupName
+}
+
 async function getTournamentList(status) {
   const statuses = [0, 1, 2];
 
@@ -94,8 +104,7 @@ export async function createTournament(req) {
 }
 
 export async function joinTournament(user, tid) {
-  let groupName = generateRandomGroupName();
-
+  
   if (!mongoose.ObjectId.isValid(tid)) {
     throwCustomError("badId", "Invalid Tournament Id");
   }
@@ -106,27 +115,50 @@ export async function joinTournament(user, tid) {
     throwCustomError("notFound", "Tournament cannot be found with id");
   }
 
-  while (!tournament.teams[groupName]) {
-    groupName = generateRandomGroupName();
-  }
+  let groupName = getUniqueGroupName(tournament);
 
   if (tournament.members.length + 1 > tournament.maxMembers) {
     throwCustomError("limit", "Not enough capacity");
   }
 
-
   tournament.members.push(user.username);
   tournament.teams[groupName] = [user.username];
-  return await tournament.save();
+  setUserInTournament(user, await tournament.save());
+  return tournament;
 }
 
 
-export async function kickUserFromTournament(user, tid, uid) {
+export async function kickUserFromTournament(req) {
 
-  if (!mongoose.ObjectId.isValid(tid)) {
+  if (!mongoose.ObjectId.isValid(req.params.tid)) {
     throwCustomError("badId", "Invalid Tournament Id");
   }
 
-  
-  
+  const tournament = await Tournament.findById(req.params.tid);
+
+  if (!tournament) {
+    throwCustomError("notFound", "Tournament cannot be found with id");
+  }
+
+  const group = tournament.teams[req.groupName];
+
+  if (!group) {
+    throwCustomError("notFound", "Group cannot be found");
+  }
+
+  if (group.includes(req.user.username) && group.includes(req.kickedUser)) {
+    group.splice(group.indexOf(req.kickedUser), 1);
+
+    if (!group.length) {
+      delete tournament.teams[req.groupName];
+    }
+
+    const groupName = getUniqueGroupName(tournament);
+    tournament.teams[groupName] = [req.kickedUser];
+
+    setUserInTournament(user, await tournament.save());
+    return tournament;
+  }
+
+  throwCustomError("badKick", "Unauthorized Kick");
 }
