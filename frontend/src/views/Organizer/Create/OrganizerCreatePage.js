@@ -29,7 +29,6 @@ export default function OrganizerCreatePage() {
 	};
 
 	const onChange = (e) => {
-		// console.log(formData);
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 

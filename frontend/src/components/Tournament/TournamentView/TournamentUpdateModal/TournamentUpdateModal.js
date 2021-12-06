@@ -40,7 +40,6 @@ export default function TournamentUpdateModal(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const tournaments = [...data.tournaments];
-    console.log(tournaments);
     tournaments[props.id - 1].description = formData.description;
     tournaments[props.id - 1].public = formData.public;
     setData({ ...data, tournaments });

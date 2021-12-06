@@ -11,6 +11,7 @@ sessionRouter.get('/validate', async (req, res) => {
 				currentUser: {
 					_id: user._id,
 					type: user.type, // Need this for frontend
+					username: user.username
 				},
 			});
 		} else {

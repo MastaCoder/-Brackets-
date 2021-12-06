@@ -2,13 +2,16 @@ import {Box, Divider, Paper, Typography, Button} from "@mui/material";
 import {useHistory} from "react-router";
 import styles from "./TournamentCard.module.css";
 import TournamentChips from "../../TournamentChips/TournamentChips";
+import {useAuth} from "../../../../hooks/Auth";
 
 export default function TournamentCard(props) {
   const history = useHistory();
+  const { user } = useAuth();
 
   return (
     <Box>
       <Paper elevation={3}>
+        <Box className={styles.onGoingBar} />
         <Box p={2} pt={1.25}>
           <Box>
             <Typography variant="h6" component="h3">
@@ -33,7 +36,7 @@ export default function TournamentCard(props) {
             <Button
               variant="outlined"
               size="small"
-              color={props.host === 'user' ? 'secondary' : 'primary'}
+              color={props.host === user.username ? 'secondary' : 'primary'}
               onClick={() => { history.push(`/tournament/${props.id}`) }}
             >
               {props.host === 'user' ? 'Manage event' : 'View Event'}
