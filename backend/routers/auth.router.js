@@ -48,6 +48,7 @@ authRouter.post('/login', async (req, res) => {
 			res.status(200).send({
 				_id: user._id,
 				type: user.type,
+				username: user.username
 			});
 		} else {
 			res.status(400).send({ msg: err });

@@ -3,17 +3,6 @@ import mongoose from "mongoose";
 import { Tournament } from "../models/tournament.model.js";
 import { generateRandomGroupName, throwCustomError } from "../util.js";
 
-function setUserInTournament(user, tournament) {
-  for (const [teamName, team] of tournament.teams.entries()) {
-    if (team.includes(user.username)) {
-      tournament.userTeam = teamName;
-      return true;
-    }
-
-    return false;
-  }
-}
-
 async function getTournamentList(status) {
   const statuses = [0, 1, 2];
 
@@ -53,9 +42,9 @@ export async function getTournaments(status) {
   return await getTournamentList(status);
 }
 
-export async function getPublicTournaments(status) {
-  const tournaments = getTournamentList(status);
-  return tournaments.filter((e) => !e.members.includes(e.username));
+export async function getPublicTournaments(user, status) {
+  const tournaments = await getTournamentList(status);
+  return tournaments.filter((e) => !e.members.includes(user.username));
 }
 
 export async function getTournamentById(user, id) {

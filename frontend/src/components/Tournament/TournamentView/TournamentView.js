@@ -7,7 +7,7 @@ import TournamentViewTeamCardList from "./TournamentViewTeamCardList/TournamentV
 import TournamentViewTeamCard from "./TournamentViewTeamCardList/TournamentViewTeamCard/TournamentViewTeamCard";
 import TournamentUpdateModal from "./TournamentUpdateModal/TournamentUpdateModal";
 import TournamentViewBrackets from "./TournamentViewBrackets/TournamentViewBrackets";
-import { useState, useContext } from "react";
+import {useState, useContext} from "react";
 import DataContext from "../../../contexts/dataContext";
 import {useAuth} from "../../../hooks/Auth";
 
@@ -77,7 +77,7 @@ export default function TournamentView(props) {
               size="large"
               variant="contained"
               color="success"
-              onClick={() => alert("To be implemented in phase 2")}
+              onClick={() => props.joinTournament()}
             >
               Join event
             </Button>
@@ -192,15 +192,15 @@ export default function TournamentView(props) {
                   </Button>
                 }
               </Box>
-              <Box maxWidth={550}>
-                <TextField
-                  label="Direct Invite Link (not functional - phase 2)"
-                  variant="outlined"
-                  defaultValue="http://localhost:3000/tournament/1/23489dxfn12dx"
-                  fullWidth
-                  InputProps={{ readOnly: true }}
-                />
-              </Box>
+              {/*<Box maxWidth={550}>*/}
+              {/*  <TextField*/}
+              {/*    label="Direct Invite Link (not functional - phase 2)"*/}
+              {/*    variant="outlined"*/}
+              {/*    defaultValue="http://localhost:3000/tournament/1/23489dxfn12dx"*/}
+              {/*    fullWidth*/}
+              {/*    InputProps={{ readOnly: true }}*/}
+              {/*  />*/}
+              {/*</Box>*/}
             </>
           )}
         </>

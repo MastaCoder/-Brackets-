@@ -4,6 +4,7 @@ import {
   createTournament,
   getAttendingTournaments,
   getHostingTournaments,
+  getPublicTournaments,
   getTournamentById,
   joinTournament
 } from "../services/tournament.service.js";
@@ -37,6 +38,9 @@ tournamentRouter.get("/list/:which/:status", authenticate, async (req, res) => {
       case "hosting":
         tournaments = await getHostingTournaments(req.user, split_status);
         break;
+      case "public":
+        tournaments = await getPublicTournaments(req.user, split_status);
+        break;
       default:
         res.status(400).send({ msg: "Invalid request type" });
         return;
@@ -61,11 +65,11 @@ tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
     if (isMongoError(error)) {
       res.status(500).send({ msg: "Internal Server Error" });
     } else if (error.name == "badId") {
-      res.status(400).send({ msg: error.msg})
+      res.status(400).send({ msg: error.msg })
     } else if (error.name == "notFound") {
-      res.status(404).send({ msg: error.msg})
+      res.status(404).send({ msg: error.msg })
     } else {
-      res.status(409).send({ msg: error.msg})
+      res.status(409).send({ msg: error.msg })
     }
   }
 })
