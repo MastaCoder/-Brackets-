@@ -1,29 +1,44 @@
 import { Tournament } from "../models/tournament.model.js";
 
 function setUserInTournaments(user, tournaments) {
-  return tournaments.map((tournament) => {
+  return tournaments.filter((tournament) => {
     for (const [teamName, team] of tournament.teams.entries()) {
-      if (team.includes(user.username))
+      if (team.includes(user.username)) {
         tournament.userTeam = teamName;
-        return tournament;
+        console.log(tournament);
+        return true;
+      }
+
+      return false;
     }
   });
 }
 
 async function getTournamentList(status) {
-  const statuses = [-1, 0, 1, 2];
+  const statuses = [0, 1, 2];
 
-  if (!statuses.includes(status)) {
-    throw Error("Invalid status type");
-  }
+  if (status.includes(-1))
+    return await Tournament.find();
+
+  let parsedStatus = status.map((e) => {
+    e = parseInt(e);
+    if (!statuses.includes(e)) {
+      throw Error("Invalid status type");
+    }
+
+    return { status: e };
+  });
 
   return await Tournament.find(
-    status !== -1 ? { status } : {}
+    { $or: parsedStatus }
   );
 }
 
 export async function getAttendingTournaments(user, status) {
-  return setUserInTournaments(user, await getTournamentList(status));
+  return setUserInTournaments(
+    user,
+    (await getTournamentList(status)).filter(e => e.members.includes(user.username))
+  );
 }
 
 export async function getHostingTournaments(user, status) {
