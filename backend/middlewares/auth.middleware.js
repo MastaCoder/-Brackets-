@@ -1,7 +1,7 @@
 import { getUser } from "../services/user.service.js";
 
 
-export const authenticate = async (req, res, next) => {
+export const checkUserLoggedIn = async (req, res, next) => {
   if (req.session.currentUser) {
     try {
       const user = await getUser(req.session.currentUser);
@@ -14,7 +14,28 @@ export const authenticate = async (req, res, next) => {
     } catch (error) {
       res.status(401).send({ msg: "Unauthorized" });
     }
-  } else {
+  }
+  else {
+    res.status(401).send({ msg: "Unauthorized" });
+  }
+};
+
+export const checkAdminLoggedIn = async (req, res, next) => {
+  if (req.session.currentUser) {
+    try {
+      const user = await getUser(req.session.currentUser);
+      if (user && user.type === "admin") {
+        req.user = user;
+        next();
+      } else {
+        throw Error();
+      }
+    }
+    catch (error) {
+      res.status(401).send({ msg: "Unauthorized" });
+    }
+  }
+  else {
     res.status(401).send({ msg: "Unauthorized" });
   }
 };

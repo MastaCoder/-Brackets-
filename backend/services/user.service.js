@@ -35,6 +35,7 @@ export async function authenticateUser(username, password) {
 		};
 	} else {
 		const user = users[0];
+    console.log(user);
 		if (bcrypt.compareSync(password, user.password)) {
 			// Check if the user is banned!
 			return user.platformAccess
@@ -59,7 +60,7 @@ export async function changeUserInfo(id, newUsername, newEmail, newPassword) {
 	const user = await getUser(id);
 	user.username = newUsername;
 	user.email = newEmail;
-	user.password = bcrypt.hashSync(newPassword, 10);
+  if (newPassword !== "") user.password = bcrypt.hashSync(newPassword, 10);
 	await user.save();
 }
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authenticate } from '../middlewares/auth.middleware.js';
+import { checkUserLoggedIn } from '../middlewares/auth.middleware.js';
 import {
   createTournament,
   getAttendingTournaments,
@@ -9,7 +9,7 @@ import { isMongoError, isValidId } from "../util.js";
 
 export const tournamentRouter = Router();
 
-tournamentRouter.post("/", authenticate, async (req, res) => {
+tournamentRouter.post("/", checkUserLoggedIn, async (req, res) => {
   try {
     await createTournament(req);
     res.send(req.body);
@@ -22,7 +22,7 @@ tournamentRouter.post("/", authenticate, async (req, res) => {
   }
 });
 
-tournamentRouter.get("/list/:which/:status", authenticate, async (req, res) => {
+tournamentRouter.get("/list/:which/:status", checkUserLoggedIn, async (req, res) => {
   try {
     let tournaments;
     let split_status = req.params.status.split(",");
@@ -69,6 +69,6 @@ tournamentRouter.get("/list/:which/:status", authenticate, async (req, res) => {
 //   }
 // });
 
-tournamentRouter.patch("/:tid", authenticate, async (req, res) => {});
+tournamentRouter.patch("/:tid", checkUserLoggedIn, async (req, res) => {});
 
-tournamentRouter.post("/:tid/addBracket", authenticate, async (req, res) => {});
+tournamentRouter.post("/:tid/addBracket", checkUserLoggedIn, async (req, res) => {});
