@@ -4,7 +4,8 @@ import {
   createTournament,
   getAttendingTournaments,
   getHostingTournaments,
-  joinTournament,
+  getTournamentById,
+  joinTournament
 } from "../services/tournament.service.js";
 import { isMongoError, isValidId } from "../util.js";
 
@@ -67,25 +68,25 @@ tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
   }
 })
 
-// tournamentRouter.get("/:tid", authenticate, async (req, res) => {
-//   const id = req.params.tid;
+tournamentRouter.get("/details/:tid", authenticate, async (req, res) => {
+  const id = req.params.tid;
 
-//   if (!isValidId(res, id)) return;
-
-//   try {
-//     const tournament = await getTournamentById(req.user, id);
-//     if (!tournament) {
-//       res.status(404).send({ msg: "Requested Tournament Not Found" });
-//     }
-//     res.send(tournament);
-//   } catch (error) {
-//     if (isMongoError(error)) {
-//       res.status(500).send({ msg: "Internal Server Error" });
-//     } else {
-//       res.status(400).send({ msg: "Bad Request" });
-//     }
-//   }
-// });
+  try {
+    console.log(id);
+    const tournament = await getTournamentById(req.user, id);
+    console.log(tournament);
+    if (!tournament)
+      res.status(404).send({ msg: "Requested Tournament Not Found" });
+    else
+      res.send(tournament);
+  } catch (error) {
+    if (isMongoError(error)) {
+      res.status(500).send({ msg: "Internal Server Error" });
+    } else {
+      res.status(400).send({ msg: "Bad Request" });
+    }
+  }
+});
 
 tournamentRouter.patch("/:tid", authenticate, async (req, res) => {});
 
