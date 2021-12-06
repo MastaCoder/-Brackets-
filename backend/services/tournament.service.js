@@ -14,6 +14,20 @@ function setUserInTournament(user, tournament) {
   }
 }
 
+function getTournamentById(id) {
+  if (!mongoose.types.ObjectId.isValid(id)) {
+    throwCustomError("badId", "Invalid Tournament Id");
+  }
+
+  const tournament = await Tournament.findById(id);
+
+  if (!tournament) {
+    throwCustomError("notFound", "Tournament cannot be found with id");
+  }
+
+  return tournament;
+}
+
 function getUniqueGroupName(tournament) {
   let groupName = generateRandomGroupName();
 
@@ -104,24 +118,15 @@ export async function createTournament(req) {
 }
 
 export async function joinTournament(user, tid) {
-  if (!mongoose.ObjectId.isValid(tid)) {
-    throwCustomError("badId", "Invalid Tournament Id");
-  }
-
-  const tournament = await Tournament.findById(tid);
-
-  if (!tournament) {
-    throwCustomError("notFound", "Tournament cannot be found with id");
-  }
+  const tournament = getTournamentById(tid);
 
   const userTeam = tournament.teams.keys().map((key) => {
     return tournament.teams[key].includes(user.username);
-  })
+  });
 
   if (!userTeam.length) {
     throwCustomError("badId", "User in tournament already");
   }
-
 
   let groupName = getUniqueGroupName(tournament);
 
@@ -136,62 +141,66 @@ export async function joinTournament(user, tid) {
 }
 
 export async function changeGroupName(req) {
-  if (!mongoose.ObjectId.isValid(req.params.tid)) {
-    throwCustomError("badId", "Invalid Tournament Id");
-  }
+  const tournament = getTournamentById(req.params.tid);
 
-  const tournament = await Tournament.findById(req.params.tid);
-
-  if (!tournament) {
-    throwCustomError("notFound", "Tournament cannot be found with id");
-  }
-
-  if (!tournament.teams[req.groupName]) {
+  if (!tournament.teams[req.body.groupName]) {
     throwCustomError("notFound", "Group cannot be found");
   }
 
-  if (!tournament.teams[req.groupName].includes(req.user.username)) {
+  if (!tournament.teams[req.body.groupName].includes(req.user.username)) {
     throwCustomError("unauth", "Unauthorized group name change");
   }
 
   delete tournament.teams.assign({
-    [req.newGroupName]: tournament.teams[req.groupName],
-  })[req.groupName];
+    [req.body.newGroupName]: tournament.teams[req.body.groupName],
+  })[req.body.groupName];
 
   setUserInTournament(user, await tournament.save());
   return tournament;
 }
 
-export async function kickUserFromTournament(req) {
-  if (!mongoose.ObjectId.isValid(req.params.tid)) {
-    throwCustomError("badId", "Invalid Tournament Id");
-  }
+export async function kickUserFromGroup(req) {
+  const tournament = getTournamentById(req.params.tid);
 
-  const tournament = await Tournament.findById(req.params.tid);
-
-  if (!tournament) {
-    throwCustomError("notFound", "Tournament cannot be found with id");
-  }
-
-  const group = tournament.teams[req.groupName];
+  const group = tournament.teams[req.body.groupName];
 
   if (!group) {
     throwCustomError("notFound", "Group cannot be found");
   }
 
-  if (group.includes(req.user.username) && group.includes(req.kickedUser)) {
-    group.splice(group.indexOf(req.kickedUser), 1);
+  if (group.includes(req.user.username) && group.includes(req.body.kickedUser)) {
+    group.splice(group.indexOf(req.body.kickedUser), 1);
 
     if (!group.length) {
-      delete tournament.teams[req.groupName];
+      delete tournament.teams[req.body.groupName];
     }
 
     const groupName = getUniqueGroupName(tournament);
-    tournament.teams[groupName] = [req.kickedUser];
+    tournament.teams[groupName] = [req.body.kickedUser];
 
     setUserInTournament(user, await tournament.save());
     return tournament;
   }
 
   throwCustomError("badKick", "Unauthorized Kick");
+}
+
+export async function removeUserFromTournament(req, userToRemove) {
+  const tournament = getTournamentById(req.params.tid);
+
+  if (
+    req.user.username !== userToRemove ||
+    req.user.username != tournament.host
+  ) {
+    throwCustomError("unauth", "Unauthorized to remove user from tournament");
+  }
+
+  tournament.teams.keys().map((key) => {
+    const userIndex = tournament.teams[key].indexOf(userToRemove);
+    if (userIndex !== -1) {
+      tournament.teams[key].splice(userIndex, 1);
+    }
+  });
+
+  return await tournament.save();
 }

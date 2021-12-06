@@ -6,8 +6,9 @@ import {
   getHostingTournaments,
   getTournamentById,
   joinTournament,
-  kickUserFromTournament,
   changeGroupName,
+  kickUserFromGroup,
+  removeUserFromTournament,
 } from "../services/tournament.service.js";
 import { isMongoError } from "../util.js";
 
@@ -74,7 +75,7 @@ tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
 
 tournamentRouter.post("/update/kick/:tid", authenticate, async (req, res) => {
   try {
-    res.send({ tournament: await kickUserFromTournament(req) });
+    res.send({ tournament: await kickUserFromGroup(req) });
   } catch (error) {
     console.log(error);
     if (isMongoError(error)) {
@@ -88,6 +89,14 @@ tournamentRouter.post("/update/kick/:tid", authenticate, async (req, res) => {
     }
   }
 });
+
+tournamentRouter.post("/update/remove/:tid", authenticate, async (req, res) => {
+  try {
+    res.send({tournament: await removeUserFromTournament(req, req.body.userToRemove)})
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 tournamentRouter.patch("/update/groupName/:tid", authenticate, async (req, res) => {
     try {
