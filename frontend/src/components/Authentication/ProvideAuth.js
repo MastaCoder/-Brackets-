@@ -1,6 +1,6 @@
 import { useProvideAuth } from '../../hooks/Auth';
 import AuthContext from '../../contexts/authContext';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 
 const ProvideAuth = ({ sessionUser, children }) => {
 	const auth = useProvideAuth(sessionUser);

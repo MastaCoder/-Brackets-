@@ -12,13 +12,7 @@ export default function UserDashboardPage() {
   const [hostingEvents, setHostingEvents] = useState(null);
 
   const history = useHistory();
-  const [data] = useContext(DataContext);
 
-  useEffect(() => {
-
-  }, []);
-
-  // This will be an API call later
   useEffect(() => {
     axios
       .get('/api/tournaments/list/attending/0,1')
@@ -27,7 +21,7 @@ export default function UserDashboardPage() {
     axios
       .get('/api/tournaments/list/hosting/0,1')
       .then((res) => setHostingEvents(res.data.tournaments));
-  }, [data]);
+  }, []);
 
   return (
     <Container maxWidth="xl">

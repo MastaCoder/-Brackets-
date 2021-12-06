@@ -24,9 +24,9 @@ export default function LoginPage() {
 					password: password,
 				})
 			).data;
-			console.log(user);
 			// Need both id and type for the user for rendering purposes
 			auth.signin(user, () => {
+				localStorage.setItem("brackets-username", username);
 				user.type === 'user'
 					? history.push('/user')
 					: history.push('/dashboard');

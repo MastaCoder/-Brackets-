@@ -8,7 +8,6 @@ import axios from 'axios';
 export default function Navbar({ setSessionUser }) {
 	const { user, signout } = useAuth();
 	const history = useHistory();
-	console.log(user);
 
 	return (
 		<Box flexGrow={1}>
@@ -16,7 +15,6 @@ export default function Navbar({ setSessionUser }) {
 				position="static"
 				sx={{ boxShadow: 'none', backgroundColor: '#3D3B8E' }}
 			>
-				{/*<AppBar position="static" className={styles.main}>*/}
 				<Toolbar>
 					<Box flexGrow={1}>
 						<Typography variant="h6" component="div">

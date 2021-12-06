@@ -1,22 +1,17 @@
 import {Box, Container, Typography} from "@mui/material";
 import PageTitle from "../../../components/Layout/PageTitle";
 import TournamentCardList from "../../../components/Tournament/TournamentList/TournamentCardList";
-import {useContext, useEffect, useState} from "react";
-import DataContext from "../../../contexts/dataContext";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 export default function OrganizerHistoryPage() {
-  const [eventHistory, setEventHistory] = useState([]);
-  const [data] = useContext(DataContext);
+  const [eventHistory, setEventHistory] = useState(null);
 
-  // This will be an API call later
   useEffect(() => {
-    let events = [];
-    data.tournaments.forEach((tournament) => {
-      if (tournament.host === 'user' && tournament.status === 2)
-        events.push(tournament);
-    });
-    setEventHistory(events);
-  }, [data]);
+    axios
+      .get('/api/tournaments/list/hosting/2')
+      .then((res) => setEventHistory(res.data.tournaments));
+  }, []);
 
   return (
     <Container maxWidth="xl">
