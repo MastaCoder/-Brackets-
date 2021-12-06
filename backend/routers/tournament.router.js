@@ -62,8 +62,10 @@ tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
       res.status(500).send({ msg: "Internal Server Error" });
     } else if (error.name == "badId") {
       res.status(400).send({ msg: error.msg})
-    } else {
+    } else if (error.name == "notFound") {
       res.status(404).send({ msg: error.msg})
+    } else {
+      res.status(409).send({ msg: error.msg})
     }
   }
 })
