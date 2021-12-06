@@ -5,7 +5,8 @@ import {
   getAttendingTournaments,
   getHostingTournaments,
   getTournamentById,
-  joinTournament
+  joinTournament,
+  kickUserFromTournament,
 } from "../services/tournament.service.js";
 import { isMongoError } from "../util.js";
 
@@ -71,7 +72,20 @@ tournamentRouter.post("/join/:tid", authenticate, async (req, res) => {
 })
 
 tournamentRouter.post("/update/kick/:tid", authenticate, async (req, res) => {
-
+  try {
+    res.send({tournament : await kickUserFromTournament(req)})
+  } catch (error) {
+    console.log(error);
+    if (isMongoError(error)) {
+      res.status(500).send({ msg: "Internal Server Error"});
+    } else if (error.name == "badId") {
+      res.status(400).send({ msg: error.msg});
+    } else if (error.name == "notFound") {
+      res.status(404).send({ msg: error.msg});
+    } else if (error.name == "badKick") {
+      res.status(403).send({ msg: error.msg});
+    }
+  }
 })
 
 
