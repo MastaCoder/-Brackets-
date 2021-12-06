@@ -114,6 +114,15 @@ export async function joinTournament(user, tid) {
     throwCustomError("notFound", "Tournament cannot be found with id");
   }
 
+  const userTeam = tournament.teams.keys().map((key) => {
+    return tournament.teams[key].includes(user.username);
+  })
+
+  if (!userTeam.length) {
+    throwCustomError("badId", "User in tournament already");
+  }
+
+
   let groupName = getUniqueGroupName(tournament);
 
   if (tournament.members.length + 1 > tournament.maxMembers) {
