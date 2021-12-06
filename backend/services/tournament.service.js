@@ -102,6 +102,10 @@ export async function joinTournament(user, tid) {
 
   const tournament = await Tournament.findById(tid);
 
+  if (!tournament) {
+    throwCustomError("notFound", "Tournament cannot be found with id");
+  }
+
   while (!tournament.teams[groupName]) {
     groupName = generateRandomGroupName();
   }
@@ -110,10 +114,19 @@ export async function joinTournament(user, tid) {
     throwCustomError("limit", "Not enough capacity");
   }
 
-  if (!tournament) {
-    throwCustomError("notFound", "Tournament cannot be found with id");
-  }
 
+  tournament.members.push(user.username);
   tournament.teams[groupName] = [user.username];
   return await tournament.save();
+}
+
+
+export async function kickUserFromTournament(user, tid, uid) {
+
+  if (!mongoose.ObjectId.isValid(tid)) {
+    throwCustomError("badId", "Invalid Tournament Id");
+  }
+
+  
+  
 }
