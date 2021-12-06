@@ -21,7 +21,7 @@ function getUniqueGroupName(tournament) {
     groupName = generateRandomGroupName();
   }
 
-  return groupName
+  return groupName;
 }
 
 async function getTournamentList(status) {
@@ -42,12 +42,13 @@ async function getTournamentList(status) {
 }
 
 export async function getAttendingTournaments(user, status) {
-  const tournaments = (await getTournamentList(status)).filter(e => e.members.includes(user.username));
+  const tournaments = (await getTournamentList(status)).filter((e) =>
+    e.members.includes(user.username)
+  );
 
   return tournaments.map((tournament) => {
     for (const [teamName, team] of tournament.teams.entries()) {
-      if (team.includes(user.username))
-        tournament.userTeam = teamName;
+      if (team.includes(user.username)) tournament.userTeam = teamName;
 
       return tournament;
     }
@@ -73,11 +74,10 @@ export async function getTournamentById(user, id) {
   tournament.userTeam = null;
 
   for (const [teamName, team] of tournament.teams.entries()) {
-    if (team.includes(user.username))
-      tournament.userTeam = teamName;
+    if (team.includes(user.username)) tournament.userTeam = teamName;
     break;
   }
-    
+
   return tournament;
 }
 
@@ -99,12 +99,11 @@ export async function createTournament(req) {
     status: 0,
     host: req.user.username,
   });
-  
+
   return await tournament.save();
 }
 
 export async function joinTournament(user, tid) {
-  
   if (!mongoose.ObjectId.isValid(tid)) {
     throwCustomError("badId", "Invalid Tournament Id");
   }
@@ -127,9 +126,34 @@ export async function joinTournament(user, tid) {
   return tournament;
 }
 
+export async function changeGroupName(req) {
+  if (!mongoose.ObjectId.isValid(req.params.tid)) {
+    throwCustomError("badId", "Invalid Tournament Id");
+  }
+
+  const tournament = await Tournament.findById(req.params.tid);
+
+  if (!tournament) {
+    throwCustomError("notFound", "Tournament cannot be found with id");
+  }
+
+  if (!tournament.teams[req.groupName]) {
+    throwCustomError("notFound", "Group cannot be found");
+  }
+
+  if (!tournament.teams[req.groupName].includes(req.user.username)) {
+    throwCustomError("unauth", "Unauthorized group name change");
+  }
+
+  delete tournament.teams.assign({
+    [req.newGroupName]: tournament.teams[req.groupName],
+  })[req.groupName];
+
+  setUserInTournament(user, await tournament.save());
+  return tournament;
+}
 
 export async function kickUserFromTournament(req) {
-
   if (!mongoose.ObjectId.isValid(req.params.tid)) {
     throwCustomError("badId", "Invalid Tournament Id");
   }
