@@ -222,7 +222,7 @@ tournamentRouter.get("/details/:tid", checkUserLoggedIn, async (req, res) => {
 tournamentRouter.delete("/:tid", checkUserLoggedIn, async (req, res) => {
   try {
     await removeTournament(req.user, req.params.tid);
-    res.send();
+    res.send({ msg: "success"});
   } catch (error) {
     console.log(error);
     if (isMongoError(error)) {
