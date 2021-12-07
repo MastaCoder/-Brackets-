@@ -33,7 +33,7 @@ export default function LoginPage() {
 			});
 		} catch (err) {
 			setShowMessage(true);
-			setMessage(err.response.data.msg);
+			setMessage("Invalid email and password combination");
 		}
 	};
 
