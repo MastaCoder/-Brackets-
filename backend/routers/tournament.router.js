@@ -14,7 +14,8 @@ import {
   joinTournamentTeam,
   removeTournament,
   updateTournamentStatus,
-  updateTournamentInfo
+  updateTournamentInfo,
+  proceedNextBracket
 } from "../services/tournament.service.js";
 import { isMongoError } from "../util.js";
 
@@ -283,5 +284,23 @@ tournamentRouter.post("/nextstatus/:tid", checkUserLoggedIn, async (req, res) =>
 tournamentRouter.post(
   "/:tid/addBracket",
   checkUserLoggedIn,
-  async (req, res) => {}
+  async (req, res) => {
+    try {
+      res.send({tournament: await proceedNextBracket(req)})
+    } catch (error) {
+      if (isMongoError(error)) {
+        res.status(500).send({ msg: "Internal Server Error" });
+      } else if (error.name === "badId") {
+        res.status(400).send({ msg: error.msg });
+      } else if (error.name === "notFound") {
+        res.status(404).send({ msg: error.msg });
+      } else if (error.name === "unauth") {
+        res.status(403).send({ msg: error.msg});
+      } else if (error.name === "badstatus") {
+        res.status(400).send({ msg: error.msg});
+      } else if (error.name === "badrequest") {
+        res.status(400).send({ msg: error.msg});
+      }
+    }
+  }
 );
