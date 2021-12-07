@@ -1,12 +1,15 @@
 import PageSubTitle from "../../../Layout/PageSubTitle";
 import {Bracket} from "react-brackets";
-import {Box, Button, FormControl, MenuItem, Select} from "@mui/material";
+import {Box, Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import bracketsConverter from "../../../../lib/bracketsConverter";
 import {useState} from "react";
 import {uid} from "react-uid";
+import {useAuth} from "../../../../hooks/Auth";
 
 export default function TournamentViewBrackets(props) {
-  const [pairSelector, setPairSelector] = useState(new Array(props.tournament.brackets.at(-1).length).fill(-1));
+  const { user } = useAuth();
+  const [pairSelector, setPairSelector] = useState(new Array(props.tournament.brackets.at(-1).length).fill(null));
+  // const [pairSelector, setPairSelector] = useState(props.tournament.brackets.at(-1).map(e => e[0]));
 
   const updateSelector = (index, value) => {
     let pairSelectorCopy = [...pairSelector];
@@ -16,7 +19,7 @@ export default function TournamentViewBrackets(props) {
 
   const nextRound = (event) => {
     event.preventDefault();
-    if (pairSelector.includes(-1)) {
+    if (pairSelector.includes(null)) {
       alert("Make sure every pair is selected!");
       return;
     }
@@ -35,7 +38,7 @@ export default function TournamentViewBrackets(props) {
         />
       </Box>
 
-      {props.tournament.host === 'user' && (
+      {props.tournament.host === user.username && (
         <Box maxWidth={450}>
           <PageSubTitle>
             Update brackets
@@ -43,14 +46,18 @@ export default function TournamentViewBrackets(props) {
           <Box component="form" mb={4} onSubmit={nextRound}>
             {props.tournament.brackets.at(-1).map((pair, pairIndex) => (
               <FormControl fullWidth margin="normal" key={uid(pair)}>
+                <InputLabel id={`team-${pairIndex}`}>Team {pairIndex + 1}</InputLabel>
                 <Select
                   value={pairSelector[pairIndex]}
                   onChange={(e) => updateSelector(pairIndex, e.target.value)}
+                  label={`team-${pairIndex}`}
                 >
-                  {pair.map(single => (
-                    <MenuItem value={single} key={single}>
-                      {single}
-                    </MenuItem>
+                  {pair.map((single) => (
+                    single !== null && (
+                      <MenuItem value={single} key={single}>
+                        {single}
+                      </MenuItem>
+                    )
                   ))}
                 </Select>
               </FormControl>
