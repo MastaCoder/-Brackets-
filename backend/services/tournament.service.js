@@ -19,22 +19,25 @@ async function validateTournamentId(id) {
   return tournament;
 }
 
-async function generateStartUpBracket(tournament) {
-  const pool = tournament.teams.keys();
+function generateStartUpBracket(tournament) {
+  const pool = [ ...tournament.teams.keys() ];
   const bracket = [];
   while (pool.length) {
     const matchUp = [];
     let choice = Math.floor(Math.random() * pool.length);
     matchUp.push(pool[choice]);
     pool.splice(choice, 1);
-    choice = Math.floor(Math.random() * pool.length);
+
     if (!pool.length) {
       matchUp.push(null);
     } else {
+      choice = Math.floor(Math.random() * pool.length);
       matchUp.push(pool[choice]);
       pool.splice(choice, 1);
     }
+
     bracket.push(matchUp);
+    // console.log("pushing", bracket);
   }
 
   return bracket;
@@ -327,8 +330,10 @@ export async function updateTournamentStatus(req) {
     throwCustomError("badstatus", "Tournament has already ended");
   }
 
-  if (tournament.status === 1) {
-    tournament.bracket.push(generateStartUpBracket(tournament));
+  if (tournament.status === 0) {
+    const bracket = generateStartUpBracket(tournament);
+    console.log(bracket);
+    tournament.brackets.push(bracket);
   }
 
   tournament.status += 1;
