@@ -9,13 +9,16 @@ import { adminRouter } from './routers/admin.router.js';
 import { authRouter } from './routers/auth.router.js';
 import { sessionRouter } from './routers/session.router.js';
 import { tournamentRouter } from './routers/tournament.router.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 /* ---------------- Middlewares ---------------- */
-app.use(cors());
+if (process.env.NODE_ENV === "development") app.use(cors());
+
 app.use(bodyParser.json());
 // Create a session and session cookie
 app.use(
