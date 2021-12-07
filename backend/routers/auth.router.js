@@ -11,6 +11,14 @@ export const authRouter = Router();
 
 const _500_message = 'An unexpected error occured, please try again.';
 
+/**
+ * Attempts to register a new user.
+ * Expects req = {
+ *  username: ...,
+ *  password: ...,
+ *  email: ...,
+ * }
+ */
 authRouter.post('/register', async (req, res) => {
 	const { username, email, password } = req.body;
 
@@ -34,6 +42,18 @@ authRouter.post('/register', async (req, res) => {
 	}
 });
 
+/**
+ * Attempts to log in an existing user.
+ * Expects req = {
+ *  username: ...,
+ *  password: ...,
+ * }
+ * Returns {
+ *  id: user's MongoDB id,
+ *  type: "admin" or "user",
+ *  username: ...
+ * } on success
+ */
 authRouter.post('/login', async (req, res) => {
 	const { username, password } = req.body;
 
@@ -55,6 +75,14 @@ authRouter.post('/login', async (req, res) => {
 	}
 });
 
+/**
+ * Attempts to update an existing user's details. User must be logged in to access this.
+ * Expects req = {
+ *  newUsername: ...,
+ *  newEmail: ...,
+ *  newPassword: ...,
+ * }
+ */
 authRouter.post('/update', checkUserLoggedIn, async (req, res) => {
 	const {
 		newUsername: newUsername,
@@ -85,6 +113,10 @@ authRouter.post('/update', checkUserLoggedIn, async (req, res) => {
 	}
 });
 
+/**
+ * Attempts to log out a user. 
+ * Expects a valid session in req.
+ */
 authRouter.post('/logout', checkUserLoggedIn, async (req, res) => {
 	req.session.destroy((error) => {
 		if (error) {
@@ -95,6 +127,14 @@ authRouter.post('/logout', checkUserLoggedIn, async (req, res) => {
 	});
 });
 
+/**
+ * Gets the details of the logged in user.
+ * Requires a valid session in req.
+ * Returns P
+ *  username: ...,
+ *  email: ...,
+ * }
+ */
 authRouter.post('/getloggedinuserdetails', checkUserLoggedIn, async (req, res) => {
 	res.status(200).send({
 		username: req.user.username,
