@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 
 export default function UserJoinPage() {
-  const [publicEvents, setPublicEvents] = useState([]);
+  const [publicEvents, setPublicEvents] = useState(null);
 
   // This will be an API call later (attending events)
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function UserJoinPage() {
       {/* All current events */}
       <Box>
         <PageSubTitle>
-          Current events
+          Public events
         </PageSubTitle>
         <TournamentCardList
           cards={publicEvents}

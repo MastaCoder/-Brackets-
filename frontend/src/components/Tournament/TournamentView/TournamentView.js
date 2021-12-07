@@ -7,7 +7,7 @@ import TournamentViewTeamCardList from "./TournamentViewTeamCardList/TournamentV
 import TournamentViewTeamCard from "./TournamentViewTeamCardList/TournamentViewTeamCard/TournamentViewTeamCard";
 import TournamentUpdateModal from "./TournamentUpdateModal/TournamentUpdateModal";
 import TournamentViewBrackets from "./TournamentViewBrackets/TournamentViewBrackets";
-import { useState, useContext } from "react";
+import {useState, useContext} from "react";
 import DataContext from "../../../contexts/dataContext";
 import {useAuth} from "../../../hooks/Auth";
 
@@ -70,29 +70,44 @@ export default function TournamentView(props) {
           justify="center"
         />
       </Box>
-      {(eventJoinable || props.tournament.status > 0) && (
-        <Box textAlign="center" my={2}>
-          {(eventJoinable && (
+      <Box display="flex" justifyContent="center" gap={1}>
+        {eventJoinable && (
+          <Box>
             <Button
               size="large"
               variant="contained"
               color="success"
-              onClick={() => alert("To be implemented in phase 2")}
+              onClick={() => props.joinTournament()}
             >
               Join event
             </Button>
-          )) || (props.tournament.status > 0 && (
+          </Box>
+        )}
+        {props.tournament.status > 0 && (
+          <Box>
             <Button
-            size="large"
-            variant="contained"
-            color={tournamentView ? 'secondary' : 'info'}
-            onClick={() => setTournamentView(!tournamentView)}
+              size="large"
+              variant="contained"
+              color={tournamentView ? 'secondary' : 'info'}
+              onClick={() => setTournamentView(!tournamentView)}
             >
               View Tournament {tournamentView ? 'Details' : 'Bracket'}
             </Button>
-          ))}
-        </Box>
-      )}
+          </Box>
+        )}
+        {props.tournament.userTeam !== null && (
+          <Box>
+            <Button
+              size="large"
+              variant="contained"
+              color={"warning"}
+              onClick={() => props.kickTournament(user.username)}
+            >
+              Leave event
+            </Button>
+          </Box>
+        )}
+      </Box>
 
       {tournamentView ? (
         <TournamentViewBrackets
@@ -101,7 +116,7 @@ export default function TournamentView(props) {
       ) : (
         <>
           {/*phase 2, put in its own component*/}
-          {props.tournament.userTeam !== null && (
+          {(props.tournament.userTeam !== null) && (
             <>
               <PageSubTitle>
                 Your Team
@@ -192,15 +207,15 @@ export default function TournamentView(props) {
                   </Button>
                 }
               </Box>
-              <Box maxWidth={550}>
-                <TextField
-                  label="Direct Invite Link (not functional - phase 2)"
-                  variant="outlined"
-                  defaultValue="http://localhost:3000/tournament/1/23489dxfn12dx"
-                  fullWidth
-                  InputProps={{ readOnly: true }}
-                />
-              </Box>
+              {/*<Box maxWidth={550}>*/}
+              {/*  <TextField*/}
+              {/*    label="Direct Invite Link (not functional - phase 2)"*/}
+              {/*    variant="outlined"*/}
+              {/*    defaultValue="http://localhost:3000/tournament/1/23489dxfn12dx"*/}
+              {/*    fullWidth*/}
+              {/*    InputProps={{ readOnly: true }}*/}
+              {/*  />*/}
+              {/*</Box>*/}
             </>
           )}
         </>

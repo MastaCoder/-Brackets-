@@ -4,10 +4,12 @@ import {
   createTournament,
   getAttendingTournaments,
   getHostingTournaments,
+  getPublicTournaments,
   getTournamentById,
   joinTournament,
-  kickUserFromTournament,
   changeGroupName,
+  kickUserFromGroup,
+  removeUserFromTournament,
 } from "../services/tournament.service.js";
 import { isMongoError } from "../util.js";
 
@@ -38,6 +40,9 @@ tournamentRouter.get("/list/:which/:status", checkUserLoggedIn, async (req, res)
         break;
       case "hosting":
         tournaments = await getHostingTournaments(req.user, split_status);
+        break;
+      case "public":
+        tournaments = await getPublicTournaments(req.user, split_status);
         break;
       default:
         res.status(400).send({ msg: "Invalid request type" });
@@ -72,9 +77,24 @@ tournamentRouter.post("/join/:tid", checkUserLoggedIn, async (req, res) => {
   }
 });
 
+tournamentRouter.post("/kick/:tid", checkUserLoggedIn, async (req, res) => {
+  try {
+    res.send({tournament: await removeUserFromTournament(req, req.body.userToRemove)})
+  } catch (error) {
+    console.log(error);
+    if (isMongoError(error)) {
+      res.status(500).send({ msg: "Internal Server Error" });
+    } else if (error.name === "badId") {
+      res.status(400).send({ msg: error.msg });
+    } else if (error.name === "unauth") {
+      res.status(403).send({ msg: error.msg});
+    }
+  }
+})
+
 tournamentRouter.post("/update/kick/:tid", checkUserLoggedIn, async (req, res) => {
   try {
-    res.send({ tournament: await kickUserFromTournament(req) });
+    res.send({ tournament: await kickUserFromGroup(req) });
   } catch (error) {
     console.log(error);
     if (isMongoError(error)) {
@@ -114,7 +134,7 @@ tournamentRouter.get("/details/:tid", checkUserLoggedIn, async (req, res) => {
     const tournament = await getTournamentById(req.user, id);
     if (!tournament)
       res.status(404).send({ msg: "Requested Tournament Not Found" });
-    else res.send(tournament);
+    else res.send({ tournament });
   } catch (error) {
     if (isMongoError(error)) {
       res.status(500).send({ msg: "Internal Server Error" });

@@ -28,7 +28,7 @@ import { useEffect, useState } from 'react';
 import TournamentViewPage from './views/Tournament/View/TournamentViewPage';
 import axios from 'axios';
 
-function App() {
+export default function App() {
 	const theme = createTheme({
 		palette: {
 			primary: {
@@ -140,5 +140,3 @@ function App() {
 		</DataContext.Provider>
 	);
 }
-
-export default App;
