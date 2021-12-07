@@ -55,16 +55,10 @@ async function getTournamentList(status) {
 
   if (status.includes(-1)) return await Tournament.find();
 
-  let parsedStatus = status.map((e) => {
-    e = parseInt(e);
-    if (!statuses.includes(e)) {
-      throw Error("Invalid status type");
-    }
+  let parsedStatus = parseInt(status);
+  if (!statuses.includes(parsedStatus)) throw Error();
 
-    return { status: e };
-  });
-
-  return await Tournament.find({ $or: parsedStatus });
+  return await Tournament.find({ status: parsedStatus });
 }
 
 async function kickFromTeam(userToRemove, tournament) {
