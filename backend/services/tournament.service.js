@@ -362,10 +362,11 @@ export async function proceedNextBracket(req) {
 
   if (proceedingTeams.length === 1) {
     proceedingTeams.push(null);
-    tournament.brackets.push(proceedingTeams);
+    tournament.brackets.push([ proceedingTeams ]);
     await tournament.save();
+    console.log(proceedingTeams);
     return await updateTournamentStatus(req);
-  } 
+  }
 
   const lastBracket = tournament.brackets.at(-1);
   const bracket = []
@@ -382,7 +383,6 @@ export async function proceedNextBracket(req) {
     }
 
     matchUp.push(proceedingTeams[i]);
-    console.log("matchup", matchUp);
 
     if (!proceedingTeams.at(i + 1)){
       matchUp.push(null);

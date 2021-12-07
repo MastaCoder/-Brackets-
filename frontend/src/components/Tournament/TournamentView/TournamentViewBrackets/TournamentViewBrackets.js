@@ -2,7 +2,7 @@ import PageSubTitle from "../../../Layout/PageSubTitle";
 import {Bracket} from "react-brackets";
 import {Box, Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import bracketsConverter from "../../../../lib/bracketsConverter";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {uid} from "react-uid";
 import {useAuth} from "../../../../hooks/Auth";
 
@@ -10,6 +10,10 @@ export default function TournamentViewBrackets(props) {
   const { user } = useAuth();
   const [pairSelector, setPairSelector] = useState(new Array(props.tournament.brackets.at(-1).length).fill(null));
   // const [pairSelector, setPairSelector] = useState(props.tournament.brackets.at(-1).map(e => e[0]));
+
+  useEffect(() => {
+    setPairSelector(new Array(props.tournament.brackets.at(-1).length).fill(null));
+  }, [props.tournament.brackets])
 
   const updateSelector = (index, value) => {
     let pairSelectorCopy = [...pairSelector];
@@ -38,7 +42,7 @@ export default function TournamentViewBrackets(props) {
         />
       </Box>
 
-      {props.tournament.host === user.username && (
+      {props.tournament.host === user.username && props.tournament.status === 1 && (
         <Box maxWidth={450}>
           <PageSubTitle>
             Update brackets
