@@ -224,7 +224,6 @@ export async function regenerateTournamentId(tid) {
   await tournament.remove();
   await newTournament.save();
   return newTournament._id;
-
 }
 
 export async function joinTournamentTeam(user, groupName, tid) {

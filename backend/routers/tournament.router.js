@@ -151,7 +151,7 @@ tournamentRouter.post(
   }
 );
 
-tournamentRouter.post("/regen/:tid", checkUserLoggedIn, async (req, res) => {
+tournamentRouter.post("/regenerate/:tid", checkUserLoggedIn, async (req, res) => {
   try {
     const tournamentId = await regenerateTournamentId(req.params.tid);
     res.send({ id: tournamentId });

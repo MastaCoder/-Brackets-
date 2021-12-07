@@ -175,7 +175,6 @@ export default function TournamentView(props) {
           {props.tournament.host === user.username && (
             <>
               <PageSubTitle>Event Settings</PageSubTitle>
-    
               <Box mt={2} mb={3} display="flex" gap={1}>
                 <Button variant="contained" onClick={handleOpen}>
                   Update the Tournament
@@ -189,6 +188,15 @@ export default function TournamentView(props) {
                     Start Tournament
                   </Button>
                 }
+                {props.tournament.status === 0 &&
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => props.regenerateLink()}
+                >
+                  Regenerate event link
+                </Button>
+                }
                 {props.tournament.status === 1 &&
                   <Button
                     variant="contained"
@@ -198,6 +206,16 @@ export default function TournamentView(props) {
                     End Tournament Early
                   </Button>
                 }
+              </Box>
+              <Box maxWidth={550}>
+                <TextField
+                  label="Event invite link"
+                  variant="outlined"
+                  defaultValue={window.location.href}
+                  fullWidth
+                  onClick={(e) => e.target.select()}
+                  InputProps={{ readOnly: true }}
+                />
               </Box>
             </>
           )}
