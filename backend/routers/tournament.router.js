@@ -22,6 +22,18 @@ import { isMongoError } from '../util.js';
 
 export const tournamentRouter = Router();
 
+/* POST /tournaments
+ * Creates a new tournament hosted by <user>. Returns data that made the event.
+ * Error message on failure.
+ * Body Expected: 
+ * {
+ * 	 name: "name",
+ *   description: "description",
+ * 	 public: true/false,
+ *   maxMembers: 2-100,
+ *   maxTeamMembers: 1-100,
+ * }
+ */
 tournamentRouter.post('/', checkUserLoggedIn, async (req, res) => {
 	try {
 		await createTournament(req);
@@ -37,6 +49,14 @@ tournamentRouter.post('/', checkUserLoggedIn, async (req, res) => {
 	}
 });
 
+
+/* GET /tournaments/list/:which/:status
+ * Gets a list of all tournaments that are of <which> and <status>.
+ * which = [attending, hosting, public]
+ * status = [0, 1, 2]
+ * Returns the list of tournaments on success. 
+ * Error message on failure.
+ */
 tournamentRouter.get(
 	'/list/:which/:status',
 	checkUserLoggedIn,
@@ -71,6 +91,11 @@ tournamentRouter.get(
 	}
 );
 
+
+/** POST /tournaments/join/:tid
+ *  Adds the user the tournament <tid>. On success returns the tournament joined.
+ *  Error message on failure.
+ */
 tournamentRouter.post('/join/:tid', checkUserLoggedIn, async (req, res) => {
 	try {
 		res.send({ tournament: await joinTournament(req.user, req.params.tid) });
@@ -90,6 +115,11 @@ tournamentRouter.post('/join/:tid', checkUserLoggedIn, async (req, res) => {
 	}
 });
 
+
+/** POST /tournaments/kick/:tid
+ * Removes user from the tournament <tid>. On success returns the tournament object.
+ * Error message on failure.
+ */
 tournamentRouter.post('/kick/:tid', checkUserLoggedIn, async (req, res) => {
 	try {
 		res.send({
@@ -109,6 +139,16 @@ tournamentRouter.post('/kick/:tid', checkUserLoggedIn, async (req, res) => {
 	}
 });
 
+
+/** PATCH /tournaments/teams/changename/:tid
+ *  Changes the name of the tournament <tid>, returns tournament object on success.
+ *  Error message on failure.
+ *  Expected Body: 
+ *  { 
+ *  	groupName: "groupName",
+ *      newGroupName: "newGroupName",
+ *  }
+ */
 tournamentRouter.patch(
 	'/teams/changename/:tid',
 	checkUserLoggedIn,
@@ -134,6 +174,16 @@ tournamentRouter.patch(
 	}
 );
 
+
+/** POST /tournaments/teams/kick/:tid
+ *  Removes a user from a team. On success returns the tournament object.
+ *  Error message on failure.
+ *  Expected Body: 
+ *  { 
+ * 	  groupName: "groupName",
+ *    kickedUser: "kickedUser",
+ *  }
+ */
 tournamentRouter.post(
 	'/teams/kick/:tid',
 	checkUserLoggedIn,
@@ -157,6 +207,12 @@ tournamentRouter.post(
 	}
 );
 
+
+/** POST /tournaments/regenerate/:tid
+ *  Regenerates the tournament <tid>'s id so that private tournaments
+ *  can "expire" a link. Returns new and copied tournament object. 
+ *  Error message on failure.
+ */
 tournamentRouter.post(
 	'/regenerate/:tid',
 	checkUserLoggedIn,
@@ -180,6 +236,15 @@ tournamentRouter.post(
 	}
 );
 
+
+/** POST /tournaments/teams/join/:tid
+ *  Places user into a team they joined for tournament <tid>.
+ *  Returns tournament object after placement. Error message on failure.
+ *  Expected Body: 
+ *  {
+ *    groupName: "groupName"
+ *  }
+ */
 tournamentRouter.post(
 	'/teams/join/:tid',
 	checkUserLoggedIn,
@@ -209,6 +274,10 @@ tournamentRouter.post(
 	}
 );
 
+/** GET /tournaments/details/:tid
+ *  Gets the tournament object with id <tid>. Returns the tournament object on success.
+ *  Error message on failure.
+ */
 tournamentRouter.get('/details/:tid', checkUserLoggedIn, async (req, res) => {
 	const id = req.params.tid;
 
@@ -226,6 +295,11 @@ tournamentRouter.get('/details/:tid', checkUserLoggedIn, async (req, res) => {
 	}
 });
 
+
+/** DELETE /tournaments/:tid
+ *  Deletes the tournament <tid>. Returns generic success message on success.
+ *  Error message on failure.
+ */
 tournamentRouter.delete('/:tid', checkUserLoggedIn, async (req, res) => {
 	try {
 		const tournamentName = await removeTournament(req.user, req.params.tid);
@@ -245,6 +319,17 @@ tournamentRouter.delete('/:tid', checkUserLoggedIn, async (req, res) => {
 	}
 });
 
+
+/** PATCH /tournaments/updateinfo/:tid
+ *  Updates the basic info of tournament <tid>: description and public status.
+ *  Returns the updated tournamnet object on success.
+ *  Error message on failure.
+ *  Expected Body:
+ *  {
+ *    description: "description",
+ *    public: true/false,
+ *  }
+ */
 tournamentRouter.patch(
 	'/updateinfo/:tid',
 	checkUserLoggedIn,
@@ -268,6 +353,12 @@ tournamentRouter.patch(
 	}
 );
 
+
+/** POST /tournaments/nextstatus/:tid
+ *  Progresses tournament <tid>'s status to the next stage. 
+ *  Returns the updated tournament object on success.
+ *  Error message on failure.
+ */
 tournamentRouter.post(
 	'/nextstatus/:tid',
 	checkUserLoggedIn,
@@ -293,6 +384,18 @@ tournamentRouter.post(
 	}
 );
 
+
+/** POST /tournaments/nextbracket/:tid
+ *  Proceeds the tournament <tid>'s brackets. Adds new bracket based on
+ *  past teams in earlier bracket. Returns tournament object on success.
+ *  Error message on failure.
+ *  Expected Body: 
+ *  {
+ * 		proceedingTeams: ["team1", "team2", "team3"]
+ *  }
+ *  Must ensure teams are in the tournament and actually ordered properly
+ *  to match bracket match ups.
+ */
 tournamentRouter.post(
 	'/nextbracket/:tid',
 	checkUserLoggedIn,
