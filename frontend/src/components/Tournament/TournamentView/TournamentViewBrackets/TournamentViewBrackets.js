@@ -1,6 +1,6 @@
 import PageSubTitle from "../../../Layout/PageSubTitle";
 import {Bracket} from "react-brackets";
-import {Alert, Box, Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {Alert, Box, Button, FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import bracketsConverter from "../../../../lib/bracketsConverter";
 import {useEffect, useState} from "react";
 import {uid} from "react-uid";
@@ -15,12 +15,16 @@ export default function TournamentViewBrackets(props) {
   const { width, height } = useWindowSize();
   const [winnerEffect, setWinnerEffect] = useState(false);
 
+  const isHost = props.tournament.host === user.username || user.type === 'admin';
+  const tournyEnded = props.tournament.brackets.at(-1)?.at(-1)?.at(-1) === null &&
+    props.tournament.brackets.at(-1).length === 1;
+
   useEffect(() => {
     setPairSelector(new Array(props.tournament.brackets.at(-1).length).fill(null));
   }, [props.tournament.brackets]);
 
   useEffect(() => {
-    if (props.tournament.brackets.at(-1)?.at(-1)?.at(-1) === null) {
+    if (tournyEnded) {
       setWinnerEffect(true);
       setTimeout(() => {
         setWinnerEffect(false);
@@ -47,6 +51,17 @@ export default function TournamentViewBrackets(props) {
 
 	return (
 		<>
+      {tournyEnded && (
+        <Box mt={7} mb={5} textAlign="center">
+          <Typography variant="h4">
+            Tournament Winner
+          </Typography>
+          <Typography variant="h1">
+            {props.tournament.brackets.at(-1)?.at(-1)[0]}!
+          </Typography>
+        </Box>
+      )}
+
 			<PageSubTitle>Brackets View</PageSubTitle>
 
       <Box my={2}>
@@ -56,7 +71,7 @@ export default function TournamentViewBrackets(props) {
         />
       </Box>
 
-      {props.tournament.host === user.username && props.tournament.status === 1 && (
+      {isHost && props.tournament.status === 1 && (
         <Box maxWidth={450}>
           <PageSubTitle>
             Update brackets
@@ -100,8 +115,8 @@ export default function TournamentViewBrackets(props) {
 
       {winnerEffect && (
         <Confetti
-          width={width - 10}
-          height={height - 10}
+          width={width - 30}
+          height={height - 30}
           numberOfPieces={50}
         />
       )}

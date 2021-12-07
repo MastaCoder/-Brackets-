@@ -35,7 +35,6 @@ function generateStartUpBracket(tournament) {
 		}
 
 		bracket.push(matchUp);
-		// console.log("pushing", bracket);
 	}
 
 	return bracket;
@@ -232,7 +231,8 @@ export async function removeUserFromTournament(req, userToRemove) {
 
 	if (
 		req.user.username !== userToRemove &&
-		req.user.username !== tournament.host
+		req.user.username !== tournament.host &&
+    req.user.type !== 'admin'
 	) {
 		throwCustomError('unauth', 'Unauthorized to remove user from tournament');
 	}
@@ -314,7 +314,7 @@ export async function updateTournamentInfo(req) {
 	const tid = req.params.tid;
 	const tournament = await validateTournamentId(tid);
 
-	if (tournament.host !== req.user.username || req.user.type !== 'admin') {
+	if (tournament.host !== req.user.username && req.user.type !== 'admin') {
 		throwCustomError('unauth', 'Unauthorized to update tournament');
 	}
 
@@ -331,7 +331,7 @@ export async function updateTournamentStatus(req) {
 	const tid = req.params.tid;
 	const tournament = await validateTournamentId(tid);
 
-	if (tournament.host !== req.user.username || req.user.type !== 'admin') {
+	if (tournament.host !== req.user.username && req.user.type !== 'admin') {
 		throwCustomError('unauth', 'Unauthorized to update tournament');
 	}
 
@@ -341,7 +341,6 @@ export async function updateTournamentStatus(req) {
 
 	if (tournament.status === 0) {
 		const bracket = generateStartUpBracket(tournament);
-		console.log(bracket);
 		tournament.brackets.push(bracket);
 	}
 
@@ -363,7 +362,7 @@ export async function proceedNextBracket(req) {
 	const tournament = await validateTournamentId(tid);
 	const proceedingTeams = req.body.proceedingTeams;
 
-	if (tournament.host !== req.user.username || req.user.type !== 'admin') {
+	if (tournament.host !== req.user.username && req.user.type !== 'admin') {
 		throwCustomError('unauth', 'Unauthorized to update tournament');
 	}
 
@@ -375,7 +374,6 @@ export async function proceedNextBracket(req) {
 		proceedingTeams.push(null);
 		tournament.brackets.push([proceedingTeams]);
 		await tournament.save();
-		console.log(proceedingTeams);
 		return await updateTournamentStatus(req);
 	}
 
