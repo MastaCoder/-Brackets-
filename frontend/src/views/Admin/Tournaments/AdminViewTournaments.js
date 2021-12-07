@@ -3,22 +3,35 @@ import { useState } from 'react';
 import PageTitle from '../../../components/Layout/PageTitle';
 import TournamentCardList from '../../../components/Tournament/TournamentList/TournamentCardList';
 import data from '../../../data/data';
+import { useEffect } from 'react';
+import { useHistory } from 'react-router';
+import axios from 'axios';
 
 const AdminViewTournaments = (props) => {
-	const [tournaments] = useState(data.tournaments);
+  useEffect(() => {
+    // Get num active and banned users
+    (async function () {
+      let status;
+      if (props.match.params.filter === "all") status = -1;
+      else if (props.match.params.filter === "notstarted") status = 0;
+      else if (props.match.params.filter === "ongoing") status = 1;
+      else history.push('/dashboard');
+
+      const res = await axios.get(`/api/admin/listtournaments/${status}`, {});
+      console.log(res);
+      setTournaments(res.data);
+    })();
+  }, []);
+
+	const [tournaments, setTournaments] = useState(data.tournaments);
+  const history = useHistory();
     
 	return (
 		<Container component="main">
 			<PageTitle variant="h4" sx={{ mb: 5, fontWeight: 'bold' }}>
 				View Tournaments
 			</PageTitle>
-			<TournamentCardList cards={ tournaments.filter(tournament => {
-        if (props.match.params.filter === "all") return true;
-        else if (props.match.params.filter === "notstarted") return tournament.status === 0;
-        else if (props.match.params.filter === "ongoing") return tournament.status === 1;
-        else if (props.match.params.filter === "finished") return tournament.status === 2;
-				return false;
-      }) }/>
+			<TournamentCardList cards={tournaments}/>
 		</Container>
 	);
 };
