@@ -127,7 +127,7 @@ tournamentRouter.get("/details/:tid", checkUserLoggedIn, async (req, res) => {
     const tournament = await getTournamentById(req.user, id);
     if (!tournament)
       res.status(404).send({ msg: "Requested Tournament Not Found" });
-    else res.send(tournament);
+    else res.send({ tournament });
   } catch (error) {
     if (isMongoError(error)) {
       res.status(500).send({ msg: "Internal Server Error" });

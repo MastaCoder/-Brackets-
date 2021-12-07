@@ -9,7 +9,7 @@ export default function TournamentViewPage(props) {
   useEffect(() => {
     axios
       .get(`/api/tournaments/details/${props.match.params.id}`)
-      .then((res) => setTournament(res.data));
+      .then((res) => setTournament(res.data.tournament));
   }, [props.match.params.id]);
 
   // kick a user, to be replaced with an API call in the future
@@ -29,7 +29,7 @@ export default function TournamentViewPage(props) {
   const onJoinTournament = async () => {
     try {
       const res = await axios.post(`/api/tournaments/join/${props.match.params.id}`);
-      setTournament(res.data);
+      setTournament(res.data.tournament);
     } catch (err) {
       console.log(err);
     }

@@ -3,21 +3,10 @@ import mongoose from "mongoose";
 import { Tournament } from "../models/tournament.model.js";
 import { generateRandomGroupName, throwCustomError } from "../util.js";
 
-function setUserInTournament(user, tournament) {
-  for (const [teamName, team] of tournament.teams.entries()) {
-    if (team.includes(user.username)) {
-      tournament.userTeam = teamName;
-      return true;
-    }
-
-    return false;
-  }
-}
-
 async function validateTournamentId(id) {
-  if (!mongoose.types.ObjectId.isValid(id)) {
-    throwCustomError("badId", "Invalid Tournament Id");
-  }
+  // if (!mongoose.types.ObjectId.isValid(id)) {
+  //   throwCustomError("badId", "Invalid Tournament Id");
+  // }
 
   const tournament = await Tournament.findById(id);
 
@@ -31,7 +20,7 @@ async function validateTournamentId(id) {
 function getUniqueGroupName(tournament) {
   let groupName = generateRandomGroupName();
 
-  while (!tournament.teams[groupName]) {
+  while (groupName in tournament.teams) {
     groupName = generateRandomGroupName();
   }
 
@@ -62,10 +51,13 @@ export async function getAttendingTournaments(user, status) {
 
   return tournaments.map((tournament) => {
     for (const [teamName, team] of tournament.teams.entries()) {
-      if (team.includes(user.username)) tournament.userTeam = teamName;
-
-      return tournament;
+      if (team.includes(user.username)) {
+        tournament.userTeam = teamName;
+        return tournament;
+      }
     }
+
+    return tournament;
   });
 }
 
@@ -118,13 +110,9 @@ export async function createTournament(req) {
 }
 
 export async function joinTournament(user, tid) {
-  const tournament = validateTournamentId(tid);
+  const tournament = await validateTournamentId(tid);
 
-  const userTeam = tournament.teams.keys().map((key) => {
-    return tournament.teams[key].includes(user.username);
-  });
-
-  if (!userTeam.length) {
+  if (tournament.members.includes(user.username)) {
     throwCustomError("badId", "User in tournament already");
   }
 
@@ -135,13 +123,15 @@ export async function joinTournament(user, tid) {
   }
 
   tournament.members.push(user.username);
-  tournament.teams[groupName] = [user.username];
-  setUserInTournament(user, await tournament.save());
+  tournament.teams.set(groupName, [user.username]);
+  await tournament.save()
+
+  tournament.userTeam = groupName;
   return tournament;
 }
 
 export async function changeGroupName(req) {
-  const tournament = validateTournamentId(req.params.tid);
+  const tournament = await validateTournamentId(req.params.tid);
 
   if (!tournament.teams[req.body.groupName]) {
     throwCustomError("notFound", "Group cannot be found");
@@ -160,7 +150,7 @@ export async function changeGroupName(req) {
 }
 
 export async function kickUserFromGroup(req) {
-  const tournament = validateTournamentId(req.params.tid);
+  const tournament = await validateTournamentId(req.params.tid);
 
   const group = tournament.teams[req.body.groupName];
 
@@ -186,7 +176,7 @@ export async function kickUserFromGroup(req) {
 }
 
 export async function removeUserFromTournament(req, userToRemove) {
-  const tournament = validateTournamentId(req.params.tid);
+  const tournament = await validateTournamentId(req.params.tid);
 
   if (
     req.user.username !== userToRemove ||
@@ -195,6 +185,7 @@ export async function removeUserFromTournament(req, userToRemove) {
     throwCustomError("unauth", "Unauthorized to remove user from tournament");
   }
 
+  // THIS WILL NOT WORK
   tournament.teams.keys().map((key) => {
     const userIndex = tournament.teams[key].indexOf(userToRemove);
     if (userIndex !== -1) {
