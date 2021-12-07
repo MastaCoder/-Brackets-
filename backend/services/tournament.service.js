@@ -182,6 +182,10 @@ export async function changeGroupName(req) {
   const groupName = req.body.groupName;
   const newGroupName = req.body.newGroupName;
 
+  if (tournament.teams.get(newGroupName)) {
+    throwCustomError("exists", "Group already exists");
+  }
+
   if (!tournament.teams.get(groupName)) {
     throwCustomError("notFound", "Group cannot be found");
   }
@@ -189,6 +193,7 @@ export async function changeGroupName(req) {
   if (!tournament.teams.get(groupName).includes(req.user.username)) {
     throwCustomError("unauth", "Unauthorized group name change");
   }
+
 
   tournament.teams.set(newGroupName, tournament.teams.get(groupName));
   tournament.teams.delete(groupName);

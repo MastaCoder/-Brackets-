@@ -123,6 +123,8 @@ tournamentRouter.patch(
         res.status(404).send({ msg: error.msg });
       } else if (error.name === "unauth") {
         res.status(403).send({ msg: error.msg });
+      } else if (error.name === "exists") {
+        res.status(409).send({ msg: error.msg});
       } else {
         res.status(400).send({ msg: "Bad Request" });
       }
