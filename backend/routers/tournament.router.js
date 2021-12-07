@@ -73,12 +73,14 @@ tournamentRouter.post("/join/:tid", checkUserLoggedIn, async (req, res) => {
     console.log(error);
     if (isMongoError(error)) {
       res.status(500).send({ msg: "Internal Server Error" });
-    } else if (error.name == "badId") {
+    } else if (error.name === "badId") {
       res.status(400).send({ msg: error.msg });
-    } else if (error.name == "notFound") {
+    } else if (error.name === "notFound") {
       res.status(404).send({ msg: error.msg });
-    } else {
+    } else if (error.name === "limit") {
       res.status(409).send({ msg: error.msg });
+    } else {
+      res.status(400).send({ msg: "Bad Request" });
     }
   }
 });
@@ -96,6 +98,8 @@ tournamentRouter.post("/kick/:tid", checkUserLoggedIn, async (req, res) => {
       res.status(400).send({ msg: error.msg });
     } else if (error.name === "unauth") {
       res.status(403).send({ msg: error.msg });
+    } else {
+      res.status(400).send({ msg: "Bad Request" });
     }
   }
 });
@@ -116,6 +120,8 @@ tournamentRouter.patch(
         res.status(404).send({ msg: error.msg });
       } else if (error.name === "unauth") {
         res.status(403).send({ msg: error.msg });
+      } else {
+        res.status(400).send({ msg: "Bad Request" });
       }
     }
   }
@@ -137,7 +143,10 @@ tournamentRouter.post(
         res.status(404).send({ msg: error.msg });
       } else if (error.name === "badKick") {
         res.status(403).send({ msg: error.msg });
+      } else {
+        res.status(400).send({ msg: "Bad Request" });
       }
+      
     }
   }
 );
@@ -181,6 +190,8 @@ tournamentRouter.post(
         res.status(404).send({ msg: error.msg });
       } else if (error.name === "conflict") {
         res.status(409).send({ msg: error.msg });
+      } else {
+        res.status(400).send({ msg: "Bad Request"})
       }
     }
   }
