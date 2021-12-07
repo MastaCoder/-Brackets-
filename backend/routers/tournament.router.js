@@ -99,6 +99,13 @@ tournamentRouter.post("/update/remove/:tid", checkUserLoggedIn, async (req, res)
     res.send({tournament: await removeUserFromTournament(req, req.body.userToRemove)})
   } catch (error) {
     console.log(error);
+    if (isMongoError(error)) {
+      res.status(500).send({ msg: "Internal Server Error" });
+    } else if (error.name === "badId") {
+      res.status(400).send({ msg: error.msg });
+    } else if (error.name === "unauth") {
+      res.status(403).send({ msg: error.msg});
+    }
   }
 })
 

@@ -4,9 +4,9 @@ import { Tournament } from "../models/tournament.model.js";
 import { generateRandomGroupName, throwCustomError } from "../util.js";
 
 async function validateTournamentId(id) {
-  // if (!mongoose.types.ObjectId.isValid(id)) {
-  //   throwCustomError("badId", "Invalid Tournament Id");
-  // }
+  if (!mongoose.isValidObjectId(id)) {
+    throwCustomError("badId", "Invalid Tournament Id");
+  }
 
   const tournament = await Tournament.findById(id);
 
