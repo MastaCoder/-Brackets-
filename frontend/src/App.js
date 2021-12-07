@@ -133,13 +133,13 @@ export default function App() {
 								<PrivateRoute exact path="/user/join">
 									<UserJoinPage />
 								</PrivateRoute>
-								<Route exact path="/org/create">
+								<PrivateRoute exact path="/org/create">
 									<OrganizerCreatePage />
-								</Route>
-								<Route exact path="/org/history">
+								</PrivateRoute>
+								<PrivateRoute exact path="/org/history">
 									<OrganizerHistoryPage />
-								</Route>
-								<Route
+								</PrivateRoute>
+								<PrivateRoute
 									exact
 									path="/tournament/:id"
 									component={TournamentViewPage}

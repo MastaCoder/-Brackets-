@@ -17,14 +17,9 @@ export default function AdminDashboard() {
   useEffect(() => {
     // Get num active and banned users
     (async function () {
-      const res = await axios.get('/api/admin/platformusers', {});
-      let active = 0;
-      let banned = 0;
-      res.data.forEach((user) => {
-        user.platformAccess ? (active += 1) : (banned += 1);
-      });
-      setNumActiveUsers(active.toString());
-      setNumBannedUsers(banned.toString());
+      const res = await axios.get('/api/admin/numusers', {});
+      setNumActiveUsers(res.data.active.toString());
+      setNumBannedUsers(res.data.banned.toString());
     })();
     // Get num active and all tournaments
     (async function () {

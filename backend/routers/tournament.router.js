@@ -17,6 +17,7 @@ import {
 	updateTournamentInfo,
 	updateTournamentStatus,
 } from '../services/tournament.service.js';
+import { addLog } from '../services/logger.service.js';
 import { isMongoError } from '../util.js';
 
 export const tournamentRouter = Router();
