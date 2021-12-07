@@ -360,9 +360,10 @@ export async function proceedNextBracket(req) {
     throwCustomError("badrequest", "Advancing teams is not an array");
   }
 
-  if (proceedingTeams.length === 2) {
+  if (proceedingTeams.length === 1) {
     proceedingTeams.push(null);
     tournament.brackets.push(proceedingTeams);
+    await tournament.save();
     return await updateTournamentStatus(req);
   } 
 
@@ -376,7 +377,6 @@ export async function proceedNextBracket(req) {
       throwCustomError("badrequest", "Team not in tournament");
     }
   
-    console.log(i, lastBracket);
     if (!(lastBracket[i].includes(proceedingTeams[i]))) {
       throwCustomError("badrequest", "Invalid proceeding team");
     }
@@ -390,7 +390,6 @@ export async function proceedNextBracket(req) {
       matchUp.push(proceedingTeams[i+1]);
     }
 
-    console.log("matchup", matchUp);
     bracket.push(matchUp);
   }
 
