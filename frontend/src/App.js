@@ -22,7 +22,6 @@ import AdminViewUserLogs from './views/Admin/Archive/AdminViewUserLogs';
 import AdminViewTournaments from './views/Admin/Tournaments/AdminViewTournaments';
 import TournamentViewPage from './views/Tournament/View/TournamentViewPage';
 import axios from 'axios';
-import styles from "./App.module.css";
 import OrganizerHistoryPage from "./views/Organizer/History/OrganizerHistoryPage";
 
 export default function App() {

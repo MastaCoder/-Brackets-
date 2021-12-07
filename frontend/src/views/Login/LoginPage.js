@@ -29,7 +29,7 @@ export default function LoginPage() {
 				localStorage.setItem("brackets-username", username);
 				user.type === 'user'
 					? history.push('/user')
-					: history.push('/dashboard');
+					: history.push('/admin');
 			});
 		} catch (err) {
 			setShowMessage(true);
