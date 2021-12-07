@@ -20,7 +20,7 @@ async function validateTournamentId(id) {
 }
 
 function generateStartUpBracket(tournament) {
-  const pool = [ ...tournament.teams.keys() ];
+  const pool = [...tournament.teams.keys()];
   const bracket = [];
   while (pool.length) {
     const matchUp = [];
@@ -194,7 +194,6 @@ export async function changeGroupName(req) {
     throwCustomError("unauth", "Unauthorized group name change");
   }
 
-
   tournament.teams.set(newGroupName, tournament.teams.get(groupName));
   tournament.teams.delete(groupName);
   await tournament.save();
@@ -353,16 +352,47 @@ export async function proceedNextBracket(req) {
   const tournament = await validateTournamentId(tid);
   const proceedingTeams = req.body.proceedingTeams;
 
-
   if (tournament.host !== req.user.username || req.user.type !== "admin") {
     throwCustomError("unauth", "Unauthorized to update tournament");
   }
 
   if (proceedingTeams.length === undefined) {
-    throwCustomError("invalidReq", "Bad request object");
+    throwCustomError("badrequest", "Advancing teams is not an array");
   }
 
   if (proceedingTeams.length === 1) {
-    tournament.brackets
+    proceedingTeams.push(null);
+    tournament.brackets.push(proceedingTeams);
+    return updateTournamentStatus(req);
+  } 
+
+  const lastBracket = tournament.brackets.at(-1);
+  const bracket = []
+  
+  for (let i = 0; i < proceedingTeams.length; i += 2) {
+    const matchUp = []
+
+    if (!(proceedingTeams[i] in tournament.teams)) {
+      throwCustomError("badrequest", "Team not in tournament");
+    }
+  
+    if (!(lastBracket[i].includes(proceedingTeams[i]))) {
+      throwCustomError("badrequest", "Invalid proceeding team");
+    }
+
+    matchUp.push(proceedingTeam[i]);
+
+    if (!proceedingTeams.at(i + 1)){
+      matchUp.push(null);
+    } else {
+      matchUp.push(proceedingTeams[i+1]);
+    }
   }
+
+  tournament.brackets.push(bracket);;
+  await tournament.save();
+
+  tournament.userTeam = null;
+  return tournament;
+
 }
