@@ -14,6 +14,7 @@ const AdminViewTournaments = (props) => {
       if (props.match.params.filter === "all") status = -1;
       else if (props.match.params.filter === "notstarted") status = 0;
       else if (props.match.params.filter === "ongoing") status = 1;
+      else if (props.match.params.filter === "finished") status = 2;
       else history.push('/dashboard');
 
       const res = await axios.get(`/api/admin/listtournaments/${status}`, {});
