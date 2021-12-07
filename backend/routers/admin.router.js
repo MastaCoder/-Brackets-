@@ -2,17 +2,18 @@ import { Router } from 'express';
 import { checkAdminLoggedIn } from '../middlewares/auth.middleware.js';
 import { addLog, getAllLogs } from '../services/logger.service.js';
 import {
-	getNumTournaments,
-	getTournaments,
+  getNumTournaments,
+  getTournaments
 } from '../services/tournament.service.js';
 import {
-	getAllUserAccess,
-	getUser,
-	setUserAccess,
+  getAllUserAccess, setUserAccess
 } from '../services/user.service.js';
 
 export const adminRouter = Router();
 
+/**
+ * Attempts to get all users in the database.
+ */
 adminRouter.get('/platformusers', checkAdminLoggedIn, async (req, res) => {
 	try {
 		const users = await getAllUserAccess();
@@ -22,6 +23,13 @@ adminRouter.get('/platformusers', checkAdminLoggedIn, async (req, res) => {
 	}
 });
 
+/**
+ * Attempts to ban or unban a user.
+ * Expects req = {
+ *  username:...,
+ *  platformAccess: true/false for ban/unban
+ * }
+ */
 adminRouter.post('/modifyuseraccess', checkAdminLoggedIn, async (req, res) => {
 	const { username, platformAccess } = req.body;
 	try {
@@ -38,6 +46,14 @@ adminRouter.post('/modifyuseraccess', checkAdminLoggedIn, async (req, res) => {
 	}
 });
 
+/**
+ * Get number of tournaments in each phase.
+ * Returns {
+ *  ongoing: ...,
+ *  open: ...,
+ *  closed: ...,
+ * }
+ */
 adminRouter.get('/numtournaments', checkAdminLoggedIn, async (req, res) => {
 	try {
 		const data = await getNumTournaments();
@@ -49,6 +65,9 @@ adminRouter.get('/numtournaments', checkAdminLoggedIn, async (req, res) => {
 	}
 });
 
+/**
+ * Returns all logs sorted in descending order.
+ */
 adminRouter.get('/logs', checkAdminLoggedIn, async (req, res) => {
 	try {
 		const logs = await getAllLogs();
@@ -58,10 +77,13 @@ adminRouter.get('/logs', checkAdminLoggedIn, async (req, res) => {
 	}
 });
 
-adminRouter.get(
-	'/listtournaments/:status',
-	checkAdminLoggedIn,
-	async (req, res) => {
+/**
+ * Gets tournaments with statuses passed in in status
+ * Expects req = {
+ *  status: array with any combination of -1, 0, 1, or 2
+ * }
+ */
+adminRouter.get('/listtournaments/:status', checkAdminLoggedIn, async (req, res) => {
 		try {
 			res.send(await getTournaments(req.params.status.split(",")));
 		} catch (error) {
@@ -70,6 +92,9 @@ adminRouter.get(
 	}
 );
 
+/**
+ * Returns number of active and banned users.
+ */
 adminRouter.get('/numusers', checkAdminLoggedIn, async (req, res) => {
 	try {
 		const users = await getAllUserAccess();
