@@ -59,3 +59,22 @@ adminRouter.get("/listtournaments/:status", checkAdminLoggedIn, async (req, res)
 		res.sendStatus(500);
 	}
 });
+
+adminRouter.get('/numusers', checkAdminLoggedIn, async (req, res) => {
+	try {
+		const users = await getAllUserAccess();
+    let active = 0;
+    let banned = 0;
+    users.forEach((user) => {
+      user.platformAccess ? (active += 1) : (banned += 1);
+    });
+		res.status(200).send({
+      active: active,
+      banned: banned
+    });
+	} catch (err) {
+		res
+			.status(500)
+			.send({ msg: 'An unexpected error occured, please try again.' });
+	}
+});
