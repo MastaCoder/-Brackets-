@@ -171,7 +171,7 @@ tournamentRouter.post("/regenerate/:tid", checkUserLoggedIn, async (req, res) =>
 });
 
 tournamentRouter.post(
-  "/join/team/:tid",
+  "/teams/join/:tid",
   checkUserLoggedIn,
   async (req, res) => {
     try {
@@ -189,6 +189,8 @@ tournamentRouter.post(
       } else if (error.name === "notFound") {
         res.status(404).send({ msg: error.msg });
       } else if (error.name === "conflict") {
+        res.status(409).send({ msg: error.msg });
+      } else if (error.name === "maxlimit") {
         res.status(409).send({ msg: error.msg });
       } else {
         res.status(400).send({ msg: "Bad Request"})

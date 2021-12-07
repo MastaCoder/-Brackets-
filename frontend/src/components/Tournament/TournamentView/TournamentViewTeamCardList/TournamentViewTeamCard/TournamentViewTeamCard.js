@@ -51,7 +51,7 @@ export default function TournamentViewTeamCard(props) {
               size="small"
               color="success"
               disabled={props.team.length >= props.maxTeamMembers || props.team.includes(user.username)}
-              onClick={() => alert("To be implemented in phase 2!")}
+              onClick={() => props.joinTeam(props.teamName)}
             >
               Join team ({props.team.length}/{props.maxTeamMembers})
             </Button>
