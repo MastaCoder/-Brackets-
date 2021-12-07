@@ -28,7 +28,6 @@ async function getTournamentList(status) {
   if (status.includes(-1)) return await Tournament.find();
 
   let parsedStatus = parseInt(status);
-  if (!statuses.includes(parsedStatus)) throw Error("Invalid status type");
 
   return await Tournament.find({status: parsedStatus});
 }

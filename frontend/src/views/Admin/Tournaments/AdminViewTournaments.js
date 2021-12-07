@@ -2,7 +2,6 @@ import { Container } from '@mui/material';
 import { useState } from 'react';
 import PageTitle from '../../../components/Layout/PageTitle';
 import TournamentCardList from '../../../components/Tournament/TournamentList/TournamentCardList';
-import data from '../../../data/data';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
@@ -18,12 +17,11 @@ const AdminViewTournaments = (props) => {
       else history.push('/dashboard');
 
       const res = await axios.get(`/api/admin/listtournaments/${status}`, {});
-      console.log(res);
       setTournaments(res.data);
     })();
   }, []);
 
-	const [tournaments, setTournaments] = useState(data.tournaments);
+	const [tournaments, setTournaments] = useState([]);
   const history = useHistory();
     
 	return (
