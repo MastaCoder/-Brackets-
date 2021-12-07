@@ -20,11 +20,9 @@ export default function TournamentView(props) {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = (responseType) => {
+  const handleClose = () => {
     setOpen(false);
-    if (responseType) {
-      setInfoUpdate(true);
-    }
+    setInfoUpdate(true);
   }
 
   if (props.tournament === null) {
@@ -184,25 +182,18 @@ export default function TournamentView(props) {
                 <Button variant="contained" onClick={handleOpen}>
                   Update the Tournament
                 </Button>
-                {props.tournament.status === 0 &&
+                {[0, 1].includes(props.tournament.status) &&
                   <Button
                     variant="contained"
-                    color="success"
-                    onClick={() => alert("Assigning brackets done on API, PHASE 2 PHASE 2 PHASE 2")}
+                    color={props.tournament.status === 0 ? 'success' : 'warning'}
+                    onClick={() => props.nextStage()}
+                    disabled={Object.keys(props.tournament.teams).length < 2}
                   >
-                    Start Tournament
-                  </Button>
-                }
-                {props.tournament.status === 1 &&
-                  <Button
-                    variant="contained"
-                    color="error"
-                  >
-                    End Tournament Early
+                    {props.tournament.status === 0 ? 'Start Tournament' : 'End Tournament Early'}
                   </Button>
                 }
               </Box>
-              <Box mt={2} display="flex" gap={1}>
+              <Box mt={2} mb={1} display="flex" gap={1}>
                 {props.tournament.status === 0 &&
                   <Button
                     variant="contained"
@@ -243,6 +234,9 @@ export default function TournamentView(props) {
                   </Box>
                 </Popover>
               </Box>
+              <Typography variant="caption" color="grey">
+                Note: Minimum of two teams required to start an event
+              </Typography>
             </>
           )}
         </>
