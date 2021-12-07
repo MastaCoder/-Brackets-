@@ -35,12 +35,25 @@ export default function TournamentViewPage(props) {
     }
   }
 
+  const onKickTournament = async (userToRemove) => {
+    try {
+      const res = await axios.post(`/api/tournaments/kick/${props.match.params.id}`, {
+        userToRemove: userToRemove
+      });
+      
+      setTournament(res.data.tournament);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <>
       {tournament !== false ? (
         <TournamentView
           tournament={tournament}
           joinTournament={onJoinTournament}
+          kickTournament={onKickTournament}
 
           onKickUser={kickUser}
           onKickFromTeam={onKickFromTeam}

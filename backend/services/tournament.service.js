@@ -178,20 +178,26 @@ export async function kickUserFromGroup(req) {
 export async function removeUserFromTournament(req, userToRemove) {
   const tournament = await validateTournamentId(req.params.tid);
 
-  if (
-    req.user.username !== userToRemove ||
-    req.user.username != tournament.host
-  ) {
+  if (req.user.username !== userToRemove && req.user.username !== tournament.host) {
     throwCustomError("unauth", "Unauthorized to remove user from tournament");
   }
 
-  // THIS WILL NOT WORK
-  tournament.teams.keys().map((key) => {
-    const userIndex = tournament.teams[key].indexOf(userToRemove);
-    if (userIndex !== -1) {
-      tournament.teams[key].splice(userIndex, 1);
-    }
-  });
+  tournament.members.splice(tournament.members.indexOf(userToRemove), 1);
 
-  return await tournament.save();
+  // removes user from the team, deletes the team if needed
+  for (const [teamName, team] of tournament.teams.entries()) {
+    if (userToRemove.includes(team)) {
+      console.log("removing user from", team);
+      team.splice(team.indexOf(userToRemove), 1);
+      if (team.length === 0) {
+        tournament.teams.delete(teamName);
+      }
+
+      break;
+    }
+  }
+  
+  await tournament.save();
+  tournament.userTeam = null;
+  return tournament;
 }

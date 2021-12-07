@@ -70,9 +70,9 @@ export default function TournamentView(props) {
           justify="center"
         />
       </Box>
-      {(eventJoinable || props.tournament.status > 0) && (
-        <Box textAlign="center" my={2}>
-          {(eventJoinable && (
+      <Box display="flex" justifyContent="center" gap={1}>
+        {eventJoinable && (
+          <Box>
             <Button
               size="large"
               variant="contained"
@@ -81,18 +81,33 @@ export default function TournamentView(props) {
             >
               Join event
             </Button>
-          )) || (props.tournament.status > 0 && (
+          </Box>
+        )}
+        {props.tournament.status > 0 && (
+          <Box>
             <Button
-            size="large"
-            variant="contained"
-            color={tournamentView ? 'secondary' : 'info'}
-            onClick={() => setTournamentView(!tournamentView)}
+              size="large"
+              variant="contained"
+              color={tournamentView ? 'secondary' : 'info'}
+              onClick={() => setTournamentView(!tournamentView)}
             >
               View Tournament {tournamentView ? 'Details' : 'Bracket'}
             </Button>
-          ))}
-        </Box>
-      )}
+          </Box>
+        )}
+        {props.tournament.userTeam !== null && (
+          <Box>
+            <Button
+              size="large"
+              variant="contained"
+              color={"warning"}
+              onClick={() => props.kickTournament(user.username)}
+            >
+              Leave event
+            </Button>
+          </Box>
+        )}
+      </Box>
 
       {tournamentView ? (
         <TournamentViewBrackets
@@ -101,7 +116,7 @@ export default function TournamentView(props) {
       ) : (
         <>
           {/*phase 2, put in its own component*/}
-          {props.tournament.userTeam !== null && (
+          {(props.tournament.userTeam !== null) && (
             <>
               <PageSubTitle>
                 Your Team
