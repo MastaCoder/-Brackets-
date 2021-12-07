@@ -51,11 +51,20 @@ function getUniqueGroupName(tournament) {
 }
 
 async function getTournamentList(status) {
+  const statuses = [0, 1, 2];
+
   if (status.includes(-1)) return await Tournament.find();
 
-  let parsedStatus = parseInt(status);
+  let parsedStatus = status.map((e) => {
+    e = parseInt(e);
+    if (!statuses.includes(e)) {
+      throw Error("Invalid status type");
+    }
 
-  return await Tournament.find({ status: parsedStatus });
+    return { status: e };
+  });
+
+  return await Tournament.find({ $or: parsedStatus });
 }
 
 async function kickFromTeam(userToRemove, tournament) {
@@ -300,17 +309,14 @@ export async function updateTournamentInfo(req) {
 
   tournament.description = req.body.description;
   tournament.public = req.body.public;
-
   await tournament.save();
-
   tournament.userTeam = null;
 
   return tournament;
 }
 
-export async function updateTournamentStatus(user, tid) {
+export async function updateTournamentStatus(req) {
   const tid = req.params.tid;
-
   const tournament = await validateTournamentId(tid);
 
   if (tournament.host !== req.user.username || req.user.type !== "admin") {
@@ -323,7 +329,6 @@ export async function updateTournamentStatus(user, tid) {
 
   tournament.status += 1;
   await tournament.save();
-
   tournament.userTeam = null;
 
   return tournament;

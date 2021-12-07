@@ -257,10 +257,11 @@ tournamentRouter.patch("/updateinfo/:tid", checkUserLoggedIn, async (req, res) =
   }
 });
 
-tournamentRouter.patch("/updatestatus/:tid", checkUserLoggedIn, async (req, res) => {
+tournamentRouter.post("/nextstatus/:tid", checkUserLoggedIn, async (req, res) => {
   try {
-    res.send({tournament: await updateTournamentStatus(req.user, req.params.tid)});
+    res.send({tournament: await updateTournamentStatus(req)});
   } catch (error) {
+    console.log(error);
     if (isMongoError(error)) {
       res.status(500).send({ msg: "Internal Server Error" });
     } else if (error.name === "badId") {

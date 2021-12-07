@@ -108,6 +108,15 @@ export default function TournamentViewPage(props) {
     }
   }
 
+  const onNextStage = async () => {
+    try {
+      const res = await axios.post(`/api/tournaments/nextstatus/${props.match.params.id}`);
+      setTournament(res.data.tournament);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <>
       {tournament !== false ? (
@@ -121,6 +130,7 @@ export default function TournamentViewPage(props) {
           joinTeam={onTeamJoin}
           updateTournament={onTournamentUpdate}
           deleteTournament={onTournamentDelete}
+          nextStage={onNextStage}
         />
       ) : (
         <Box textAlign="center" mt={3}>
