@@ -132,20 +132,23 @@ export async function joinTournament(user, tid) {
 
 export async function changeGroupName(req) {
   const tournament = await validateTournamentId(req.params.tid);
+  
+  const groupName = req.body.groupName;
+  const newGroupName = req.body.newGroupName;
 
-  if (!tournament.teams[req.body.groupName]) {
+  if (!tournament.teams[groupName]) {
     throwCustomError("notFound", "Group cannot be found");
   }
 
-  if (!tournament.teams[req.body.groupName].includes(req.user.username)) {
+  if (!tournament.teams[groupName].includes(req.user.username)) {
     throwCustomError("unauth", "Unauthorized group name change");
   }
 
-  delete tournament.teams.assign({
-    [req.body.newGroupName]: tournament.teams[req.body.groupName],
-  })[req.body.groupName];
-
-  setUserInTournament(user, await tournament.save());
+  tournament.teams.set(newGroupName, tournament.teams.get(groupName));
+  tournament.teams.delete(groupName);
+  await tournament.save();
+  
+  tournament.userTeam = newGroupName;
   return tournament;
 }
 

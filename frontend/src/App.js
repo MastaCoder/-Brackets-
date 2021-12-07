@@ -29,6 +29,8 @@ import TournamentViewPage from './views/Tournament/View/TournamentViewPage';
 import axios from 'axios';
 
 export default function App() {
+	const [loading, setLoading] = useState(true);
+
 	const theme = createTheme({
 		palette: {
 			primary: {
@@ -65,26 +67,33 @@ export default function App() {
 			axios.get('/api/session/validate').then((res) => {
 				const user = res.data.currentUser;
 				if (user) setSessionUser(user);
+				setLoading(false);
+			}).catch((err) => {
+				console.log(err);
+				setLoading(false);
 			});
 		}
 	}, [sessionUser]);
 
-	const handleSessionUser = () => {
-		// Need to do this check seperately to avoid redirection on page refresh
-		if (!sessionUser) return;
-		return sessionUser?.type === 'user' ? (
-			<Redirect to="/user" />
-		) : (
-			<Redirect to="/dashboard" />
-		);
-	};
+	if (loading) {
+		return (<>Validating your login..</>);
+	}
+
+	// const handleSessionUser = () => {
+	// 	// Need to do this check seperately to avoid redirection on page refresh
+	// 	if (!sessionUser) return;
+	// 	return sessionUser?.type === 'user' ? (
+	// 		<Redirect to="/user" />
+	// 	) : (
+	// 		<Redirect to="/dashboard" />
+	// 	);
+	// };
 
 	return (
 		<DataContext.Provider value={dataState}>
 			<ProvideAuth sessionUser={sessionUser}>
 				<ThemeProvider theme={theme}>
 					<Router>
-						{handleSessionUser()}
 						<Navbar setSessionUser={setSessionUser} />
 						<Switch>
 							<Route exact path="/">

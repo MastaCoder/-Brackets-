@@ -170,7 +170,6 @@ export default function TournamentView(props) {
                 teams={props.tournament.teams}
                 canUserJoin={props.tournament.userTeam !== null}
                 maxTeamMembers={props.tournament.maxTeamMembers}
-                onNameUpdate={props.tournament.host === user.username ? props.onTeamNameUpdate : null}
               />
             ) : (
               <Typography variant="body1">

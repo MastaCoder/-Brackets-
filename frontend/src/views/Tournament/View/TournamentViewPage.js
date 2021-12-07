@@ -40,7 +40,20 @@ export default function TournamentViewPage(props) {
       const res = await axios.post(`/api/tournaments/kick/${props.match.params.id}`, {
         userToRemove: userToRemove
       });
-      
+
+      setTournament(res.data.tournament);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const onTeamNameChange = async (newName) => {
+    try {
+      const res = await axios.post(`/api/tournaments/teams/changename/${props.match.params.id}`, {
+        groupName: tournament.userTeam,
+        newGroupName: newName
+      });
+
       setTournament(res.data.tournament);
     } catch (err) {
       console.log(err);
@@ -54,6 +67,7 @@ export default function TournamentViewPage(props) {
           tournament={tournament}
           joinTournament={onJoinTournament}
           kickTournament={onKickTournament}
+          teamNameChange={onTeamNameChange}
 
           onKickUser={kickUser}
           onKickFromTeam={onKickFromTeam}
