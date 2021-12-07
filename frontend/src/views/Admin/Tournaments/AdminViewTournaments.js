@@ -1,12 +1,14 @@
 import { Container } from '@mui/material';
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import PageTitle from '../../../components/Layout/PageTitle';
 import TournamentCardList from '../../../components/Tournament/TournamentList/TournamentCardList';
-import { useEffect } from 'react';
-import { useHistory } from 'react-router';
-import axios from 'axios';
 
 const AdminViewTournaments = (props) => {
+  const [tournaments, setTournaments] = useState([]);
+  const history = useHistory();
+
   useEffect(() => {
     // Get num active and banned users
     (async function () {
@@ -21,9 +23,6 @@ const AdminViewTournaments = (props) => {
       setTournaments(res.data);
     })();
   }, []);
-
-	const [tournaments, setTournaments] = useState([]);
-  const history = useHistory();
     
 	return (
 		<Container component="main">

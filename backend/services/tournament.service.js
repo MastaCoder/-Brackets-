@@ -1,9 +1,6 @@
 import mongoose from 'mongoose';
-import { addLog } from '../services/logger.service.js';
 import { Tournament } from '../models/tournament.model.js';
 import { generateRandomGroupName, throwCustomError } from '../util.js';
-
-// helpers
 
 async function validateTournamentId(id) {
 	if (!mongoose.isValidObjectId(id)) {

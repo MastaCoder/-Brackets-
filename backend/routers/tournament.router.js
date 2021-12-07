@@ -1,23 +1,22 @@
 import { Router } from 'express';
 import { checkUserLoggedIn } from '../middlewares/auth.middleware.js';
 import {
+	changeGroupName,
 	createTournament,
 	getAttendingTournaments,
 	getHostingTournaments,
 	getPublicTournaments,
 	getTournamentById,
 	joinTournament,
-	changeGroupName,
-	kickUserFromGroup,
-	removeUserFromTournament,
-	regenerateTournamentId,
 	joinTournamentTeam,
-	removeTournament,
-	updateTournamentStatus,
-	updateTournamentInfo,
+	kickUserFromGroup,
 	proceedNextBracket,
+	regenerateTournamentId,
+	removeTournament,
+	removeUserFromTournament,
+	updateTournamentInfo,
+	updateTournamentStatus,
 } from '../services/tournament.service.js';
-import { addLog } from '../services/logger.service.js';
 import { isMongoError } from '../util.js';
 
 export const tournamentRouter = Router();

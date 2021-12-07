@@ -1,32 +1,30 @@
-import ProvideAuth from './components/Authentication/ProvideAuth';
+import { ThemeProvider } from '@emotion/react';
+import { Box } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import styles from './App.module.css';
 import PrivateRoute from './components/Authentication/PrivateRoute';
+import ProvideAuth from './components/Authentication/ProvideAuth';
+import Footer from './components/Layout/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
-import ProfilePage from './views/Profile/ProfilePage';
+import DataContext from './contexts/dataContext';
+import data from './data/data';
+import AdminViewUserLogs from './views/Admin/Archive/AdminViewUserLogs';
+import AdminDashboard from './views/Admin/Dashboard/AdminDashboard';
+import AdminViewTournaments from './views/Admin/Tournaments/AdminViewTournaments';
+import AdminViewUserPage from './views/Admin/Users/AdminViewUsers';
 import HomePage from './views/Home/HomePage';
 import LoginPage from './views/Login/LoginPage';
+import OrganizerCreatePage from './views/Organizer/Create/OrganizerCreatePage';
+import OrganizerHistoryPage from './views/Organizer/History/OrganizerHistoryPage';
+import ProfilePage from './views/Profile/ProfilePage';
 import RegisterPage from './views/Register/RegisterPage';
-import { createTheme } from '@mui/material/styles';
-import { ThemeProvider } from '@emotion/react';
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	Redirect,
-} from 'react-router-dom';
-import AdminDashboard from './views/Admin/Dashboard/AdminDashboard';
+import TournamentViewPage from './views/Tournament/View/TournamentViewPage';
 import UserDashboardPage from './views/User/Dashboard/UserDashboardPage';
 import UserHistoryPage from './views/User/History/UserHistoryPage';
 import UserJoinPage from './views/User/Join/UserJoinPage';
-import OrganizerCreatePage from './views/Organizer/Create/OrganizerCreatePage';
-import OrganizerHistoryPage from './views/Organizer/History/OrganizerHistoryPage';
-import AdminViewUserPage from './views/Admin/Users/AdminViewUsers';
-import AdminViewUserLogs from './views/Admin/Archive/AdminViewUserLogs';
-import AdminViewTournaments from './views/Admin/Tournaments/AdminViewTournaments';
-import DataContext from './contexts/dataContext';
-import data from './data/data';
-import { useEffect, useState } from 'react';
-import TournamentViewPage from './views/Tournament/View/TournamentViewPage';
-import axios from 'axios';
 
 export default function App() {
 	const [loading, setLoading] = useState(true);
@@ -94,61 +92,64 @@ export default function App() {
 
 	return (
 		<DataContext.Provider value={dataState}>
-			<ProvideAuth sessionUser={sessionUser}>
-				<ThemeProvider theme={theme}>
-					<Router>
-						<Navbar setSessionUser={setSessionUser} />
-						<Switch>
-							<Route exact path="/">
-								<HomePage />
-							</Route>
-							<Route exact path="/login">
-								<LoginPage />
-							</Route>
-							<Route exact path="/register">
-								<RegisterPage />
-							</Route>
-							<PrivateRoute exact path="/settings">
-								<ProfilePage />
-							</PrivateRoute>
-							<PrivateRoute exact path="/dashboard">
-								<AdminDashboard />
-							</PrivateRoute>
-							<PrivateRoute exact path="/admin/users">
-								<AdminViewUserPage />
-							</PrivateRoute>
-							<PrivateRoute exact path="/admin/userLogs">
-								<AdminViewUserLogs />
-							</PrivateRoute>
-							<PrivateRoute
-								exact
-								path="/admin/tournaments/:filter"
-								component={AdminViewTournaments}
-							/>
-							<PrivateRoute exact path="/user">
-								<UserDashboardPage />
-							</PrivateRoute>
-							<PrivateRoute exact path="/user/history">
-								<UserHistoryPage />
-							</PrivateRoute>
-							<PrivateRoute exact path="/user/join">
-								<UserJoinPage />
-							</PrivateRoute>
-							<PrivateRoute exact path="/org/create">
-								<OrganizerCreatePage />
-							</PrivateRoute>
-							<PrivateRoute exact path="/org/history">
-								<OrganizerHistoryPage />
-							</PrivateRoute>
-							<PrivateRoute
-								exact
-								path="/tournament/:id"
-								component={TournamentViewPage}
-							/>
-						</Switch>
-					</Router>
-				</ThemeProvider>
-			</ProvideAuth>
+			<Box className={styles.mainContainer}>
+				<ProvideAuth sessionUser={sessionUser}>
+					<ThemeProvider theme={theme}>
+						<Router>
+							<Navbar setSessionUser={setSessionUser} />
+							<Switch>
+								<Route exact path="/">
+									<HomePage />
+								</Route>
+								<Route exact path="/login">
+									<LoginPage />
+								</Route>
+								<Route exact path="/register">
+									<RegisterPage />
+								</Route>
+								<PrivateRoute exact path="/settings">
+									<ProfilePage />
+								</PrivateRoute>
+								<PrivateRoute exact path="/dashboard">
+									<AdminDashboard />
+								</PrivateRoute>
+								<PrivateRoute exact path="/admin/users">
+									<AdminViewUserPage />
+								</PrivateRoute>
+								<PrivateRoute exact path="/admin/userLogs">
+									<AdminViewUserLogs />
+								</PrivateRoute>
+								<PrivateRoute
+									exact
+									path="/admin/tournaments/:filter"
+									component={AdminViewTournaments}
+								/>
+								<PrivateRoute exact path="/user">
+									<UserDashboardPage />
+								</PrivateRoute>
+								<PrivateRoute exact path="/user/history">
+									<UserHistoryPage />
+								</PrivateRoute>
+								<PrivateRoute exact path="/user/join">
+									<UserJoinPage />
+								</PrivateRoute>
+								<Route exact path="/org/create">
+									<OrganizerCreatePage />
+								</Route>
+								<Route exact path="/org/history">
+									<OrganizerHistoryPage />
+								</Route>
+								<Route
+									exact
+									path="/tournament/:id"
+									component={TournamentViewPage}
+								/>
+							</Switch>
+						</Router>
+					</ThemeProvider>
+				</ProvideAuth>
+			</Box>
+			<Footer />
 		</DataContext.Provider>
 	);
 }

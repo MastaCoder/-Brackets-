@@ -1,12 +1,9 @@
 import {
-  Modal,
-  Box,
-  TextField,
-  Button,
+  Box, Button,
   Checkbox,
-  FormControlLabel,
+  FormControlLabel, Modal, TextField
 } from "@mui/material";
-import {useState, useContext} from "react";
+import { useState } from "react";
 
 const style = {
   position: "absolute",
