@@ -1,19 +1,32 @@
 import PageSubTitle from "../../../Layout/PageSubTitle";
 import {Bracket} from "react-brackets";
-import {Box, Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {Alert, Box, Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import bracketsConverter from "../../../../lib/bracketsConverter";
 import {useEffect, useState} from "react";
 import {uid} from "react-uid";
 import {useAuth} from "../../../../hooks/Auth";
+import useWindowSize from 'react-use/lib/useWindowSize';
+import Confetti from 'react-confetti'
 
 export default function TournamentViewBrackets(props) {
   const { user } = useAuth();
   const [pairSelector, setPairSelector] = useState(new Array(props.tournament.brackets.at(-1).length).fill(null));
-  // const [pairSelector, setPairSelector] = useState(props.tournament.brackets.at(-1).map(e => e[0]));
+  const [error, setError] = useState(false);
+  const { width, height } = useWindowSize();
+  const [winnerEffect, setWinnerEffect] = useState(false);
 
   useEffect(() => {
     setPairSelector(new Array(props.tournament.brackets.at(-1).length).fill(null));
-  }, [props.tournament.brackets])
+  }, [props.tournament.brackets]);
+
+  useEffect(() => {
+    if (props.tournament.brackets.at(-1)?.at(-1)?.at(-1) === null) {
+      setWinnerEffect(true);
+      setTimeout(() => {
+        setWinnerEffect(false);
+      }, 7000);
+    }
+  }, [props.tournament.brackets]);
 
   const updateSelector = (index, value) => {
     let pairSelectorCopy = [...pairSelector];
@@ -23,8 +36,9 @@ export default function TournamentViewBrackets(props) {
 
   const nextRound = (event) => {
     event.preventDefault();
+    setError(false);
     if (pairSelector.includes(null)) {
-      alert("Make sure every pair is selected!"); // @todo change this with a modal
+      setError(true);
       return;
     }
 
@@ -47,6 +61,11 @@ export default function TournamentViewBrackets(props) {
           <PageSubTitle>
             Update brackets
           </PageSubTitle>
+          {error && (
+            <Alert severity="warning">
+              Make sure you select all the team pairs!
+            </Alert>
+          )}
           <Box component="form" mb={4} onSubmit={nextRound}>
             {props.tournament.brackets.at(-1).map((pair, pairIndex) => (
               <FormControl fullWidth margin="normal" key={uid(pair)}>
@@ -77,6 +96,14 @@ export default function TournamentViewBrackets(props) {
             </Box>
           </Box>
         </Box>
+      )}
+
+      {winnerEffect && (
+        <Confetti
+          width={width - 10}
+          height={height - 10}
+          numberOfPieces={50}
+        />
       )}
     </>
   )

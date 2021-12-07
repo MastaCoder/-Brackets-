@@ -1,7 +1,7 @@
 import { Container, Box, Button, TextField, Alert } from '@mui/material';
 import { useAuth } from '../../hooks/Auth';
 import { useHistory } from 'react-router';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import PageTitle from '../../components/Layout/PageTitle';
 import axios from 'axios';
 
@@ -36,6 +36,10 @@ export default function LoginPage() {
 			setMessage(err.response.data.msg);
 		}
 	};
+
+	useEffect(() => {
+		if (auth.user) history.push("/user");
+	}, [auth.user, history]);
 
 	return (
 		<Container maxWidth="sm">

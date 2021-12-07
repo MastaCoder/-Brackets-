@@ -17,7 +17,6 @@ export default function TournamentViewDetails(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setInfoUpdate(true);
   }
 
   return (
@@ -173,6 +172,7 @@ export default function TournamentViewDetails(props) {
             description={props.tournament.description}
             id={props.tournament.id}
             updateTournament={props.updateTournament}
+            setInfoUpdate={setInfoUpdate}
           />
         </>
       )}

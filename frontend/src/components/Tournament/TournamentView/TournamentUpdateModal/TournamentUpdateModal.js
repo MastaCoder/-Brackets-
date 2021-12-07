@@ -34,6 +34,7 @@ export default function TournamentUpdateModal(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     props.updateTournament(formData.description, formData.public);
+    props.setInfoUpdate(true);
     props.handleClose(true);
   };
 
@@ -51,6 +52,7 @@ export default function TournamentUpdateModal(props) {
             name="description"
             defaultValue={formData.description}
             onChange={(e) => onChange(e)}
+            inputProps={{ maxLength: 500 }}
           />
           <FormControlLabel
             control={formData.public ? <Checkbox defaultChecked /> : <Checkbox />}

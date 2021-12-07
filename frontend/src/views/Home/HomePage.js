@@ -1,9 +1,16 @@
 import styles from "./HomePage.module.css";
 import {Box, Typography, Button} from "@mui/material";
 import {useHistory} from "react-router";
+import {useEffect} from "react";
+import {useAuth} from "../../hooks/Auth";
 
 export default function HomePage() {
   const history = useHistory();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) history.push("/user");
+  }, [history, user]);
 
   return (
     <Box className={styles.main}>

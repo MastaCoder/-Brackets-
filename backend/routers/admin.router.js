@@ -63,7 +63,7 @@ adminRouter.get(
 	checkAdminLoggedIn,
 	async (req, res) => {
 		try {
-			res.send(await getTournaments(req.params.status));
+			res.send(await getTournaments(req.params.status.split(",")));
 		} catch (error) {
 			res.sendStatus(500);
 		}

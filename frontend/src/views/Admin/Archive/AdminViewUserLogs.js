@@ -1,7 +1,8 @@
-import { Container } from '@mui/material';
+import {Box, Container} from '@mui/material';
 import { useEffect, useState } from 'react';
 import PaginatedTable from '../../../components/Table/PaginatedTable';
 import axios from 'axios';
+import PageTitle from "../../../components/Layout/PageTitle";
 
 export default function AdminViewUserLogs() {
 	const [logs, setLogs] = useState([]);
@@ -23,7 +24,10 @@ export default function AdminViewUserLogs() {
 
 	return (
 		<Container component="main">
-			<PaginatedTable columns={['User', 'Action', 'TimeStamp']} rows={logs} />
+			<PageTitle>User Logs</PageTitle>
+			<Box mt={4}>
+				<PaginatedTable columns={['User', 'Action', 'TimeStamp']} rows={logs} />
+			</Box>
 		</Container>
 	);
 }

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Tournament } from '../models/tournament.model.js';
 import { generateRandomGroupName, throwCustomError } from '../util.js';
+import { addLog } from './logger.service.js';
 
 async function validateTournamentId(id) {
 	if (!mongoose.isValidObjectId(id)) {
@@ -53,12 +54,18 @@ function getUniqueGroupName(tournament) {
 async function getTournamentList(status) {
 	const statuses = [0, 1, 2];
 
-	if (status.includes(-1)) return await Tournament.find();
+  if (status.includes('-1')) return await Tournament.find();
 
-	let parsedStatus = parseInt(status);
-	if (!statuses.includes(parsedStatus)) throw Error();
+  let parsedStatus = status.map((e) => {
+    e = parseInt(e);
+    if (!statuses.includes(e)) {
+      throw Error("Invalid status type");
+    }
 
-	return await Tournament.find({ status: parsedStatus });
+    return { status: e };
+  });
+
+  return await Tournament.find({ $or: parsedStatus });
 }
 
 async function kickFromTeam(userToRemove, tournament) {
