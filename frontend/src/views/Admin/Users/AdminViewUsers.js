@@ -8,15 +8,15 @@ const AdminViewUsers = () => {
 	const [platformUsers, setPlatformUsers] = useState([]);
 
 	// We will make an API call to get the users
-	const handlePlayerUpdate = async (email) => {
+	const handlePlayerUpdate = async (username) => {
 		const userToModify = platformUsers.filter(
-			(user) => user.email === email
+			(user) => user.username === username
 		)[0];
 
 		try {
 			// First modify the user's platform access
 			await axios.post('/api/admin/modifyuseraccess', {
-				email: userToModify.email,
+				username: userToModify.username,
 				platformAccess: !userToModify.platformAccess,
 			});
 			// Then update the current state

@@ -59,7 +59,7 @@ export async function changeUserInfo(id, newUsername, newEmail, newPassword) {
 	const user = await getUser(id);
 	user.username = newUsername;
 	user.email = newEmail;
-  if (newPassword !== "") user.password = bcrypt.hashSync(newPassword, 10);
+	if (newPassword !== '') user.password = bcrypt.hashSync(newPassword, 10);
 	await user.save();
 }
 
@@ -80,13 +80,13 @@ export async function getAllUserAccess() {
 	return mappedUsers;
 }
 
-export async function setUserAccess(email, platformAccess) {
+export async function setUserAccess(username, platformAccess) {
 	const user = await User.findOne({
-		email: email,
+		username: username,
 	});
 	if (user.length == 0) {
 		return new Error('User not found.');
 	}
 	user.platformAccess = platformAccess;
-	user.save();
+	await user.save();
 }

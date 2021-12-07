@@ -61,7 +61,7 @@ const PlayerCard = ({ player, handlePlayerUpdate }) => {
 				<Button
 					variant="contained"
 					className={classes.button}
-					onClick={() => handlePlayerUpdate(player.email)}
+					onClick={() => handlePlayerUpdate(player.username)}
 					disableElevation
 				>
 					{!player.platformAccess ? 'Revert Ban' : 'Ban Player'}

@@ -1,13 +1,12 @@
 import { ThemeProvider } from '@emotion/react';
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
-import {
-  BrowserRouter as Router, Route, Switch
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import styles from './App.module.css';
 import PrivateRoute from './components/Authentication/PrivateRoute';
 import ProvideAuth from './components/Authentication/ProvideAuth';
-import Footer from "./components/Layout/Footer/Footer";
+import Footer from './components/Layout/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import AdminDashboard from './views/Admin/Dashboard/AdminDashboard';
 import HomePage from './views/Home/HomePage';
@@ -61,19 +60,22 @@ export default function App() {
 
 	useEffect(() => {
 		if (!sessionUser) {
-			axios.get('/api/session/validate').then((res) => {
-				const user = res.data.currentUser;
-				if (user) setSessionUser(user);
-				setLoading(false);
-			}).catch((err) => {
-				console.log(err);
-				setLoading(false);
-			});
+			axios
+				.get('/api/session/validate')
+				.then((res) => {
+					const user = res.data.currentUser;
+					if (user) setSessionUser(user);
+					setLoading(false);
+				})
+				.catch((err) => {
+					console.log(err);
+					setLoading(false);
+				});
 		}
 	}, [sessionUser]);
 
 	if (loading) {
-		return (<>Validating your login..</>);
+		return <>Validating your login..</>;
 	}
 
 	// const handleSessionUser = () => {
@@ -129,13 +131,13 @@ export default function App() {
 								<PrivateRoute exact path="/user/join">
 									<UserJoinPage />
 								</PrivateRoute>
-								<Route exact path="/org/create">
+								<PrivateRoute exact path="/org/create">
 									<OrganizerCreatePage />
-								</Route>
-								<Route exact path="/org/history">
+								</PrivateRoute>
+								<PrivateRoute exact path="/org/history">
 									<OrganizerHistoryPage />
-								</Route>
-								<Route
+								</PrivateRoute>
+								<PrivateRoute
 									exact
 									path="/tournament/:id"
 									component={TournamentViewPage}

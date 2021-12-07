@@ -24,6 +24,10 @@ Users are able to perform various different things in the website. Firstly, user
 
 ## Usage
 ### Access
+Node Version: 16
+
+*Note:* We tried to downgrade our react version in order to satisfy react-brackets; however, that caused issue with MUI dependicies. We tried messaging the developer of the library but not response, their last update was 7 months ago and it appears that the library works with React 17 yet the dependencies in the package.json just have not been changed. Therefore, if running locally, a force tag is required.
+
 [Brackets] can be accessed at the following url: https://csc309-brackets.herokuapp.com/. 
 
 
