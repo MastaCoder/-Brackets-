@@ -81,7 +81,7 @@ export async function getTournaments(status) {
 export async function getPublicTournaments(user, status) {
   const tournaments = await getTournamentList(status);
   return tournaments.filter(
-    (e) => !e.members.includes(user.username) && e.host !== user.username
+    (e) => !e.members.includes(user.username) && e.host !== user.username && e.public
   );
 }
 
@@ -270,7 +270,6 @@ export async function removeTournament(user, tid) {
 
 export async function updateTournamentInfo(req) {
   const tid = req.params.tid;
-
   const tournament = await validateTournamentId(tid);
 
   if (tournament.host !== req.user.username || req.user.type !== "admin") {
@@ -280,7 +279,11 @@ export async function updateTournamentInfo(req) {
   tournament.description = req.body.description;
   tournament.public = req.body.public;
 
-  return await tournament.save();
+  await tournament.save();
+
+  tournament.userTeam = null;
+
+  return tournament;
 }
 
 export async function updateTournamentStatus(user, tid) {
@@ -297,5 +300,9 @@ export async function updateTournamentStatus(user, tid) {
   }
 
   tournament.status += 1;
-  return await tournament.save();
+  await tournament.save();
+
+  tournament.userTeam = null;
+
+  return tournament;
 }

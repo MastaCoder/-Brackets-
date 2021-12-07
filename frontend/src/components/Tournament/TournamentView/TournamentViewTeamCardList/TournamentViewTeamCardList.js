@@ -14,6 +14,7 @@ export default function TournamentViewTeamCardList(props) {
             maxTeamMembers={props.maxTeamMembers}
             canUserJoin={props.canUserJoin}
             joinTeam={props.joinTeam}
+            hideButton={props.hideButton}
           />
         </Grid>
       ))}
