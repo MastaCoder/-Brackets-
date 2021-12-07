@@ -269,3 +269,18 @@ export async function removeTournament(user, tid) {
     throwCustomError("unauth", "Unauthorized to remove tournament");
   }
 }
+
+export async function updateTournamentInfo(req) {
+   const tid = req.params.tid;
+
+   const tournament = await validateTournamentId(tid);
+
+   if (tournament.host !== req.user.username || req.user.type !== "admin") {
+    throwCustomError("unauth", "Unauthorized to remove tournament");
+   }
+
+   tournament.description = req.body.description;
+   tournament.public = req.body.public;
+
+   return await tournament.save();
+}
