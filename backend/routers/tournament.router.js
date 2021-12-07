@@ -10,6 +10,7 @@ import {
   changeGroupName,
   kickUserFromGroup,
   removeUserFromTournament,
+  regenerateTournamentId,
 } from "../services/tournament.service.js";
 import { isMongoError } from "../util.js";
 
@@ -122,6 +123,21 @@ tournamentRouter.post("/teams/kick/:tid", checkUserLoggedIn, async (req, res) =>
       res.status(404).send({ msg: error.msg });
     } else if (error.name === "badKick") {
       res.status(403).send({ msg: error.msg });
+    }
+  }
+});
+
+tournamentRouter.post("/regen/:tid", checkUserLoggedIn, async (req, res) => {
+  try {
+    const tournamentId = await regenerateTournamentId(req.params.tid);
+    res.send({id: tournamentId});
+  } catch (error) {
+    if (isMongoError(error)) {
+      res.status(500).send({ msg: "Internal Server Error" });
+    } else if (error.name === "statusError") {
+      res.status(400).send({msg: error.message});
+    } else {
+      res.status(400).send({msg: "Bad Request"});
     }
   }
 });

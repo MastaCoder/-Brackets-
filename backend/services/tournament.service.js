@@ -202,3 +202,27 @@ export async function removeUserFromTournament(req, userToRemove) {
   tournament.userTeam = null;
   return tournament;
 }
+
+export async function regenerateTournamentId(tid) {
+  const tournament = await validateTournamentId(tid);
+
+  if (tournament.status !== 0){
+    throwCustomError("statusError", "Tournament not in opening status")
+  }
+
+  const newTournament = new Tournament({
+    name: tournament.name,
+    description: tournament.description,
+    public: tournament.public,
+    maxMembers: tournament.maxMembers,
+    maxTeamMembers: tournament.maxTeamMembers,
+    status: 0,
+    host: tournament.host,
+    teams: tournament.teams,
+  });
+
+  await tournament.remove();
+  await newTournament.save();
+  return newTournament._id;
+
+}
