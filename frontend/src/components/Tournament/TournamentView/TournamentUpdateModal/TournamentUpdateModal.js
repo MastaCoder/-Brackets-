@@ -7,7 +7,6 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import {useState, useContext} from "react";
-import DataContext from "../../../../contexts/dataContext";
 
 const style = {
   position: "absolute",
@@ -22,11 +21,9 @@ const style = {
 };
 
 export default function TournamentUpdateModal(props) {
-  const [data, setData] = useContext(DataContext);
-
   const [formData, setFormData] = useState({
-    description: "",
-    public: true,
+    description: props.description,
+    public: props.public,
   });
 
   const onChange = (e) => {
@@ -39,11 +36,8 @@ export default function TournamentUpdateModal(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const tournaments = [...data.tournaments];
-    tournaments[props.id - 1].description = formData.description;
-    tournaments[props.id - 1].public = formData.public;
-    setData({ ...data, tournaments });
-    props.handleClose();
+    props.updateTournament(formData.description, formData.public);
+    props.handleClose(true);
   };
 
   return (
@@ -58,10 +52,11 @@ export default function TournamentUpdateModal(props) {
             rows={3}
             label="Description"
             name="description"
+            defaultValue={formData.description}
             onChange={(e) => onChange(e)}
           />
           <FormControlLabel
-            control={props.public ? <Checkbox defaultChecked /> : <Checkbox />}
+            control={formData.public ? <Checkbox defaultChecked /> : <Checkbox />}
             label="Public"
             onChange={(e) => onPublicChange(e.target.checked)}
           />

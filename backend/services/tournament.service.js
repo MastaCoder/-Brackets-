@@ -81,7 +81,7 @@ export async function getTournaments(status) {
 export async function getPublicTournaments(user, status) {
   const tournaments = await getTournamentList(status);
   return tournaments.filter(
-    (e) => !e.members.includes(user.username) && e.host !== user.username
+    (e) => !e.members.includes(user.username) && e.host !== user.username && e.public
   );
 }
 
@@ -262,7 +262,7 @@ export async function joinTournamentTeam(user, groupName, tid) {
 export async function removeTournament(user, tid) {
   const tournament = await validateTournamentId(tid);
 
-  if (user.type === "admin" || user.username === tournament.host){
+  if (user.type === "admin" || user.username === tournament.host) {
     await tournament.remove();
   }
   else {
@@ -271,16 +271,18 @@ export async function removeTournament(user, tid) {
 }
 
 export async function updateTournamentInfo(req) {
-   const tid = req.params.tid;
+  const tid = req.params.tid;
+  const tournament = await validateTournamentId(tid);
 
-   const tournament = await validateTournamentId(tid);
-
-   if (tournament.host !== req.user.username || req.user.type !== "admin") {
+  if (tournament.host !== req.user.username || req.user.type !== "admin") {
     throwCustomError("unauth", "Unauthorized to remove tournament");
-   }
+  }
 
-   tournament.description = req.body.description;
-   tournament.public = req.body.public;
+  tournament.description = req.body.description;
+  tournament.public = req.body.public;
+  await tournament.save();
 
-   return await tournament.save();
+  tournament.userTeam = null;
+
+  return tournament;
 }

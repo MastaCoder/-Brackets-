@@ -86,6 +86,28 @@ export default function TournamentViewPage(props) {
     }
   }
 
+  const onTournamentUpdate = async (description, pub) => {
+    try {
+      const res = await axios.patch(`/api/tournaments/updateinfo/${props.match.params.id}`, {
+        public: pub,
+        description: description
+      });
+
+      setTournament(res.data.tournament);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const onTournamentDelete = async () => {
+    try {
+      await axios.delete(`/api/tournaments/${props.match.params.id}`);
+      history.push("/user");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <>
       {tournament !== false ? (
@@ -97,6 +119,8 @@ export default function TournamentViewPage(props) {
           teamKick={onTeamKick}
           regenerateLink={onRegenerateLink}
           joinTeam={onTeamJoin}
+          updateTournament={onTournamentUpdate}
+          deleteTournament={onTournamentDelete}
         />
       ) : (
         <Box textAlign="center" mt={3}>

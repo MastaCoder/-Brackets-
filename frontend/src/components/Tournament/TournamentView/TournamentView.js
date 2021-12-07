@@ -1,4 +1,4 @@
-import {Box, Button, Container, Grid, TextField, Typography} from "@mui/material";
+import {Alert, Box, Button, Container, Grid, Popover, Snackbar, TextField, Typography} from "@mui/material";
 import PageTitle from "../../Layout/PageTitle";
 import TournamentChips from "../TournamentChips/TournamentChips";
 import PageSubTitle from "../../Layout/PageSubTitle";
@@ -7,19 +7,25 @@ import TournamentViewTeamCardList from "./TournamentViewTeamCardList/TournamentV
 import TournamentViewTeamCard from "./TournamentViewTeamCardList/TournamentViewTeamCard/TournamentViewTeamCard";
 import TournamentUpdateModal from "./TournamentUpdateModal/TournamentUpdateModal";
 import TournamentViewBrackets from "./TournamentViewBrackets/TournamentViewBrackets";
-import {useState, useContext} from "react";
-import DataContext from "../../../contexts/dataContext";
+import {useState} from "react";
 import {useAuth} from "../../../hooks/Auth";
 
 export default function TournamentView(props) {
   const { user } = useAuth();
 
   const [tournamentView, setTournamentView] = useState(false);
-  const [data, setData] = useContext(DataContext);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [infoUpdate, setInfoUpdate] = useState(false);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = (responseType) => {
+    setOpen(false);
+    if (responseType) {
+      setInfoUpdate(true);
+    }
+  }
 
   if (props.tournament === null) {
     return (
@@ -34,19 +40,7 @@ export default function TournamentView(props) {
     );
   }
 
-  // const handleStartTournamentClk = () => {
-  //   const tournaments = [...data.tournaments];
-  //   tournaments[props.tournament.id - 1].status = 1;
-  //   setData({...data, tournaments})
-  // }
-
-  const handleEndTournamentClk = () => {
-    const tournaments = [...data.tournaments];
-    tournaments[props.tournament.id - 1].status = 2;
-    setData({...data, tournaments})
-  }
-
-  const eventJoinable = props.tournament.userTeam === null && !props.tournament.status && props.tournament.public &&
+  const eventJoinable = props.tournament.userTeam === null && !props.tournament.status &&
     props.tournament.host !== user.username;
 
   return (
@@ -162,7 +156,7 @@ export default function TournamentView(props) {
                 teams={props.tournament.teams}
                 canUserJoin={props.tournament.userTeam !== null}
                 maxTeamMembers={props.tournament.maxTeamMembers}
-                hideButton={false}
+                hideButton={props.tournament.userTeam === null}
                 joinTeam={props.joinTeam}
               />
             ) : (
@@ -176,7 +170,17 @@ export default function TournamentView(props) {
           {props.tournament.host === user.username && (
             <>
               <PageSubTitle>Event Settings</PageSubTitle>
-              <Box mt={2} mb={3} display="flex" gap={1}>
+              <Box maxWidth={550} mt={2}>
+                <TextField
+                  label="Event invite link"
+                  variant="outlined"
+                  defaultValue={window.location.href}
+                  fullWidth
+                  onClick={(e) => e.target.select()}
+                  InputProps={{ readOnly: true }}
+                />
+              </Box>
+              <Box mt={2} display="flex" gap={1}>
                 <Button variant="contained" onClick={handleOpen}>
                   Update the Tournament
                 </Button>
@@ -189,34 +193,55 @@ export default function TournamentView(props) {
                     Start Tournament
                   </Button>
                 }
-                {props.tournament.status === 0 &&
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => props.regenerateLink()}
-                  >
-                    Regenerate event link
-                  </Button>
-                }
                 {props.tournament.status === 1 &&
                   <Button
                     variant="contained"
                     color="error"
-                    onClick={handleEndTournamentClk}
                   >
                     End Tournament Early
                   </Button>
                 }
               </Box>
-              <Box maxWidth={550}>
-                <TextField
-                  label="Event invite link"
-                  variant="outlined"
-                  defaultValue={window.location.href}
-                  fullWidth
-                  onClick={(e) => e.target.select()}
-                  InputProps={{ readOnly: true }}
-                />
+              <Box mt={2} display="flex" gap={1}>
+                {props.tournament.status === 0 &&
+                  <Button
+                    variant="contained"
+                    color="warning"
+                    onClick={() => props.regenerateLink()}
+                  >
+                    Regenerate event link
+                  </Button>
+                }
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={(e) => setAnchorEl(e.currentTarget)}
+                >
+                  Delete event
+                </Button>
+                <Popover
+                  open={Boolean(anchorEl)}
+                  anchorEl={anchorEl}
+                  onClose={() => setAnchorEl(null)}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                >
+                  <Box p={2}>
+                    <Typography>Are you <strong>sure</strong> you want to do this?</Typography>
+                    <Typography fontSize={12}>You cannot undo this action!</Typography>
+                    <Box textAlign="center" mt={1}>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => props.deleteTournament()}
+                      >
+                        Yes I'm sure
+                      </Button>
+                    </Box>
+                  </Box>
+                </Popover>
               </Box>
             </>
           )}
@@ -224,12 +249,24 @@ export default function TournamentView(props) {
       )}
 
       {props.tournament.host === user.username && (
-        <TournamentUpdateModal
-          open={open}
-          handleClose={handleClose}
-          public={props.tournament.public}
-          id={props.tournament.id}
-        />
+        <>
+          <Snackbar
+            open={infoUpdate}
+            autoHideDuration={4000}
+            onClose={() => setInfoUpdate(false)}
+            anchorOrigin={{ horizontal: "right", vertical: 'bottom'}}
+            message="Your info has been updated successfully!"
+          >
+          </Snackbar>
+          <TournamentUpdateModal
+            open={open}
+            handleClose={handleClose}
+            public={props.tournament.public}
+            description={props.tournament.description}
+            id={props.tournament.id}
+            updateTournament={props.updateTournament}
+          />
+        </>
       )}
     </Container>
   );
