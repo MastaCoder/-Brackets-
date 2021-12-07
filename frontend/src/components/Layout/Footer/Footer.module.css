@@ -1,0 +1,12 @@
+.footer {
+    text-align: center;
+    background-color: #3D3B8E;
+    color: white;
+    height: 40px;
+    padding: 9px;
+    font-size: 15px;
+}
+
+.font {
+    font-family: "Kanit", sans-serif;
+}

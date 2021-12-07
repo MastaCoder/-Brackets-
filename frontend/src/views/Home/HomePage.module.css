@@ -1,15 +1,9 @@
 .main {
     background-image: url("HomePageBackground.svg");
-    height: calc(100vh - 64px);
+    height: calc(100vh - 104px);
     background-size: contain;
 }
 
 .title {
     color: white;
-    /* Remove the importants later */
-    font-family: "Kanit", sans-serif !important;
-}
-
-.whatSectionTitle {
-    font-family: "Kanit", sans-serif !important;
 }
