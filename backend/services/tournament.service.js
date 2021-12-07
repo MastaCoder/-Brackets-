@@ -327,6 +327,10 @@ export async function updateTournamentStatus(req) {
     throwCustomError("badstatus", "Tournament has already ended");
   }
 
+  if (tournament.status === 1) {
+    tournament.bracket.push(generateStartUpBracket(tournament));
+  }
+
   tournament.status += 1;
   await tournament.save();
   tournament.userTeam = null;
