@@ -22,7 +22,7 @@ const AdminViewTournaments = (props) => {
       const res = await axios.get(`/api/admin/listtournaments/${status}`, {});
       setTournaments(res.data);
     })();
-  }, []);
+  }, [history, props.match.params.filter]);
     
 	return (
 		<Container component="main">

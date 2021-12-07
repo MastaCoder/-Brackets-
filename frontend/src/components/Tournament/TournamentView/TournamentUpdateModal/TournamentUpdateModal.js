@@ -3,7 +3,7 @@ import {
   Checkbox,
   FormControlLabel, Modal, TextField
 } from "@mui/material";
-import { useState } from "react";
+import {useState} from "react";
 
 const style = {
   position: "absolute",

@@ -1,32 +1,30 @@
 import { ThemeProvider } from '@emotion/react';
 import { Box } from "@mui/material";
 import { createTheme } from '@mui/material/styles';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router, Route, Switch
 } from 'react-router-dom';
-import styles from "./App.module.css";
 import PrivateRoute from './components/Authentication/PrivateRoute';
 import ProvideAuth from './components/Authentication/ProvideAuth';
 import Footer from "./components/Layout/Footer/Footer";
 import Navbar from './components/Navbar/Navbar';
-import DataContext from './contexts/dataContext';
-import data from './data/data';
-import AdminViewUserLogs from './views/Admin/Archive/AdminViewUserLogs';
 import AdminDashboard from './views/Admin/Dashboard/AdminDashboard';
-import AdminViewTournaments from './views/Admin/Tournaments/AdminViewTournaments';
-import AdminViewUserPage from './views/Admin/Users/AdminViewUsers';
 import HomePage from './views/Home/HomePage';
 import LoginPage from './views/Login/LoginPage';
 import OrganizerCreatePage from './views/Organizer/Create/OrganizerCreatePage';
-import OrganizerHistoryPage from './views/Organizer/History/OrganizerHistoryPage';
 import ProfilePage from './views/Profile/ProfilePage';
 import RegisterPage from './views/Register/RegisterPage';
-import TournamentViewPage from './views/Tournament/View/TournamentViewPage';
 import UserDashboardPage from './views/User/Dashboard/UserDashboardPage';
 import UserHistoryPage from './views/User/History/UserHistoryPage';
 import UserJoinPage from './views/User/Join/UserJoinPage';
+import AdminViewUserPage from './views/Admin/Users/AdminViewUsers';
+import AdminViewUserLogs from './views/Admin/Archive/AdminViewUserLogs';
+import AdminViewTournaments from './views/Admin/Tournaments/AdminViewTournaments';
+import TournamentViewPage from './views/Tournament/View/TournamentViewPage';
+import axios from 'axios';
+import styles from "./App.module.css";
+import OrganizerHistoryPage from "./views/Organizer/History/OrganizerHistoryPage";
 
 export default function App() {
 	const [loading, setLoading] = useState(true);
@@ -59,7 +57,6 @@ export default function App() {
 		},
 	});
 
-	const dataState = useState(data);
 	const [sessionUser, setSessionUser] = useState(null);
 
 	useEffect(() => {
@@ -90,7 +87,7 @@ export default function App() {
 	// };
 
 	return (
-		<DataContext.Provider value={dataState}>
+		<>
 			<Box className={styles.mainContainer}>
 				<ProvideAuth sessionUser={sessionUser}>
 					<ThemeProvider theme={theme}>
@@ -109,7 +106,7 @@ export default function App() {
 								<PrivateRoute exact path="/settings">
 									<ProfilePage />
 								</PrivateRoute>
-								<PrivateRoute exact path="/dashboard">
+								<PrivateRoute exact path="/admin">
 									<AdminDashboard />
 								</PrivateRoute>
 								<PrivateRoute exact path="/admin/users">
@@ -149,6 +146,6 @@ export default function App() {
 				</ProvideAuth>
 			</Box>
 			<Footer />
-		</DataContext.Provider>
+		</>
 	);
 }

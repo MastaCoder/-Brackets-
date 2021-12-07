@@ -56,8 +56,9 @@ export default function TournamentView(props) {
               variant="contained"
               color="success"
               onClick={() => props.joinTournament()}
+              disabled={props.tournament.members.length >= props.tournament.maxMembers}
             >
-              Join event
+              {props.tournament.members.length >= props.tournament.maxMembers ? "Event is full" : "Join event"}
             </Button>
           </Box>
         )}

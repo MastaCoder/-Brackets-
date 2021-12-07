@@ -35,7 +35,7 @@ export default function Navbar({ setSessionUser }) {
 					) : (
 						<>
 							{user.type === 'admin' && (
-								<Link to="/dashboard" className={styles.navLink}>
+								<Link to="/admin" className={styles.navLink}>
 									<Button color="inherit">Admin</Button>
 								</Link>
 							)}
