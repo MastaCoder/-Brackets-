@@ -1,32 +1,29 @@
-import ProvideAuth from './components/Authentication/ProvideAuth';
+import { ThemeProvider } from '@emotion/react';
+import { createTheme } from '@mui/material/styles';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router, Route, Switch
+} from 'react-router-dom';
 import PrivateRoute from './components/Authentication/PrivateRoute';
+import ProvideAuth from './components/Authentication/ProvideAuth';
 import Navbar from './components/Navbar/Navbar';
-import ProfilePage from './views/Profile/ProfilePage';
+import DataContext from './contexts/dataContext';
+import data from './data/data';
+import AdminViewUserLogs from './views/Admin/Archive/AdminViewUserLogs';
+import AdminDashboard from './views/Admin/Dashboard/AdminDashboard';
+import AdminViewTournaments from './views/Admin/Tournaments/AdminViewTournaments';
+import AdminViewUserPage from './views/Admin/Users/AdminViewUsers';
 import HomePage from './views/Home/HomePage';
 import LoginPage from './views/Login/LoginPage';
+import OrganizerCreatePage from './views/Organizer/Create/OrganizerCreatePage';
+import OrganizerHistoryPage from './views/Organizer/History/OrganizerHistoryPage';
+import ProfilePage from './views/Profile/ProfilePage';
 import RegisterPage from './views/Register/RegisterPage';
-import { createTheme } from '@mui/material/styles';
-import { ThemeProvider } from '@emotion/react';
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	Redirect,
-} from 'react-router-dom';
-import AdminDashboard from './views/Admin/Dashboard/AdminDashboard';
+import TournamentViewPage from './views/Tournament/View/TournamentViewPage';
 import UserDashboardPage from './views/User/Dashboard/UserDashboardPage';
 import UserHistoryPage from './views/User/History/UserHistoryPage';
 import UserJoinPage from './views/User/Join/UserJoinPage';
-import OrganizerCreatePage from './views/Organizer/Create/OrganizerCreatePage';
-import OrganizerHistoryPage from './views/Organizer/History/OrganizerHistoryPage';
-import AdminViewUserPage from './views/Admin/Users/AdminViewUsers';
-import AdminViewUserLogs from './views/Admin/Archive/AdminViewUserLogs';
-import AdminViewTournaments from './views/Admin/Tournaments/AdminViewTournaments';
-import DataContext from './contexts/dataContext';
-import data from './data/data';
-import { useEffect, useState } from 'react';
-import TournamentViewPage from './views/Tournament/View/TournamentViewPage';
-import axios from 'axios';
 
 export default function App() {
 	const [loading, setLoading] = useState(true);

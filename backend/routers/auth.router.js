@@ -2,11 +2,9 @@ import { Router } from 'express';
 import { checkUserLoggedIn } from '../middlewares/auth.middleware.js';
 import { addLog } from '../services/logger.service.js';
 import {
-	registerUser,
-	usernameTaken,
-	emailTaken,
-	authenticateUser,
-	changeUserInfo,
+  authenticateUser,
+  changeUserInfo, emailTaken, registerUser,
+  usernameTaken
 } from '../services/user.service.js';
 
 export const authRouter = Router();

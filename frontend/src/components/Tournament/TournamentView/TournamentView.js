@@ -1,14 +1,9 @@
-import {Alert, Box, Button, Container, Grid, Popover, Snackbar, TextField, Typography} from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
+import { useState } from "react";
+import { useAuth } from "../../../hooks/Auth";
 import PageTitle from "../../Layout/PageTitle";
 import TournamentChips from "../TournamentChips/TournamentChips";
-import PageSubTitle from "../../Layout/PageSubTitle";
-import TournamentViewUserChip from "./TournamentViewUserChip/TournamentViewUserChip";
-import TournamentViewTeamCardList from "./TournamentViewTeamCardList/TournamentViewTeamCardList";
-import TournamentViewTeamCard from "./TournamentViewTeamCardList/TournamentViewTeamCard/TournamentViewTeamCard";
-import TournamentUpdateModal from "./TournamentUpdateModal/TournamentUpdateModal";
 import TournamentViewBrackets from "./TournamentViewBrackets/TournamentViewBrackets";
-import {useState} from "react";
-import {useAuth} from "../../../hooks/Auth";
 import TournamentViewDetails from "./TournamentViewDetails/TournamentViewDetails";
 
 export default function TournamentView(props) {

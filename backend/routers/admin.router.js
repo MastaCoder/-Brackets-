@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import { checkAdminLoggedIn, checkUserLoggedIn } from '../middlewares/auth.middleware.js';
-import { getNumTournaments, getTournaments } from '../services/tournament.service.js';
-import { getAllUserAccess, setUserAccess } from '../services/user.service.js';
-import { getUser } from '../services/user.service.js';
+import { checkAdminLoggedIn } from '../middlewares/auth.middleware.js';
 import { addLog, getAllLogs } from '../services/logger.service.js';
+import { getNumTournaments, getTournaments } from '../services/tournament.service.js';
+import { getAllUserAccess, getUser, setUserAccess } from '../services/user.service.js';
 
 export const adminRouter = Router();
 

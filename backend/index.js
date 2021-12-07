@@ -1,14 +1,14 @@
-import express from 'express';
-import cors from 'cors';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+import express from 'express';
 import session from 'express-session';
-import { authRouter } from './routers/auth.router.js';
-import { sessionRouter } from './routers/session.router.js';
-import { adminRouter } from './routers/admin.router.js';
-import { checkMongooseConnection } from './middlewares/connection.middleware.js';
-import { tournamentRouter } from './routers/tournament.router.js';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { checkMongooseConnection } from './middlewares/connection.middleware.js';
+import { adminRouter } from './routers/admin.router.js';
+import { authRouter } from './routers/auth.router.js';
+import { sessionRouter } from './routers/session.router.js';
+import { tournamentRouter } from './routers/tournament.router.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();

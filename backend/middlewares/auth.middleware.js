@@ -1,6 +1,5 @@
 import { getUser } from "../services/user.service.js";
 
-
 export const checkUserLoggedIn = async (req, res, next) => {
   if (req.session.currentUser) {
     try {
