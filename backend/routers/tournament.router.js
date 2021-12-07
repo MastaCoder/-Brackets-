@@ -13,6 +13,7 @@ import {
   regenerateTournamentId,
   joinTournamentTeam,
   removeTournament,
+  updateTournamentStatus,
 } from "../services/tournament.service.js";
 import { isMongoError } from "../util.js";
 
@@ -247,9 +248,31 @@ tournamentRouter.patch("/updateinfo/:tid", checkUserLoggedIn, async (req, res) =
       res.status(404).send({ msg: error.msg });
     } else if (error.name === "unauth") {
       res.status(403).send({ msg: error.msg});
+    } else {
+      res.status(400).send({ msg: "Bad Request"})
     }
   }
 });
+
+tournamentRouter.patch("/updatestatus/:tid", checkUserLoggedIn, async (req, res) => {
+  try {
+    res.send({tournament: await updateTournamentStatus(req.user, req.params.tid)});
+  } catch (error) {
+    if (isMongoError(error)) {
+      res.status(500).send({ msg: "Internal Server Error" });
+    } else if (error.name === "badId") {
+      res.status(400).send({ msg: error.msg });
+    } else if (error.name === "notFound") {
+      res.status(404).send({ msg: error.msg });
+    } else if (error.name === "unauth") {
+      res.status(403).send({ msg: error.msg});
+    } else if (error.name === "badstatus") {
+      res.status(400).send({ msg: error.msg;});
+    } else {
+      res.status(400).send({ msg: "Bad Request"});
+    }
+  }
+})
 
 tournamentRouter.post(
   "/:tid/addBracket",

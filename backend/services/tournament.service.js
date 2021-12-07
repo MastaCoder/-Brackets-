@@ -181,12 +181,11 @@ export async function kickUserFromGroup(req) {
   kickFromTeam(kickedUser, tournament);
   const newTeam = getUniqueGroupName(tournament);
 
-  tournament.teams.set(newTeam, [ kickedUser ]);
+  tournament.teams.set(newTeam, [kickedUser]);
   await tournament.save();
 
   tournament.userTeam = groupName;
-  if (kickedUser === req.user.username)
-    tournament.userTeam = newTeam;
+  if (kickedUser === req.user.username) tournament.userTeam = newTeam;
 
   return tournament;
 }
@@ -262,25 +261,41 @@ export async function joinTournamentTeam(user, groupName, tid) {
 export async function removeTournament(user, tid) {
   const tournament = await validateTournamentId(tid);
 
-  if (user.type === "admin" || user.username === tournament.host){
+  if (user.type === "admin" || user.username === tournament.host) {
     await tournament.remove();
-  }
-  else {
+  } else {
     throwCustomError("unauth", "Unauthorized to remove tournament");
   }
 }
 
 export async function updateTournamentInfo(req) {
-   const tid = req.params.tid;
+  const tid = req.params.tid;
 
-   const tournament = await validateTournamentId(tid);
+  const tournament = await validateTournamentId(tid);
 
-   if (tournament.host !== req.user.username || req.user.type !== "admin") {
+  if (tournament.host !== req.user.username || req.user.type !== "admin") {
     throwCustomError("unauth", "Unauthorized to remove tournament");
-   }
+  }
 
-   tournament.description = req.body.description;
-   tournament.public = req.body.public;
+  tournament.description = req.body.description;
+  tournament.public = req.body.public;
 
-   return await tournament.save();
+  return await tournament.save();
+}
+
+export async function updateTournamentStatus(user, tid) {
+  const tid = req.params.tid;
+
+  const tournament = await validateTournamentId(tid);
+
+  if (tournament.host !== req.user.username || req.user.type !== "admin") {
+    throwCustomError("unauth", "Unauthorized to remove tournament");
+  }
+
+  if (tournament.status === 2) {
+    throwCustomError("badstatus", "Tournament has already ended");
+  }
+
+  tournament.status += 1;
+  return await tournament.save();
 }
