@@ -218,7 +218,7 @@ tournamentRouter.get("/details/:tid", checkUserLoggedIn, async (req, res) => {
 });
 
 
-tournamentRouter.delete("/remove/:tid", checkUserLoggedIn, async (req, res) => {
+tournamentRouter.delete("/:tid", checkUserLoggedIn, async (req, res) => {
   try {
     await removeTournament(req.user, req.params.tid);
   } catch (error) {
