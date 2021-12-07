@@ -224,5 +224,4 @@ export async function regenerateTournamentId(tid) {
   await tournament.remove();
   await newTournament.save();
   return newTournament._id;
-
 }

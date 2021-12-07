@@ -2,8 +2,10 @@ import TournamentView from "../../../components/Tournament/TournamentView/Tourna
 import {useEffect, useState} from "react";
 import {Box, CircularProgress} from "@mui/material";
 import axios from "axios";
+import {useHistory} from "react-router";
 
 export default function TournamentViewPage(props) {
+  const history = useHistory();
   const [tournament, setTournament] = useState(false);
 
   useEffect(() => {
@@ -11,10 +13,6 @@ export default function TournamentViewPage(props) {
       .get(`/api/tournaments/details/${props.match.params.id}`)
       .then((res) => setTournament(res.data.tournament));
   }, [props.match.params.id]);
-
-  // kicks a user from a team, forms their own new team
-  const onKickFromTeam = (userName) => {
-  }
 
   const onJoinTournament = async () => {
     try {
@@ -66,6 +64,16 @@ export default function TournamentViewPage(props) {
     }
   }
 
+  const onRegenerateLink = async () => {
+    try {
+      const res = await axios.post(`/api/tournaments/regenerate/${props.match.params.id}`);
+      console.log("the fuck?", `/tournament/${res.data.id}`);
+      window.location.href = `/tournament/${res.data.id}`; // page needs to be re-rendered
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <>
       {tournament !== false ? (
@@ -75,6 +83,7 @@ export default function TournamentViewPage(props) {
           kickTournament={onKickTournament}
           teamNameChange={onTeamNameChange}
           teamKick={onTeamKick}
+          regenerateLink={onRegenerateLink}
         />
       ) : (
         <Box textAlign="center" mt={3}>
