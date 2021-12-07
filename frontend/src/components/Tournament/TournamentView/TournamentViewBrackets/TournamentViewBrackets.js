@@ -20,11 +20,11 @@ export default function TournamentViewBrackets(props) {
   const nextRound = (event) => {
     event.preventDefault();
     if (pairSelector.includes(null)) {
-      alert("Make sure every pair is selected!");
+      alert("Make sure every pair is selected!"); // @todo change this with a modal
       return;
     }
 
-    alert("To be done in phase 2: " + pairSelector);
+    props.nextBracket(pairSelector);
   }
 
 	return (

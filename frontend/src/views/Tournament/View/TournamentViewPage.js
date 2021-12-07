@@ -117,9 +117,11 @@ export default function TournamentViewPage(props) {
     }
   }
 
-  const onNextBracket = async () => {
+  const onNextBracket = async (proceedingTeams) => {
     try {
-      const res = await axios.post(`/api/tournaments/nextbracket/${props.match.params.id}`);
+      const res = await axios.post(`/api/tournaments/nextbracket/${props.match.params.id}`, {
+        proceedingTeams: proceedingTeams // this is personal.
+      });
       setTournament(res.data.tournament);
     } catch (err) {
       console.log(err);

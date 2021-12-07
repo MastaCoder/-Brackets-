@@ -360,10 +360,10 @@ export async function proceedNextBracket(req) {
     throwCustomError("badrequest", "Advancing teams is not an array");
   }
 
-  if (proceedingTeams.length === 1) {
+  if (proceedingTeams.length === 2) {
     proceedingTeams.push(null);
     tournament.brackets.push(proceedingTeams);
-    return updateTournamentStatus(req);
+    return await updateTournamentStatus(req);
   } 
 
   const lastBracket = tournament.brackets.at(-1);
@@ -372,24 +372,29 @@ export async function proceedNextBracket(req) {
   for (let i = 0; i < proceedingTeams.length; i += 2) {
     const matchUp = []
 
-    if (!(proceedingTeams[i] in tournament.teams)) {
+    if (!(tournament.teams.get(proceedingTeams[i]))) {
       throwCustomError("badrequest", "Team not in tournament");
     }
   
+    console.log(i, lastBracket);
     if (!(lastBracket[i].includes(proceedingTeams[i]))) {
       throwCustomError("badrequest", "Invalid proceeding team");
     }
 
-    matchUp.push(proceedingTeam[i]);
+    matchUp.push(proceedingTeams[i]);
+    console.log("matchup", matchUp);
 
     if (!proceedingTeams.at(i + 1)){
       matchUp.push(null);
     } else {
       matchUp.push(proceedingTeams[i+1]);
     }
+
+    console.log("matchup", matchUp);
+    bracket.push(matchUp);
   }
 
-  tournament.brackets.push(bracket);;
+  tournament.brackets.push(bracket);
   await tournament.save();
 
   tournament.userTeam = null;
