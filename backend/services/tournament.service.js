@@ -34,7 +34,7 @@ async function getTournamentList(status) {
 
   let parsedStatus = parseInt(status);
 
-  return await Tournament.find({status: parsedStatus});
+  return await Tournament.find({ status: parsedStatus });
 }
 
 async function kickFromTeam(userToRemove, tournament) {
@@ -80,7 +80,9 @@ export async function getTournaments(status) {
 
 export async function getPublicTournaments(user, status) {
   const tournaments = await getTournamentList(status);
-  return tournaments.filter((e) => !e.members.includes(user.username));
+  return tournaments.filter(
+    (e) => !e.members.includes(user.username) && e.host !== user.username
+  );
 }
 
 export async function getTournamentById(user, id) {
@@ -134,7 +136,7 @@ export async function joinTournament(user, tid) {
 
   tournament.members.push(user.username);
   tournament.teams.set(groupName, [user.username]);
-  await tournament.save()
+  await tournament.save();
 
   tournament.userTeam = groupName;
   return tournament;
@@ -157,7 +159,7 @@ export async function changeGroupName(req) {
   tournament.teams.set(newGroupName, tournament.teams.get(groupName));
   tournament.teams.delete(groupName);
   await tournament.save();
-  
+
   tournament.userTeam = newGroupName;
   return tournament;
 }
@@ -179,7 +181,7 @@ export async function kickUserFromGroup(req) {
   kickFromTeam(kickedUser, tournament);
   const newTeam = getUniqueGroupName(tournament);
 
-  tournament.teams.set(newTeam, [ req.user.username ]);
+  tournament.teams.set(newTeam, [req.user.username]);
   await tournament.save();
   tournament.userTeam = newTeam;
 
@@ -189,7 +191,10 @@ export async function kickUserFromGroup(req) {
 export async function removeUserFromTournament(req, userToRemove) {
   const tournament = await validateTournamentId(req.params.tid);
 
-  if (req.user.username !== userToRemove && req.user.username !== tournament.host) {
+  if (
+    req.user.username !== userToRemove &&
+    req.user.username !== tournament.host
+  ) {
     throwCustomError("unauth", "Unauthorized to remove user from tournament");
   }
 
@@ -197,7 +202,7 @@ export async function removeUserFromTournament(req, userToRemove) {
 
   // removes user from the team, deletes the team if needed
   kickFromTeam(userToRemove, tournament);
-  
+
   await tournament.save();
   tournament.userTeam = null;
   return tournament;
@@ -206,8 +211,8 @@ export async function removeUserFromTournament(req, userToRemove) {
 export async function regenerateTournamentId(tid) {
   const tournament = await validateTournamentId(tid);
 
-  if (tournament.status !== 0){
-    throwCustomError("statusError", "Tournament not in opening status")
+  if (tournament.status !== 0) {
+    throwCustomError("statusError", "Tournament not in opening status");
   }
 
   const newTournament = new Tournament({
