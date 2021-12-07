@@ -12,6 +12,7 @@ import {
   removeUserFromTournament,
   regenerateTournamentId,
   joinTournamentTeam,
+  removeTournament,
 } from "../services/tournament.service.js";
 import { isMongoError } from "../util.js";
 
@@ -213,6 +214,23 @@ tournamentRouter.get("/details/:tid", checkUserLoggedIn, async (req, res) => {
     }
   }
 });
+
+
+tournamentRouter.delete("/remove/:tid", checkUserLoggedIn, async (req, res) => {
+  try {
+    await removeTournament(req.user, req.params.tid);
+  } catch (error) {
+    if (isMongoError(error)) {
+      res.status(500).send({ msg: "Internal Server Error" });
+    } else if (error.name === "badId") {
+      res.status(400).send({ msg: error.msg });
+    } else if (error.name === "notFound") {
+      res.status(404).send({ msg: error.msg });
+    } else if (error.name === "unauth") {
+      res.status(403).send({ msg: error.msg});
+    }
+  }
+})
 
 tournamentRouter.patch("/:tid", checkUserLoggedIn, async (req, res) => {});
 

@@ -245,3 +245,14 @@ export async function joinTournamentTeam(user, groupName, tid) {
 
   return tournament;
 }
+
+export async function removeTournament(user, tid) {
+  const tournament = await validateTournamentId(tid);
+
+  if (user.type === "admin" || user.username === tournament.host){
+    await tournament.remove();
+  }
+  else {
+    throwCustomError("unauth", "Unauthorized to remove tournament");
+  }
+}
