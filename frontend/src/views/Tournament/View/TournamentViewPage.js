@@ -117,6 +117,15 @@ export default function TournamentViewPage(props) {
     }
   }
 
+  const onNextBracket = async () => {
+    try {
+      const res = await axios.post(`/api/tournaments/nextbracket/${props.match.params.id}`);
+      setTournament(res.data.tournament);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <>
       {tournament !== false ? (
@@ -131,6 +140,7 @@ export default function TournamentViewPage(props) {
           updateTournament={onTournamentUpdate}
           deleteTournament={onTournamentDelete}
           nextStage={onNextStage}
+          nextBracket={onNextBracket}
         />
       ) : (
         <Box textAlign="center" mt={3}>
