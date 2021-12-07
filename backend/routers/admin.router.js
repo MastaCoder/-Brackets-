@@ -57,6 +57,6 @@ adminRouter.get("/listtournaments/:status", checkAdminLoggedIn, async (req, res)
 	try {
 		res.send(await getTournaments(req.params.status));
 	} catch (error) {
-		res.sendStatus(500); 
+		res.sendStatus(500);
 	}
 });
