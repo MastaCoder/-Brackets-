@@ -19,6 +19,27 @@ async function validateTournamentId(id) {
   return tournament;
 }
 
+async function generateStartUpBracket(tournament) {
+  const pool = tournament.teams.keys();
+  const bracket = [];
+  while (pool.length) {
+    const matchUp = [];
+    let choice = Math.floor(Math.random() * pool.length);
+    matchUp.push(pool[choice]);
+    pool.splice(choice, 1);
+    choice = Math.floor(Math.random() * pool.length);
+    if (!pool.length) {
+      matchUp.push(null);
+    } else {
+      matchUp.push(pool[choice]);
+      pool.splice(choice, 1);
+    }
+    bracket.push(matchUp);
+  }
+
+  return bracket;
+}
+
 function getUniqueGroupName(tournament) {
   let groupName = generateRandomGroupName();
 
@@ -81,7 +102,8 @@ export async function getTournaments(status) {
 export async function getPublicTournaments(user, status) {
   const tournaments = await getTournamentList(status);
   return tournaments.filter(
-    (e) => !e.members.includes(user.username) && e.host !== user.username && e.public
+    (e) =>
+      !e.members.includes(user.username) && e.host !== user.username && e.public
   );
 }
 
