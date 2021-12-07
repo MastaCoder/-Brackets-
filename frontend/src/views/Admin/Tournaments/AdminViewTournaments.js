@@ -6,7 +6,7 @@ import PageTitle from '../../../components/Layout/PageTitle';
 import TournamentCardList from '../../../components/Tournament/TournamentList/TournamentCardList';
 
 const AdminViewTournaments = (props) => {
-  const [tournaments, setTournaments] = useState([]);
+  const [tournaments, setTournaments] = useState(null);
   const history = useHistory();
 
   useEffect(() => {

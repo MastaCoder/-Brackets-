@@ -1,7 +1,9 @@
 import { Container, Box, Button, TextField, Alert } from "@mui/material";
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import PageTitle from "../../components/Layout/PageTitle";
 import axios from "axios"
+import {useAuth} from "../../hooks/Auth";
+import {useHistory} from "react-router";
 
 export default function RegisterPage() {
     const [showMessage, setShowMessage] = useState(false);
@@ -12,6 +14,9 @@ export default function RegisterPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+
+    const { user } = useAuth();
+    const history = useHistory();
 
     const handleRegistration = async (event) => {
         event.preventDefault();
@@ -36,6 +41,10 @@ export default function RegisterPage() {
             }
         }
     }
+
+    useEffect(() => {
+        if (user) history.push("/user");
+    }, [user, history]);
 
     return (
         <Container maxWidth="sm">

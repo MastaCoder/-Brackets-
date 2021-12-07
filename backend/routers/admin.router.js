@@ -85,7 +85,7 @@ adminRouter.get('/logs', checkAdminLoggedIn, async (req, res) => {
  */
 adminRouter.get('/listtournaments/:status', checkAdminLoggedIn, async (req, res) => {
 		try {
-			res.send(await getTournaments(req.params.status));
+			res.send(await getTournaments(req.params.status.split(",")));
 		} catch (error) {
 			res.sendStatus(500);
 		}

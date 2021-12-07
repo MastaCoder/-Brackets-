@@ -25,7 +25,7 @@ export default function TournamentView(props) {
   }
 
   const eventJoinable = props.tournament.userTeam === null && !props.tournament.status &&
-    props.tournament.host !== user.username;
+    props.tournament.host !== user.username && user.type !== 'admin';
 
   return (
     <Container maxWidth="xl">

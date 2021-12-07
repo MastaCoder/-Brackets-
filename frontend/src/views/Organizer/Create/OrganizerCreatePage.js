@@ -65,6 +65,7 @@ export default function OrganizerCreatePage() {
 					label="Name"
 					name="name"
 					onChange={(e) => onChange(e)}
+					inputProps={{ maxLength: 50 }}
 				/>
 				<TextField
 					margin="normal"
@@ -75,6 +76,7 @@ export default function OrganizerCreatePage() {
 					label="Description"
 					name="description"
 					onChange={(e) => onChange(e)}
+					inputProps={{ maxLength: 500 }}
 				/>
 				<TextField
 					margin="normal"
@@ -84,6 +86,7 @@ export default function OrganizerCreatePage() {
 					label="Maximum members"
 					name="maxMembers"
 					onChange={(e) => onChange(e)}
+					inputProps={{ min: 2, max: 100 }}
 				/>
 				<TextField
 					margin="normal"
@@ -93,6 +96,7 @@ export default function OrganizerCreatePage() {
 					label="Team Size"
 					name="maxTeamSize"
 					onChange={(e) => onChange(e)}
+					inputProps={{ min: 1, max: formData.maxMembers }}
 				/>
 				<FormControlLabel
 					control={<Checkbox defaultChecked />}

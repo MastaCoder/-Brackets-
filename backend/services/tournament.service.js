@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Tournament } from '../models/tournament.model.js';
 import { generateRandomGroupName, throwCustomError } from '../util.js';
+import { addLog } from './logger.service.js';
 
 async function validateTournamentId(id) {
 	if (!mongoose.isValidObjectId(id)) {
@@ -34,7 +35,6 @@ function generateStartUpBracket(tournament) {
 		}
 
 		bracket.push(matchUp);
-		// console.log("pushing", bracket);
 	}
 
 	return bracket;
@@ -53,12 +53,18 @@ function getUniqueGroupName(tournament) {
 async function getTournamentList(status) {
 	const statuses = [0, 1, 2];
 
-	if (status.includes(-1)) return await Tournament.find();
+  if (status.includes('-1')) return await Tournament.find();
 
-	let parsedStatus = parseInt(status);
-	if (!statuses.includes(parsedStatus)) throw Error();
+  let parsedStatus = status.map((e) => {
+    e = parseInt(e);
+    if (!statuses.includes(e)) {
+      throw Error("Invalid status type");
+    }
 
-	return await Tournament.find({ status: parsedStatus });
+    return { status: e };
+  });
+
+  return await Tournament.find({ $or: parsedStatus });
 }
 
 async function kickFromTeam(userToRemove, tournament) {
@@ -225,7 +231,8 @@ export async function removeUserFromTournament(req, userToRemove) {
 
 	if (
 		req.user.username !== userToRemove &&
-		req.user.username !== tournament.host
+		req.user.username !== tournament.host &&
+    req.user.type !== 'admin'
 	) {
 		throwCustomError('unauth', 'Unauthorized to remove user from tournament');
 	}
@@ -307,7 +314,7 @@ export async function updateTournamentInfo(req) {
 	const tid = req.params.tid;
 	const tournament = await validateTournamentId(tid);
 
-	if (tournament.host !== req.user.username || req.user.type !== 'admin') {
+	if (tournament.host !== req.user.username && req.user.type !== 'admin') {
 		throwCustomError('unauth', 'Unauthorized to update tournament');
 	}
 
@@ -324,7 +331,7 @@ export async function updateTournamentStatus(req) {
 	const tid = req.params.tid;
 	const tournament = await validateTournamentId(tid);
 
-	if (tournament.host !== req.user.username || req.user.type !== 'admin') {
+	if (tournament.host !== req.user.username && req.user.type !== 'admin') {
 		throwCustomError('unauth', 'Unauthorized to update tournament');
 	}
 
@@ -334,7 +341,6 @@ export async function updateTournamentStatus(req) {
 
 	if (tournament.status === 0) {
 		const bracket = generateStartUpBracket(tournament);
-		console.log(bracket);
 		tournament.brackets.push(bracket);
 	}
 
@@ -356,7 +362,7 @@ export async function proceedNextBracket(req) {
 	const tournament = await validateTournamentId(tid);
 	const proceedingTeams = req.body.proceedingTeams;
 
-	if (tournament.host !== req.user.username || req.user.type !== 'admin') {
+	if (tournament.host !== req.user.username && req.user.type !== 'admin') {
 		throwCustomError('unauth', 'Unauthorized to update tournament');
 	}
 
@@ -368,7 +374,6 @@ export async function proceedNextBracket(req) {
 		proceedingTeams.push(null);
 		tournament.brackets.push([proceedingTeams]);
 		await tournament.save();
-		console.log(proceedingTeams);
 		return await updateTournamentStatus(req);
 	}
 

@@ -10,14 +10,14 @@ import TournamentUpdateModal from "../TournamentUpdateModal/TournamentUpdateModa
 export default function TournamentViewDetails(props) {
   const { user } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
-
   const [infoUpdate, setInfoUpdate] = useState(false);
-
   const [open, setOpen] = useState(false);
+
+  const isHost = props.tournament.host === user.username || user.type === 'admin';
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setInfoUpdate(true);
   }
 
   return (
@@ -48,7 +48,7 @@ export default function TournamentViewDetails(props) {
         {props.tournament.members.length > 0 ? (
           <TournamentViewUserChip
             members={props.tournament.members}
-            onKick={props.tournament.host === user.username && !props.tournament.status ? props.kickTournament : null}
+            onKick={isHost && !props.tournament.status ? props.kickTournament : null}
             size="medium"
           />
         ) : (
@@ -79,7 +79,7 @@ export default function TournamentViewDetails(props) {
       </Box>
 
       {/* Settings */}
-      {props.tournament.host === user.username && (
+      {isHost && (
         <>
           <PageSubTitle>Event Settings</PageSubTitle>
           <Box maxWidth={550} mt={2}>
@@ -156,7 +156,7 @@ export default function TournamentViewDetails(props) {
         </>
       )}
 
-      {props.tournament.host === user.username && (
+      {isHost && (
         <>
           <Snackbar
             open={infoUpdate}
@@ -173,6 +173,7 @@ export default function TournamentViewDetails(props) {
             description={props.tournament.description}
             id={props.tournament.id}
             updateTournament={props.updateTournament}
+            setInfoUpdate={setInfoUpdate}
           />
         </>
       )}
