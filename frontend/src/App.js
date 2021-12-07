@@ -64,19 +64,22 @@ export default function App() {
 
 	useEffect(() => {
 		if (!sessionUser) {
-			axios.get('/api/session/validate').then((res) => {
-				const user = res.data.currentUser;
-				if (user) setSessionUser(user);
-				setLoading(false);
-			}).catch((err) => {
-				console.log(err);
-				setLoading(false);
-			});
+			axios
+				.get('/api/session/validate')
+				.then((res) => {
+					const user = res.data.currentUser;
+					if (user) setSessionUser(user);
+					setLoading(false);
+				})
+				.catch((err) => {
+					console.log(err);
+					setLoading(false);
+				});
 		}
 	}, [sessionUser]);
 
 	if (loading) {
-		return (<>Validating your login..</>);
+		return <>Validating your login..</>;
 	}
 
 	// const handleSessionUser = () => {
@@ -131,13 +134,13 @@ export default function App() {
 							<PrivateRoute exact path="/user/join">
 								<UserJoinPage />
 							</PrivateRoute>
-							<Route exact path="/org/create">
+							<PrivateRoute exact path="/org/create">
 								<OrganizerCreatePage />
-							</Route>
-							<Route exact path="/org/history">
+							</PrivateRoute>
+							<PrivateRoute exact path="/org/history">
 								<OrganizerHistoryPage />
-							</Route>
-							<Route
+							</PrivateRoute>
+							<PrivateRoute
 								exact
 								path="/tournament/:id"
 								component={TournamentViewPage}
