@@ -126,20 +126,12 @@ export default function TournamentView(props) {
                   <TournamentViewTeamCard
                     teamName={props.tournament.userTeam}
                     team={props.tournament.teams[props.tournament.userTeam]}
-                    onKick={props.tournament.status !== 2 ? props.onKickFromTeam : null}
-                    onNameUpdate={props.tournament.status !== 2 ? props.onTeamNameUpdate : null}
+                    teamNameChange={props.tournament.status !== 2 ? props.teamNameChange : null}
+                    hideButton={true}
+                    onKick={props.tournament.status !== 2 ? props.teamKick : null}
                   />
                 </Grid>
               </Grid>
-              {/*<Box maxWidth={500} mb={3}>*/}
-              {/*  <TextField*/}
-              {/*    label="Team invite link (not functional - phase 2)"*/}
-              {/*    variant="outlined"*/}
-              {/*    defaultValue="http://localhost:3000/tournament/1/team/jsk18Z01kM23"*/}
-              {/*    fullWidth*/}
-              {/*    InputProps={{ readOnly: true }}*/}
-              {/*  />*/}
-              {/*</Box>*/}
             </>
           )}
 
@@ -150,7 +142,7 @@ export default function TournamentView(props) {
             {props.tournament.members.length > 0 ? (
               <TournamentViewUserChip
                 members={props.tournament.members}
-                onKick={props.tournament.host === user.username ? props.onKickUser : null}
+                onKick={props.tournament.host === user.username ? props.kickTournament : null}
                 size="medium"
               />
             ) : (
@@ -170,6 +162,7 @@ export default function TournamentView(props) {
                 teams={props.tournament.teams}
                 canUserJoin={props.tournament.userTeam !== null}
                 maxTeamMembers={props.tournament.maxTeamMembers}
+                hideButton={false}
               />
             ) : (
               <Typography variant="body1">
@@ -206,15 +199,6 @@ export default function TournamentView(props) {
                   </Button>
                 }
               </Box>
-              {/*<Box maxWidth={550}>*/}
-              {/*  <TextField*/}
-              {/*    label="Direct Invite Link (not functional - phase 2)"*/}
-              {/*    variant="outlined"*/}
-              {/*    defaultValue="http://localhost:3000/tournament/1/23489dxfn12dx"*/}
-              {/*    fullWidth*/}
-              {/*    InputProps={{ readOnly: true }}*/}
-              {/*  />*/}
-              {/*</Box>*/}
             </>
           )}
         </>

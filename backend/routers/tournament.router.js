@@ -107,10 +107,9 @@ tournamentRouter.patch("/teams/changename/:tid", checkUserLoggedIn, async (req, 
       res.status(403).send({ msg: error.msg});
     }
   }
-}
-);
+});
 
-tournamentRouter.post("/update/kick/:tid", checkUserLoggedIn, async (req, res) => {
+tournamentRouter.post("/teams/kick/:tid", checkUserLoggedIn, async (req, res) => {
   try {
     res.send({ tournament: await kickUserFromGroup(req) });
   } catch (error) {

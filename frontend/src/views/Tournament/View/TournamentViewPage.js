@@ -12,18 +12,8 @@ export default function TournamentViewPage(props) {
       .then((res) => setTournament(res.data.tournament));
   }, [props.match.params.id]);
 
-  // kick a user, to be replaced with an API call in the future
-  const kickUser = (userName) => {
-
-  }
-
   // kicks a user from a team, forms their own new team
   const onKickFromTeam = (userName) => {
-  }
-
-  // Update the name of a team
-  const onNameUpdate = (oldName, newName) => {
-
   }
 
   const onJoinTournament = async () => {
@@ -48,10 +38,26 @@ export default function TournamentViewPage(props) {
   }
 
   const onTeamNameChange = async (newName) => {
+    if (newName === tournament.userTeam)
+      return;
+
     try {
-      const res = await axios.post(`/api/tournaments/teams/changename/${props.match.params.id}`, {
+      const res = await axios.patch(`/api/tournaments/teams/changename/${props.match.params.id}`, {
         groupName: tournament.userTeam,
         newGroupName: newName
+      });
+
+      setTournament(res.data.tournament);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const onTeamKick = async (kickedUser) => {
+    try {
+      const res = await axios.post(`/api/tournaments/teams/kick/${props.match.params.id}`, {
+        groupName: tournament.userTeam,
+        kickedUser: kickedUser
       });
 
       setTournament(res.data.tournament);
@@ -68,10 +74,7 @@ export default function TournamentViewPage(props) {
           joinTournament={onJoinTournament}
           kickTournament={onKickTournament}
           teamNameChange={onTeamNameChange}
-
-          onKickUser={kickUser}
-          onKickFromTeam={onKickFromTeam}
-          onTeamNameUpdate={onNameUpdate}
+          teamKick={onTeamKick}
         />
       ) : (
         <Box textAlign="center" mt={3}>

@@ -1,13 +1,16 @@
 import {Box, Button, Divider, Paper, TextField, Typography} from "@mui/material";
 import TournamentViewUserChip from "../../TournamentViewUserChip/TournamentViewUserChip";
 import {useState} from "react";
+import {useAuth} from "../../../../../hooks/Auth";
 
 export default function TournamentViewTeamCard(props) {
+  const { user } = useAuth();
+
   const [editing, setEditing] = useState(false);
   const [newName, setNewName] = useState(props.teamName);
 
-  const updateName = (e) => {
-    props.onNameUpdate(props.teamName, newName);
+  const updateName = () => {
+    props.teamNameChange(newName);
     setEditing(false);
   }
 
@@ -41,17 +44,16 @@ export default function TournamentViewTeamCard(props) {
           size="small"
         />
 
-        {/* Neat little trick, if the user can edit then they can't join */}
-        {(props.onNameUpdate === null && props.canUserJoin) && (
+        {!props.hideButton && (
           <Box textAlign="center" mt={1}>
             <Button
               variant="outlined"
               size="small"
               color="success"
-              disabled={props.team.length >= props.maxTeamMembers}
+              disabled={props.team.length >= props.maxTeamMembers || props.team.includes(user.username)}
               onClick={() => alert("To be implemented in phase 2!")}
             >
-              Join team
+              Join team ({props.team.length}/{props.maxTeamMembers})
             </Button>
           </Box>
         )}
