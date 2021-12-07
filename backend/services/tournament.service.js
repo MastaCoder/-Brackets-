@@ -225,3 +225,18 @@ export async function regenerateTournamentId(tid) {
   await newTournament.save();
   return newTournament._id;
 }
+
+export async function joinTournamentTeam(user, groupName, tid) {
+  const tournament = await validateTournamentId(tid);
+  const team = tournament.teams.get(groupName);
+  if (team.includes(user.username)) {
+    throwCustomError("conflict", "Already in this team");
+  }
+
+  team.push(user.username);
+  await tournament.save();
+
+  tournament.userTeam = groupName;
+
+  return tournament;
+}
