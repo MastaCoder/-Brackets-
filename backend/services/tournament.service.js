@@ -181,9 +181,12 @@ export async function kickUserFromGroup(req) {
   kickFromTeam(kickedUser, tournament);
   const newTeam = getUniqueGroupName(tournament);
 
-  tournament.teams.set(newTeam, [req.user.username]);
+  tournament.teams.set(newTeam, [ kickedUser ]);
   await tournament.save();
-  tournament.userTeam = newTeam;
+
+  tournament.userTeam = groupName;
+  if (kickedUser === req.user.username)
+    tournament.userTeam = newTeam;
 
   return tournament;
 }
@@ -234,10 +237,20 @@ export async function regenerateTournamentId(tid) {
 export async function joinTournamentTeam(user, groupName, tid) {
   const tournament = await validateTournamentId(tid);
   const team = tournament.teams.get(groupName);
+
+  if (!tournament.members.includes(user.username)) {
+    throwCustomError("badId", "User not in tournament");
+  }
+
   if (team.includes(user.username)) {
     throwCustomError("conflict", "Already in this team");
   }
 
+  if (team.length >= tournament.maxTeamMembers) {
+    throwCustomError("maxlimit", "Team limit size exceeded");
+  }
+
+  kickFromTeam(user.username, tournament);
   team.push(user.username);
   await tournament.save();
 

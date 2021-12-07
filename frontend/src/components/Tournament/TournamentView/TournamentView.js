@@ -163,6 +163,7 @@ export default function TournamentView(props) {
                 canUserJoin={props.tournament.userTeam !== null}
                 maxTeamMembers={props.tournament.maxTeamMembers}
                 hideButton={false}
+                joinTeam={props.joinTeam}
               />
             ) : (
               <Typography variant="body1">
@@ -189,13 +190,13 @@ export default function TournamentView(props) {
                   </Button>
                 }
                 {props.tournament.status === 0 &&
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => props.regenerateLink()}
-                >
-                  Regenerate event link
-                </Button>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => props.regenerateLink()}
+                  >
+                    Regenerate event link
+                  </Button>
                 }
                 {props.tournament.status === 1 &&
                   <Button

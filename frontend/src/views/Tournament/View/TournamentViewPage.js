@@ -74,6 +74,18 @@ export default function TournamentViewPage(props) {
     }
   }
 
+  const onTeamJoin = async (groupName) => {
+    try {
+      const res = await axios.post(`/api/tournaments/teams/join/${props.match.params.id}`, {
+        groupName
+      });
+
+      setTournament(res.data.tournament);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <>
       {tournament !== false ? (
@@ -84,6 +96,7 @@ export default function TournamentViewPage(props) {
           teamNameChange={onTeamNameChange}
           teamKick={onTeamKick}
           regenerateLink={onRegenerateLink}
+          joinTeam={onTeamJoin}
         />
       ) : (
         <Box textAlign="center" mt={3}>
