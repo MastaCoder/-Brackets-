@@ -2,6 +2,9 @@
   "name": "brackets",
   "version": "1.0.0",
   "description": "CSC309 Project",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "heroku-prebuild": "cd frontend && npm install && npm run build && cd ../backend && npm install"
   },

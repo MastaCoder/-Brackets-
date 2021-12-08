@@ -1,9 +1,12 @@
+Note: We've committed once past the deadline for a Heroku deployment fix. Our package-lock.json mismatched
+with the version uploaded on Heroku, so we uploaded our Node engine and the lock files for it. This will not
+cause any issues with local deployment. (No code changes were made)
+
 # 4 Devs 1 Game - [Brackets]
 
 <h4 align="center">Try out [Brackets] at https://csc309-brackets.herokuapp.com/!</h4>
 
 ![image](https://user-images.githubusercontent.com/25436568/140655196-48a430b1-4fc0-484a-948c-5c6c406f136f.png)
-
 
 
 * [Features](#features)
